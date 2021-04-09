@@ -7,7 +7,10 @@
 <body>
     <form method="POST" action="{% url 'signup' %}">
         {% csrf_token %}
-        <p>username</p>
+        <p>userID</p>
+        <input type="text" name="userid">
+        <br>
+        <p>name</p>
         <input type="text" name="username">
         <br>
         <p>password</p>

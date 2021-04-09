@@ -1,7 +1,8 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth.models import User
 from django.contrib import auth
-
+from .models import Member
+from django.http import JsonResponse , HttpResponse
 # Create your views here.
 def signup(request):
     # signup 으로 POST 요청이 왔다면, 새로운 유저를 추가해야함
@@ -16,34 +17,55 @@ def signup(request):
             #                                 )
             # member = Member.user_id =
             # auth.login(request , user)
-            print(request.POST['username'])
-            print(request.POST['password'])
-            user = User;
-            user.username = request.POST['username']
-            user.password = request.POST['password']
-            user.save(self = )
+            try:
+                Member(
+                    user_name= request.POST['username'],
+                    user_id= request.POST['userid'],
+                    user_password=request.POST['password'],
+                ).save()
+                print("저장 됨 ")
+                return redirect('/')
+            except:
+                print("저장안됨")
+
+        else:
+            print("비밀번호를 다시 확인 해 주세요")
             return redirect('/')
     else:
         return render(request , 'signup.html')
 
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
+        # 유저 아이디랑 비밀번호 가져오기
+        userid = request.POST['userid']
         password = request.POST['password']
+        print(userid + password)
         #해당 username 과 password와 일치하는 User 객체 가져온다
-        user = auth.authenticate(request , username = username,
-                                 password = password)
+        try:
+            if Member.objects.filter(user_id = userid).exists():
+                user = Member.objects.get(user_id = userid)
+                if user.user_password == password:
+                    print("login 성공하였습니다")
+                    return redirect('/')
+                else:
+                    print("비밀번호 불일치")
+                    return redirect('/login')
+            else:
+                print("해당 id 유저 없음")
+                redirect('/login')
+        except:
+            return 0
 
-        # 해당 user 객체 존재한다면 login
-        if user is not None:
-            auth.login(request , user)
-            #메인 페이지로 돌아가기
-            return redirect('/')
-        else:
-            #딕셔너리에 에러메시지 전달 , 다시 login.html 로 돌아감
-            return render(request , 'login.html' , {'error' : 'username or password is incorrect'})
+
+
+
+          #딕셔너리에 에러메시지 전달 , 다시 login.html 로 돌아감
+        return render(request , 'login.html' , {'error' : 'username or password is incorrect'})
 
 
 
     return render(request , 'login.html')
 
+
+def code(request):
+    return render(request , 'code.html')
