@@ -68,4 +68,6 @@ def login(request):
 
 
 def code(request):
-    return render(request , 'code.html')
+    if request.method == 'POST':
+        print("post method on!")
+    return render(request , 'Code_visual.html')
