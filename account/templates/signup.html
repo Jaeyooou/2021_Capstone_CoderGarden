@@ -2,12 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Signup</title>
 </head>
 <body>
     <form method="POST" action="{% url 'signup' %}">
         {% csrf_token %}
-        <p>username</p>
+
+        <p>userID</p>
+        <input type="text" name="userid">
+        <br>
+        <p>name</p>
+
         <input type="text" name="username">
         <br>
         <p>password</p>
@@ -18,6 +23,7 @@
         <br>
         <input type="submit" value="회원가입">
     </form>
-$END$
+
+
 </body>
 </html>

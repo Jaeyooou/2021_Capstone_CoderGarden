@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Login</title>
 </head>
 <body>
     <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
-        <p>username</p>
-        <input type="text" name="username">
+
+        <p>userid</p>
+        <input type="text" name="userid">
         <br>
         <p>password</p>
         <input type="text" name="password">
         <br>
         <input type="submit" value="로그인">
 </form>
-$END$
+
 </body>
 </html>
