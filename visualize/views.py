@@ -11,7 +11,6 @@ def code_write(request):
 def compiler(request):
     if request.method == 'POST':
         text = request.POST['code']
-        print(text)
-
+        exec(text)
     return render(request , '../templates/compile.html')
 
