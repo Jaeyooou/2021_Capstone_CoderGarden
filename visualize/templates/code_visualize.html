@@ -41,8 +41,6 @@
                 }
             });
             //document.getElementById("code_editor").editor.getValue();
-
-
     }
     </script>
     <script>
@@ -92,7 +90,7 @@
     </script>
 
 
-     <form action = "http://localhost:8000/compile/" method = "POST">-->
+     <form action = "http://localhost:8000/compile/" method = "POST">{% csrf_token %}
 
         <button type="button" onclick = "copyText()" >POST</button>
 

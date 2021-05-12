@@ -29,35 +29,36 @@ def compiler(request):
 
 
 def get_exec(main_text):
-    print('!!!!!!!!!!!!!!!!!!!!!!')
     out_s = StringIO.StringIO()
-    print('out_s')
-    print(out_s)
 
     def json_finalizer(input_code, output_trace):
-        print('input_code')
-        print(input_code)
-        print('input+code type')
-        print(type(input_code))
-        print('output+trace')
-        print(output_trace)
-        print('output+trace type : ')
-        print(type(output_trace))
         ret = dict(code=input_code, trace=output_trace)
         json_output = json.dumps(ret, indent=None)
         out_s.write(json_output)
 
-    print(type(main_option))
     options = json.loads(main_json_option)
-    print('-----request.puery.user_script----')
-    print(main_text)
-    print(main_json)
-    print('----------------------------------')
 
     pg_logger.exec_script_str_local(main_text,
                                   main_json,
                                   options['cumulative_mode'],
                                   options['heap_primitives'],
                                   json_finalizer)
-
     return out_s.getvalue()
+
+
+def test_h(request):
+    return render(request, 'test_h.html')
+
+def test2_h(request):
+    text = request.GET['code']
+    trace = eval(get_exec(text))
+    print(text)
+    print(trace)
+    print(type(trace['code']))
+    print(trace)
+    print(type(trace['trace']))
+    context = {
+        'code' : trace['code'],
+        'trace' : trace['trace']
+    }
+    return render(request, 'test2_h.html', context)

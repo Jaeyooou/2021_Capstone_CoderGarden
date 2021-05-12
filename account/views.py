@@ -67,3 +67,4 @@ def code(request):
     if request.method == 'POST':
         print("post method on!")
     return render(request , 'Code_visual.html')
+
