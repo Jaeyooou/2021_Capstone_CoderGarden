@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link  rel = "stylesheet" href ="../static/codemirror/theme/dracula.css " >
+    <link rel = "stylesheet" href = "../static/codemirror/lib/codemirror.css">
+    <link rel = "stylesheet" href = "../static/codemirror/addon/fold/foldgutter.css">
+    <link rel = "stylesheet" href = "../static/codemirror/addon/hint/show-hint.css">
+    <link rel = "stylesheet" href = "../static/codemirror/addon/lint/lint.css">
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+
+    <script src = "../static/codemirror/lib/codemirror.js"></script>
+    <script src = "../static/codemirror/mode/python/python.js"></script>
+    <script src = "../static/codemirror/addon/hint/show-hint.js"></script>
+    <script src="../static/codemirror/addon/comment/comment.js"></script>
+    <script src="../static/codemirror/addon/selection/active-line.js"></script>
+    <script src="../static/codemirror/keymap/sublime.js"></script>
+    <script src="../static/codemirror/addon/fold/foldcode.js"></script>
+    <script src="../static/codemirror/addon/fold/foldgutter.js"></script>
+    <script src="../static/codemirror/addon/fold/brace-fold.js"></script>
+    <script src="../static/codemirror/addon/fold/indent-fold.js"></script>
+    <script src="../static/codemirror/addon/fold/comment-fold.js"></script>
+    <script src="../static/codemirror/addon/edit/closebrackets.js"></script>
+    <script src="../static/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src = "../static/codemirror/addon/hint/python-hint.js"></script>
+    <script>
+        var el = document.getElementById("editor");
+        var version = "# version: Python3\n\n";
+        var codeAreaTip = "# please edit your code here:\n";
+        var codeStart = "# code start\n\n";
+        var codeEnd = "# code end\n\n";
+        var code = "def solution():\n\tpass\n\n";
+        var main = "if __name__ == '__main__':\n";
+        var initValue = version + codeAreaTip + codeStart + codeEnd + code + main;
+    </script>
+    <script>
+        function post_to_url(path, params, method){
+            method = method || "post";
+
+            var form = document.createElement("form");
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+
+            for(var key in params){
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+            document.body.appendChild(form);
+            form.submit()
+        }
+    </script>
+</head>
+<body>
+<form action="/test2_h/">
+    <textarea id = "code_editor" name="code"></textarea>
+<script>
+    let editor = CodeMirror.fromTextArea(document.getElementById('code_editor') , {
+        mode :"python" ,
+        theme : "dracula" ,
+        keyMap: "sublime", // Fast key style
+        lineNumbers: true, // set number
+        smartIndent: true, // smart indent
+        indentUnit: 4, // Smart indent in 4 spaces
+        indentWithTabs: true, // Smart indent with tabs
+        lineWrapping: true, //
+        // Add line number display, folder and syntax detector to the slot
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
+        foldGutter: true, // Enable code folding in slots
+        autofocus: true, // Autofocus
+        matchBrackets: true, // Match end symbols, such as "],}"
+        autoCloseBrackets: true, // Auto close symbol
+        styleActiveLine: true, // Display the style of the selected row
+
+    });
+    editor.setOption("value" , initValue);
+    editor.on('inputRead', function onChange(editor, input) {
+
+        if (input.text[0] === ';' || input.text[0] === ' ' || input.text[0] === ":") {
+            return;
+        }
+        editor.showHint({
+            hint: CodeMirror.pythonHint
+        });
+    });
+</script>
+    <input type="submit" value="confirm">
+</form>
+</body>
+</html>
