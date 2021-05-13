@@ -75,8 +75,10 @@ def login(request):
         return render(request , 'login.html' , {'error' : 'username or password is incorrect'})
 
     return render(request , 'login.html')
-
-
+def logout(request):# 로그아웃
+    if request.session.get('user_numb'):
+        del(request.session['user_numb'])
+        return redirect('/')
 def code(request):
     if request.method == 'POST':
         print("post method on!")
