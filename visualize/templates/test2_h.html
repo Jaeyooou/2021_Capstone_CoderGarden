@@ -3,13 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+<script>
+
+    //index = 1;
+    function dataMaking(index)
+    {
+    var tmp = {{trace|safe}};
+    heap = tmp[index].heap;
+    //list start from heap[index][1] ~~
+
+    targetarr = heap[index].slice(1,heap[index].length);
+
+    return targetarr;
+    };
+
+
+</script>
+<style>
+    .bar{
+    fill:gold;
+    }
+
+
+</style>
 </head>
 <body>
-<p>{{ code }}</p>
-<p>{{ trace }}</p>
------------------------
-<li>
+<p>JsonData : {{trace}}</p>
+<h3>Yout Code: {{code}}</h3>
 
-</li>
+<svg width="500" height="300"></svg>
+<script>
+
+
+    function next(index)
+    {
+
+    var dataset = dataMaking(index);
+    document.write("<h1>now list is " , targetarr , "</h1>");
+    document.write("<h1> now code in line : ",index,"</h1><br>");
+
+        var svg = d3.select("svg");
+
+        for ( var i = 0 ; i < dataset.length ; i ++){
+            svg.append("rect")
+                .attr("height", dataset[i]*30)
+                .attr("width",40)
+                .attr("x",50*i)
+                .attr("y",300-dataset[i]*30)
+                .attr("class","bar");
+                }
+
+
+    };
+
+    index = 1;
+    next(index);
+</script>
+
+<button onClick = next(2)> NEXT </button>
 </body>
 </html>
+
+<!--
+list = [1,3,4,2,5]
+list = [5,1,2,3,4]
+list = [4,5,1,2,3]
+list = [3,4,5,1,2]
+list = [2,3,4,5,1]
+list = [1,2,3,4,5]
+
+-->
