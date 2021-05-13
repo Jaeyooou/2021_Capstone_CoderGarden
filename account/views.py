@@ -1,9 +1,12 @@
-
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render , redirect
 from django.contrib.auth.models import User
 from django.contrib import auth
-from .models import Member
-from django.http import JsonResponse , HttpResponse
+from .models import Member, Sourcecode
+from django.contrib import messages
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+
+
 # Create your views here.
 
 def signup(request):
@@ -19,20 +22,28 @@ def signup(request):
             #                                 )
             # member = Member.user_id =
             # auth.login(request , user)
-            try:
-                Member(
-                    user_name= request.POST['username'],
-                    user_id= request.POST['userid'],
-                    user_password=request.POST['password'],
-                ).save()
-                print("저장 됨 ")
-                return redirect('/')
-            except:
-                print("저장안됨")
+            if Member.objects.get(user_id = request.POST['userid']):
+                messages.info(request , '아이디가 중복되었습니다')
+                return render(request , 'signup.html')
+            else:
+                try:
+                    Member(
+                        user_name= request.POST['username'],
+                        user_id= request.POST['userid'],
+                        user_password=request.POST['password'],
+                    ).save()
+                    print("저장 됨 ")
+                    messages.info(request, '회원가입이 완료되었습니다')
+
+                    return redirect('/')
+                except:
+                    messages.info(request , '저장이 되지 않았습니다 다시 한번 시도해주세요')
+                    return render(request , 'signup.html')
 
         else:
             print("비밀번호를 다시 확인 해 주세요")
-            return redirect('/')
+            messages.info(request , '비밀번호가 다릅니다')
+            return render(request , 'signup.html')
     else:
         return render(request , 'signup.html')
 
@@ -48,23 +59,51 @@ def login(request):
                 user = Member.objects.get(user_id = userid)
                 if user.user_password == password:
                     print("login 성공하였습니다")
+                    request.session['user_numb'] = user.user_number
                     return redirect('/')
                 else:
                     print("비밀번호 불일치")
-                    return redirect('/login')
+                    messages.info(request , '비밀번호가 일치하지 않습니다')
+                    return render(request , 'login.html')
             else:
                 print("해당 id 유저 없음")
-                redirect('/login')
+                messages.info(request, '해당 유저 id 없음')
+                return render(request, 'login.html')
         except:
             return 0
           #딕셔너리에 에러메시지 전달 , 다시 login.html 로 돌아감
         return render(request , 'login.html' , {'error' : 'username or password is incorrect'})
 
     return render(request , 'login.html')
-
-
+def logout(request):# 로그아웃
+    if request.session.get('user_numb'):
+        del(request.session['user_numb'])
+        return redirect('/')
 def code(request):
     if request.method == 'POST':
         print("post method on!")
     return render(request , 'Code_visual.html')
+
+
+def mypage(request):
+    # 세션 or 토큰 권한 없으면 로그인 페이지로 리다이렉트
+    # 세션 or 토큰 유효성 있으면,  model.Member 에서 id 값 같은 애들 불러오기
+    # id 값과 일치하는 코드들 보여주기
+    user_session_numb = request.session.get('user_numb') # 유저의 아이디
+    if user_session_numb: # 세션이 존재한다면
+        user_num = Member.objects.get(user_number = user_session_numb)
+        print(user_num)
+    else: # 존재하지 않는다면!
+        return redirect('login')
+
+    codelist = Sourcecode.objects.filter(user_number=user_num)
+    #codelist = Sourcecode.objects.all()
+    #return render(request , 'mypage.html' , {'postlist':codelist})
+    return render(request ,'code_list.html' ,  {'codelist':codelist})
+
+def codeview(request , code_num):
+    print(code_num)
+    code = Sourcecode.objects.get(code_number = code_num)
+    print(code.user_code)
+    return render(request , 'detail.html' ,{'code' : code.user_code})
 
