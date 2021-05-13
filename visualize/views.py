@@ -50,6 +50,8 @@ def test_h(request):
     return render(request, 'test_h.html')
 
 def test2_h(request):
+    user_session_numb = request.session.get('user_numb')# 유저 세션 있고 ,
+
     text = request.GET['code']
     trace = eval(get_exec(text))
     print(text)
