@@ -16,10 +16,11 @@
             <tbody>
             {%  for list in codelist %}
                 <tr>
-                        <th>1</th>
-                        <td>{{list.code_title}}</td>
-                        <td>{{list.process_time}}</td>
-                        <td>{{list.code_date}}</td>
+                    <th>{{forloop.counter}}</th>
+                    <td><a href = "/code/{{list.code_number}}">{{list.code_title}}</a></td>
+
+                    <td>{{list.process_time}}</td>
+                    <td>{{list.code_date}}</td>
                 </tr>
             {% endfor %}
             </tbody>

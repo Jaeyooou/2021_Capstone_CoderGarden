@@ -1,9 +1,11 @@
-
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render , redirect
 from django.contrib.auth.models import User
 from django.contrib import auth
 from .models import Member , Sourcecode
-from django.http import JsonResponse , HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+
+
 # Create your views here.
 
 def signup(request):
@@ -48,6 +50,7 @@ def login(request):
                 user = Member.objects.get(user_id = userid)
                 if user.user_password == password:
                     print("login 성공하였습니다")
+                    request.session['user'] = user.user_id
                     return redirect('/')
                 else:
                     print("비밀번호 불일치")
@@ -70,9 +73,25 @@ def code(request):
 
 
 def mypage(request):
-    #세션 or 토큰 권한 없으면 로그인 페이지로 리다이렉트
-    #세션 or 토큰 유효성 있으면,  model.Member 에서 id 값 같은 애들 불러오기
-    #id 값과 일치하는 코드들 보여주기
-    codelist = Sourcecode.objects.all()
+    # 세션 or 토큰 권한 없으면 로그인 페이지로 리다이렉트
+    # 세션 or 토큰 유효성 있으면,  model.Member 에서 id 값 같은 애들 불러오기
+    # id 값과 일치하는 코드들 보여주기
+    user_id = request.session.get('user') # 유저의 아이디
+    if user_id: # 세션이 존재한다면
+        user_num = Member.objects.get(user_id = user_id).user_number
+        print(user_num)
+    else: # 존재하지 않는다면!
+        return redirect('login')
+
+    codelist = Sourcecode.objects.filter(user_number=user_num)
+    #codelist = Sourcecode.objects.all()
     #return render(request , 'mypage.html' , {'postlist':codelist})
     return render(request ,'code_list.html' ,  {'codelist':codelist})
+
+def codeview(request , code_num):
+    print(code_num)
+    usercode = Sourcecode.objects.get(code_number = code_num)
+    print(usercode.user_code)
+
+    return render(request , 'detail.html')
+
