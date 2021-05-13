@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>Blog List</title>
+    </head>
+    <body>
+        <h1>게시판 페이지입니다</h1>
+        <!-- 게시판(postlist)의 게시글(list)을 하나씩 보여줍니다 -->
+        <table>
+        {% for list in postlist %}
+            <ul>
+                <li>{{list.user_code}}</li>
+                <li>{{list.code_date}}</li>
+                <li>{{list.code_title}}</li>
+                <li>{{list.process_time}}</li>
+            </ul>
+        {% endfor %}
+        </table>
+    </body>
+</html>
+
+{#user_number = models.OneToOneField(Member, models.DO_NOTHING, db_column='User_number', primary_key=True)  # Field name made lowercase.#}
+{#    user_code = models.CharField(db_column='User_code', max_length=100)  # Field name made lowercase.#}
+{#    code_date = models.DateField(blank=True, null=True)#}
+{#    code_title = models.CharField(max_length=30, blank=True, null=True)#}
+{#    process_time = models.FloatField(blank=True, null=True)#}

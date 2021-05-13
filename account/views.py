@@ -2,7 +2,7 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth.models import User
 from django.contrib import auth
-from .models import Member
+from .models import Member , Sourcecode
 from django.http import JsonResponse , HttpResponse
 # Create your views here.
 
@@ -73,4 +73,6 @@ def mypage(request):
     #세션 or 토큰 권한 없으면 로그인 페이지로 리다이렉트
     #세션 or 토큰 유효성 있으면,  model.Member 에서 id 값 같은 애들 불러오기
     #id 값과 일치하는 코드들 보여주기
-    return 0
+    codelist = Sourcecode.objects.all()
+    #return render(request , 'mypage.html' , {'postlist':codelist})
+    return render(request ,'code_list.html' ,  {'codelist':codelist})
