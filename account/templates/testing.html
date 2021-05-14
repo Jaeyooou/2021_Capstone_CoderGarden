@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing for main</title>
+    <link rel = "stylesheet" href = "../static/src/testing.css">
+</head>
+<body>
+    <div classname="nav_bar"  style= "border:1px solid black;">
+        <img id = "logo" src = "../static/src/sansung_logo.png">
+        <div class="box" >
+            <button class = "button" onclick="location.href='#popup1'">Sing In</button>
+            <button class = "button" onclick="location.href='#popup2'">Sign Up</button>
+        </div>
+    </div>
+            <div id="popup1" class="overlay">
+            <div class="popup">
+                <a class="close" href="#">×</a>
+                <div class="content">
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <p>userid</p>
+                        <input type="text" name="userid">
+                        <br>
+                        <p>password</p>
+                        <input type="text" name="password">
+                        <br>
+                        <input type="submit" value="로그인">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id = "popup2" class = "overlay">
+            <div class="popup">
+                <a class="close" href="#">×</a>
+                <div class="content">
+                    <form method="POST" action="{% url 'signup' %}">
+                         {% csrf_token %}
+
+                        <p>userID</p>
+                        <input type="text" name="userid">
+                        <br>
+                        <p>name</p>
+
+                        <input type="text" name="username">
+                        <br>
+                        <p>password</p>
+                        <input type="text" name="password">
+                        <br>
+                        <p>confirm</p>
+                        <input type="text" name="confirm">
+                        <br>
+                        <input type="submit" value="회원가입">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    <div class="slide">
+        <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+    </div>
+
+
+</body>
+</html>

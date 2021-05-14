@@ -5,6 +5,8 @@ from django.contrib import auth
 from .models import Member
 from django.http import JsonResponse , HttpResponse
 # Create your views here.
+def testing(request):
+    return render(request, 'testing.html')
 
 def signup(request):
     # signup 으로 POST 요청이 왔다면, 새로운 유저를 추가해야함

@@ -25,6 +25,7 @@ urlpatterns = [
     path('signup/' , account.views.signup , name = 'signup'),
     path('code_write/' ,visualize.views.code_write  , name = 'code_write') ,
     path('compile/' , visualize.views.compiler , name = 'compile') ,
+    path('testing/',account.views.testing, name = 'testing'),
     path('test_h/', visualize.views.test_h, name='test_h'),
     path('test2_h/', visualize.views.test2_h, name='test2_h'),
 
