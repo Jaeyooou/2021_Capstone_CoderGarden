@@ -48,6 +48,24 @@ h1 {
   color:black;
 }
 
+.button2 {
+  margin-top : 10px;
+  background : black;
+  font-size : 1em;
+  padding : 5px;
+  color :white;
+  border : 1px solid orange;
+  border-radius : 2opx/50px;
+  text-decoration : none;
+  cursor : pointer;
+  
+}
+
+.button2:hover {
+  background:orange;
+  color:black;
+}
+
 
 .overlay {
   position: absolute;
@@ -66,13 +84,20 @@ h1 {
 }
 
 .popup {
+  font-size : 30px;
   margin: 70px auto;
-  padding: 20px;
+  padding: 30px;
   background: #fff;
   border-radius: 5px;
   width: 30%;
   position: relative;
   transition: all 5s ease-in-out;
+}
+
+.texts{
+  border : 2px solid orange;
+  height : 30px;
+  font-size : 25px;
 }
 
 .popup h2 {
@@ -101,11 +126,11 @@ h1 {
     ul,li{list-style:none;}
     .slide{height:300px;}
     .slide ul{width:calc(100% * 4);display:flex;animation:slide 12s infinite;} /* slide를 8초동안 진행하며 무한반복 함 */
-    .slide li{width:calc(100% / 4);height:1500px;}
-    .slide li:nth-child(1){background-image:url("./item1.png");}
-    .slide li:nth-child(2){background-image:url("./item2.png");}
-    .slide li:nth-child(3){background-image:url("./item3.png");}
-    .slide li:nth-child(4){background-image:url("./item4.png");}
+    .slide li{width:calc(100% / 4);height:900px;}
+    .slide li:nth-child(1){background-image:url("./item1.png"); object-fit: cover;}
+    .slide li:nth-child(2){background-image:url("./item2.png"); object-fit: cover;}
+    .slide li:nth-child(3){background-image:url("./item3.png"); object-fit: cover;}
+    .slide li:nth-child(4){background-image:url("./item4.png"); object-fit: cover;}
     @keyframes slide {
       0% {margin-left:0;} /* 0 ~ 10  : 정지 */
       10% {margin-left:0;} /* 10 ~ 25 : 변이 */

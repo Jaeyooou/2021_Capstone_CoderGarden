@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Testing for main</title>
     <link rel = "stylesheet" href = "../static/src/testing.css">
+
 </head>
 <body>
     <div classname="nav_bar"  style= "border:1px solid black;">
@@ -20,12 +21,12 @@
                     <form method="POST" action="{% url 'login' %}">
                         {% csrf_token %}
                         <p>userid</p>
-                        <input type="text" name="userid">
+                        <input type="text" name="userid" class = "texts">
                         <br>
                         <p>password</p>
-                        <input type="text" name="password">
+                        <input type="text" name="password" class = "texts">
                         <br>
-                        <input type="submit" value="로그인">
+                        <input type="submit" value="로그인" class = "button2">
                     </form>
                 </div>
             </div>
@@ -39,19 +40,19 @@
                          {% csrf_token %}
 
                         <p>userID</p>
-                        <input type="text" name="userid">
+                        <input type="text" name="userid" class = "texts">
                         <br>
                         <p>name</p>
 
-                        <input type="text" name="username">
+                        <input type="text" name="username" class = "texts">
                         <br>
                         <p>password</p>
-                        <input type="text" name="password">
+                        <input type="text" name="password" class = "texts">
                         <br>
                         <p>confirm</p>
-                        <input type="text" name="confirm">
+                        <input type="text" name="confirm" class = "texts">
                         <br>
-                        <input type="submit" value="회원가입">
+                        <input type="submit" value="회원가입" class = "button2">
                     </form>
                 </div>
             </div>
