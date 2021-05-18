@@ -29,5 +29,5 @@ urlpatterns = [
     path('compile/' , visualize.views.compiler , name = 'compile') ,
     path('test_h/', visualize.views.test_h, name='test_h'),
     path('test2_h/', visualize.views.test2_h, name='test2_h'),
-
+    path('logout/',account.views.logout , name = 'logout'),
 ]

@@ -63,7 +63,7 @@ def test2_h(request):
         Sourcecode(
            user_code = text ,
            code_date = datetime.datetime.now() ,
-           code_title = '제목' ,
+           code_title = 'Bubble_sort' ,
            process_time= execution_time ,
            user_number = Member.objects.get(user_number = user_session_numb)
         ).save()
