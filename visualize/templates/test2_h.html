@@ -5,75 +5,240 @@
     <title>Title</title>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
-<script>
+<!--<script>
 
     //index = 1;
-    function dataMaking(index)
-    {
-    var tmp = {{trace|safe}};
-    heap = tmp[index].heap;
+    index = 2;
+   
+    
+    var target = {{trace|safe}};
+    //heap = tmp[index].heap;
     //list start from heap[index][1] ~~
+    //targetarr = heap[index].slice(1,heap[index].length);
+    var tmp = target[index].ordered_globals[0];
+    var tmp2 = target[index].globals[tmp][1];
+    var targetarr = target[index].heap[tmp2];
+    
 
-    targetarr = heap[index].slice(1,heap[index].length);
 
-    return targetarr;
-    };
-
-    var tmp = {{trace|safe}};
-    heap = tmp[index].heap;
+    //return targetarr;
+    
+    
+    //var tmp = {{trace|safe}};
+    
+    //heap = tmp[index].heap;
 
 </script>
+-->
 <style>
     .bar{
     fill:gold;
     }
 
+    .pivot1
+    {
+        fill:green;
+    }
+    
+    .pivot2
+    {
+        fill:pink;
+    }
 
+    .pivot3
+    {
+        fill:mediumslateblue;
+    }
 </style>
 </head>
 <body>
+<!--
 <p>JsonData : {{trace}}</p>
 <h3>Yout Code: {{code}}</h3>
+-->
 
-<svg width="500" height="300"></svg>
+<!--<svg width="500" height="300"></svg>-->
 <script>
 
+    index = 0;
+    var pivot1;
+    var pivot2;
+    var pivot3;
+    //var targets = {{trace|safe}};
+    //document.write(JSON.stringify(targets));
 
-    function next(index)
+
+
+    //var target = {{trace|safe}};
+    function next(obj)
     {
+        
+        index = index + 1;
+        console.log("index(json line) : " + index); // for test
+        //console.log("next is started");
+        var target = {{trace|safe}};
+        //heap = tmp[index].heap;
+        //list start from heap[index][1] ~~
+        //targetarr = heap[index].slice(1,heap[index].length);
+        if (index === target.length)  // line out of index
+        {
+            document.write("<h1>next 그만 누르세요. 라인 범위를 벗어남.</h1>");
+            return;
+        }
 
-    var dataset = dataMaking(index);
-    document.write("<h1>now list is " , targetarr , "</h1>");
-    document.write("<h1> now code in line : ",index,"</h1><br>");
+        length = target[index].ordered_globals.length;  //how many variables we have in json line in index
+        for (var i = 0 ; i < length ; i ++)
+        {
+            //console.log("for i in " + i);
+            var tmp = target[index].ordered_globals[i];   // get variable name 
+            var tmp2 = target[index].globals[tmp][1];   // can divide if it is int or list
+            if (tmp2 === undefined)     //this variable is int
+            {
+                //console.log("now in int");
+                var targetint = target[index].globals[tmp];
+                console.log(tmp + " : " + targetint);
+                if (tmp === "pivot3"){pivot3 = targetint;}
+                if (tmp === "pivot1"){pivot1 = targetint;}
+                if (tmp === "pivot2"){pivot2 = targetint;}
+                
+            }
+            else{      //this variable is list
+            //console.log("now in list");
+            //var tmp2 = target[index].globals[tmp][1];    //get REF if list  or get value if int
 
-        var svg = d3.select("svg");
+            var targetarr = target[index].heap[tmp2];  //get the list componenet
+            
+            
+            
+            var dataset = targetarr.slice(1);  //slice to use list data (not inclue key)
 
-        for ( var i = 0 ; i < dataset.length ; i ++){
-            svg.append("rect")
-                .attr("height", dataset[i]*30)
-                .attr("width",40)
-                .attr("x",50*i)
-                .attr("y",300-dataset[i]*30)
-                .attr("class","bar");
+
+            var newDiv = document.createElement("div");
+            var newH1_1 = document.createElement("h1");
+            var newH1_2 = document.createElement("h1");
+            console.log(tmp + " : " + dataset);
+            newH1_1.innerHTML = "now list is " +  dataset;
+            newH1_2.innerHTML = "now code in line : " + index;
+            //document.write("<h1>now list is " , dataset , "</h1>");
+            //document.write("<h1> now code in line : ",index,"</h1><br>");
+            
+            
+            //var newSvg = document.createElementNS("svg");
+            
+            //newSvg.style.width = "500px";
+            //newSvg.style.height = "300px";
+            
+            newDiv.appendChild(newH1_1);     //showing json status about line variable
+            newDiv.appendChild(newH1_2);
+            //newDiv.appendChild(newSvg);
+            var targetNode = obj.parentNode;
+            targetNode.appendChild(newDiv);
+            //document.write("<svg width='500' height='300'></svg>");
+            
+              // here is D3 part
+            //d3.selectAll("svg > *").remove();    
+            
+            //var svg = d3.select("svg");
+
+            //delete previous svg
+            
+            if ( document.getElementsByTagName("svg").length !== 0)   //delete previous svg
+            {
+            var toDelete = document.getElementsByTagName("svg");
+            var toDelete = toDelete[0];
+            toDelete.remove();
+            }
+
+            if ( document.getElementsByTagName("h1").length === 4)    //delete previous h1 
+            {
+                var toDelete = document.getElementsByTagName("h1");
+                toDelete[0].remove();
+                toDelete[0].remove();
+            }
+
+            var width = 500;
+            var height = 300;
+            var svg = d3.select("body").append("svg")  // insert svg in body  (insert everyday not delete previous list)
+                .attr("width", width)
+                .attr("height",height)
+            
+
+
+            for ( var j = 0 ; j < dataset.length ; j ++)   //set svg bar attribute
+            {
+                
+                tmpClass = "bar";
+                if (j === pivot1){
+                    tmpClass = "pivot1";
                 }
+                if (j === pivot2){
+                    tmpClass = "pivot2";
+                }
+                if (j === pivot3){
+                    tmpClass = "pivot3";
+                }
+                svg.append("rect")
+                    .attr("height", dataset[j]*30)
+                    .attr("width",40)
+                    .attr("x",50*j)
+                    .attr("y",300-dataset[j]*30)
+                    .attr("class",tmpClass);
+            }
+            //targetNode.appendChild(newSvg);
+           
 
+            
+            } // if list end 
+    
+        } // for end
+       
+        
+    }//fuction end
 
-    };
-
-    index = 2;
-    next(index);
+   
+    
+    //index = 2;
+    //next(index);
 </script>
-
-<button onClick = next(2)> NEXT </button>
+    <div>
+        <button onclick = "next(this)"> NEXT </button>
+        <button onclick = "testing(this)"> testing </button>
+    </div>
 </body>
 </html>
 
 <!--
-list = [1,3,4,2,5]
-list = [5,1,2,3,4]
-list = [4,5,1,2,3]
-list = [3,4,5,1,2]
-list = [2,3,4,5,1]
-list = [1,2,3,4,5]
 
+list1 = [3,1,5,4,2]
+for pivot2 in range(1,len(list1)):
+	for pivot1 in range(pivot2,0,-1):
+		if list1[pivot1-1] > list1[pivot1]:
+			list1[pivot1 - 1], list1[pivot1] = list1[pivot1], list1[pivot1 - 1]
+
+
+
+list1 = [1,2,3,4,5]
+
+for pivot1 in range(4):
+	if pivot1%2 == 0:
+		pivot2 = pivot1 + 2
+	if pivot1%2 == 1:
+		pivot2 = pivot1 + 1
+   
+        
+
+
+
+a = [3,5,1,4,2]
+n = len(a)
+for i in range(0, n-1):
+	pivot1 = i
+	index = i
+	for j in range(i+1, n):
+		pivot2 = j
+		if a[j] < a[index]:
+			index = j
+			pivot3 = index
+	a[i], a[index] = a[index],a[i]
+	
 -->
