@@ -81,6 +81,7 @@ import inspect
 is_python3 = (sys.version_info[0] == 3)
 if is_python3:
   # avoid name errors (GROSS!)
+  null = None
   long = int
   unicode = str
 
@@ -202,6 +203,7 @@ class ObjectEncoder:
     func_obj = self.encoded_heap_objects[ref_obj[1]]
     assert func_obj[0] == 'FUNCTION'
     func_obj[-1] = enclosing_frame_id
+
 
 
   # return either a primitive object or an object reference;

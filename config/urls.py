@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
 import config.views
 import account.views
 import visualize.views
@@ -27,5 +28,6 @@ urlpatterns = [
     path('compile/' , visualize.views.compiler , name = 'compile') ,
     path('test_h/', visualize.views.test_h, name='test_h'),
     path('test2_h/', visualize.views.test2_h, name='test2_h'),
+    path('visualize/', visualize.views.visualize, name='visualize'),
 
 ]

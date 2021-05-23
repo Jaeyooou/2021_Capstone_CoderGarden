@@ -13,7 +13,7 @@
 
   // Depth means the amount of open braces in JS context, in XML
   // context 0 means not in tag, 1 means in tag, and 2 means in tag
-  // and js block comment.
+  // and js_pytutor block comment.
   function Context(state, mode, depth, prev) {
     this.state = state; this.mode = mode; this.depth = depth; this.prev = prev
   }

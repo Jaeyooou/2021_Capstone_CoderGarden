@@ -67,7 +67,7 @@
      "  BUNDLE_APP_CONFIG=[string \"$GEM_HOME\"]");
 
   MT("verify_keyword",
-     "[keyword RUN] add-apt-repository ppa:chris-lea/node.js");
+     "[keyword RUN] add-apt-repository ppa:chris-lea/node.js_pytutor");
 
   MT("scripts",
      "[comment # Set an entrypoint, to automatically install node modules]",

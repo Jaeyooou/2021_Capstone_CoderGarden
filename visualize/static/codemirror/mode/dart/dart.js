@@ -159,7 +159,7 @@
 
   CodeMirror.registerHelper("hintWords", "application/dart", keywords.concat(atoms).concat(builtins));
 
-  // This is needed to make loading through meta.js work.
+  // This is needed to make loading through meta.js_pytutor work.
   CodeMirror.defineMode("dart", function(conf) {
     return CodeMirror.getMode(conf, "application/dart");
   }, "clike");

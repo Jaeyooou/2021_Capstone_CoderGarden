@@ -1,7 +1,7 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
-// Depends on jsonlint.js from https://github.com/zaach/jsonlint
+// Depends on jsonlint.js_pytutor from https://github.com/zaach/jsonlint
 
 // declare global: jsonlint
 

@@ -98,7 +98,7 @@
     });
   }
 
-  // copied from CodeMirror/src/util/dom.js
+  // copied from CodeMirror/src/util/dom.js_pytutor
   function classTest(cls) { return new RegExp("(^|\\s)" + cls + "(?:$|\\s)\\s*") }
 
   function updateInViewport(cm) {

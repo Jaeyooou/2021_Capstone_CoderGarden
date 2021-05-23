@@ -75,7 +75,6 @@
         matchBrackets: true, // Match end symbols, such as "],}"
         autoCloseBrackets: true, // Auto close symbol
         styleActiveLine: true, // Display the style of the selected row
-
     });
     editor.setOption("value" , initValue);
     editor.on('inputRead', function onChange(editor, input) {
@@ -83,12 +82,14 @@
         if (input.text[0] === ';' || input.text[0] === ' ' || input.text[0] === ":") {
             return;
         }
+
         editor.showHint({
             hint: CodeMirror.pythonHint
         });
     });
 </script>
-    <input type="submit" value="confirm">
+    <input type="submit" value="CONFIRM">
 </form>
+
 </body>
 </html>

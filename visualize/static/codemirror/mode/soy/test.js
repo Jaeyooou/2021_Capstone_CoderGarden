@@ -21,7 +21,7 @@
      '');
 
   MT('function-test',
-     '[keyword {] [callee&variable css]([string "MyClass"])[keyword }]',
+     '[keyword {] [callee&variable css_pytutor]([string "MyClass"])[keyword }]',
      '[tag&bracket <][tag input] [attribute value]=[string "]' +
      '[keyword {] [callee&variable index]([variable-2&error $list])[keyword }]' +
         '[string "][tag&bracket />]');
@@ -156,7 +156,7 @@
      '[keyword {template] [def .foo] [attribute kind]=[string "html"][keyword }]',
      '  [tag&bracket <][tag div][tag&bracket >]',
      '    [keyword {call] [variable-2 .bar][keyword }]',
-     '      [keyword {param] [property propertyName] [attribute kind]=[string "js"][keyword }]',
+     '      [keyword {param] [property propertyName] [attribute kind]=[string "js_pytutor"][keyword }]',
      '        [keyword var] [def bar] [operator =] [number 5];',
      '      [keyword {/param}]',
      '    [keyword {/call}]',
@@ -166,8 +166,8 @@
 
   MT('tag-starting-with-function-call-is-not-a-keyword',
      '[keyword {][callee&variable index]([variable-2&error $foo])[keyword }]',
-     '[keyword {css] [string "some-class"][keyword }]',
-     '[keyword {][callee&variable css]([string "some-class"])[keyword }]',
+     '[keyword {css_pytutor] [string "some-class"][keyword }]',
+     '[keyword {][callee&variable css_pytutor]([string "some-class"])[keyword }]',
      '');
 
   MT('allow-missing-colon-in-@param',

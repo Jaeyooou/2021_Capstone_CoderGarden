@@ -1817,7 +1817,7 @@
         // deal with visual mode in order to select an appropriate match.
 
         var from = next[0];
-        // For whatever reason, when we use the "to" as returned by searchcursor.js directly,
+        // For whatever reason, when we use the "to" as returned by searchcursor.js_pytutor directly,
         // the resulting selection is extended by 1 char. Let's shrink it so that only the
         // match is selected.
         var to = Pos(next[1].line, next[1].ch - 1);
@@ -2907,7 +2907,7 @@
     }
 
     /*
-     * Below are miscellaneous utility functions used by vim.js
+     * Below are miscellaneous utility functions used by vim.js_pytutor
      */
 
     /**
@@ -3379,8 +3379,8 @@
      * Depends on the following:
      *
      * - editor mode should be htmlmixedmode / xml
-     * - mode/xml/xml.js should be loaded
-     * - addon/fold/xml-fold.js should be loaded
+     * - mode/xml/xml.js_pytutor should be loaded
+     * - addon/fold/xml-fold.js_pytutor should be loaded
      *
      * If any of the above requirements are not true, this function noops.
      *
@@ -5089,7 +5089,7 @@
       },
       substitute: function(cm, params) {
         if (!cm.getSearchCursor) {
-          throw new Error('Search feature not available. Requires searchcursor.js or ' +
+          throw new Error('Search feature not available. Requires searchcursor.js_pytutor or ' +
               'any other getSearchCursor implementation.');
         }
         var argString = params.argString;

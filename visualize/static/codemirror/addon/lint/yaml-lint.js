@@ -11,7 +11,7 @@
 })(function(CodeMirror) {
 "use strict";
 
-// Depends on js-yaml.js from https://github.com/nodeca/js-yaml
+// Depends on js_pytutor-yaml.js_pytutor from https://github.com/nodeca/js-yaml
 
 // declare global: jsyaml
 
@@ -26,7 +26,7 @@ CodeMirror.registerHelper("lint", "yaml", function(text) {
   try { jsyaml.loadAll(text); }
   catch(e) {
       var loc = e.mark,
-          // js-yaml YAMLException doesn't always provide an accurate lineno
+          // js_pytutor-yaml YAMLException doesn't always provide an accurate lineno
           // e.g., when there are multiple yaml docs
           // ---
           // ---

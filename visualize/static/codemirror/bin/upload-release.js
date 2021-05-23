@@ -4,7 +4,7 @@ let version = process.argv[2]
 let auth = process.argv[3]
 
 if (!auth) {
-  console.log("Usage: upload-release.js [TAG] [github-user:password]")
+  console.log("Usage: upload-release.js_pytutor [TAG] [github-user:password]")
   process.exit(1)
 }
 

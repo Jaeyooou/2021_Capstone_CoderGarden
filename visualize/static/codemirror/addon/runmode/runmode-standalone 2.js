@@ -129,7 +129,7 @@
   var modes = {}, mimeModes = {};
 
   // Extra arguments are stored as the mode's dependencies, which is
-  // used by (legacy) mechanisms like loadmode.js to automatically
+  // used by (legacy) mechanisms like loadmode.js_pytutor to automatically
   // load a mode. (Preferred mechanism is the require/define calls.)
   function defineMode(name, mode) {
     if (arguments.length > 2)
