@@ -60,6 +60,9 @@ def test_h(request):
 def visualize(request):
     return render(request, 'visualize.html')
 
+def main_test(request):
+    return render(request, 'main_test.html')
+
 def test2_h(request):
     a=[]
     text = request.GET['code']

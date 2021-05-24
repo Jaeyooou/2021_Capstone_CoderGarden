@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link  rel = "stylesheet" href ="../static/codemirror/theme/dracula.css " >
-    <link rel = "stylesheet" href = "../static/codemirror/lib/codemirror.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main_style.css' %}">
+    <link  rel = "stylesheet" href ="../static/codemirror/lib/codemirror.css " >
+    <link  rel = "stylesheet" href ="../static/codemirror/theme/elegant.css " >
+    <link  rel = "stylesheet" href ="../static/codemirror/theme/idea.css " >
+    <link  rel = "stylesheet" href ="../static/codemirror/theme/base16-light.css " >
     <link rel = "stylesheet" href = "../static/codemirror/addon/fold/foldgutter.css">
     <link rel = "stylesheet" href = "../static/codemirror/addon/hint/show-hint.css">
     <link rel = "stylesheet" href = "../static/codemirror/addon/lint/lint.css">
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
     <script src = "../static/codemirror/lib/codemirror.js"></script>
     <script src = "../static/codemirror/mode/python/python.js"></script>
@@ -35,16 +40,93 @@
         var a = {{ code|safe }};
         var initValue = a[0];
     </script>
+    <style>
+        .bar {
+            fill :gold;
+        }
+
+        .pivot1
+        {
+            fill:green;
+        }
+        .pivot2
+        {
+            fill:pink;
+        }
+        .pivot3
+        {
+            fill:mediumslateblue;
+        }
+
+
+    </style>
 </head>
 <body>
-<form action="/test2_h/">
-    <textarea class="cm_test" id = "code_editor" name="code"></textarea>
-
+<div class="wrapper">
+    <div class="box1">
+        <img id="logo" src="../static/img/codergarden_logo2.png" alt="">
+    </div>
+    <div class="box2">
+        <p>Python 3.8</p>
+        <form action="/test2_h/">
+            <textarea class="cm_test" id = "code_editor" name="code"></textarea>
+            <div id="confirm_btn">
+                <div id="confirm_btn_box1"><img src="../static/img/orange.png" alt=""> &nbsp;line that just executed<br><img
+                        src="../static/img/blue.png" alt=""> &nbsp;next line to excute</div>
+                <div id="confirm_btn_box2"><p id="slider_value_view">step of</p></div>
+                <div id="confirm_btn_box3"><button id="confirm_btn_real" type="submit">CONFRIRM</button></div>
+            </div>
+            <div class="slider_box" >
+                <input id="slider" size=100 oninput='ShowSliderValue(this.value, 1)'  type="range" min='0' max='100' value='0'>
+            </div>
+        </form>
+        <div id="control_box">
+            <button id="processing" onclick="answer(this, 0, 0)">FIRST</button>
+            <button onclick="answer(this, -1, 0)">PREV</button>
+            <button id="PlayBtn" onclick="play(this)">PLAY</button>
+            <button onclick="answer(this, 1, 0)">NEXT</button>
+            <button onclick="answer(this, 100, 0)">LAST</button>
+        <hr>
+        </div>
+        <div>
+            <p id="explanation">
+                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores consectetur consequuntur,
+                    nisi omnis perspiciatis quae quidem sequi soluta voluptates? Error eveniet fuga minus molestias
+                    non optio vel voluptas, voluptatem voluptatibus.</span>
+                <span>Cupiditate ducimus iure officiis quo repellat! Animi cumque deserunt, ducimus et ex facere
+                    incidunt magni mollitia nemo neque praesentium quae quo, recusandae rem sequi sit tempora temporibus
+                    voluptatum. Libero, officiis.</span>
+                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet aut commodi consequuntur cum dolorem
+                    excepturi, explicabo fuga ipsa laborum laudantium nam placeat praesentium quia quo recusandae sapiente
+                    sequi sint totam.</span>
+                <br><br>
+                <span>Aut eius non quaerat! Animi beatae consequuntur cumque enim eos est expedita illo nam placeat, quis,
+                    sint soluta temporibus veniam! Debitis eligendi harum iusto nostrum praesentium quia quisquam quos
+                    repudiandae.</span>
+                <span>Aliquam, autem blanditiis dolorem, eligendi est excepturi facere nam odio placeat porro quaerat quasi
+                    quidem quos, ratione sequi suscipit temporibus? Eligendi est eum inventore ipsam magnam natus quos,
+                    repudiandae sint?</span>
+            </p>
+        </div>
+    </div>
+    <div class="box3">
+        <p id="answer_table_name">Frames</p>
+        <div id="table_box">
+            <p id="answer"></p>
+        </div>
+    </div>
+    <div class="box4">
+        <p id="visu_name">Visualize</p>
+        <p id="visu">
+        <p></p>
+    </div>
+</div>
 <script>
     var editor = {
         mode :"python" ,
         keyMap: "sublime", // Fast key style
         value: "Test Default Value",
+        theme : "idea",
         lineNumbers: true, // set number
         smartIndent: true, // smart indent
         indentUnit: 4, // Smart indent in 4 spaces
@@ -58,17 +140,90 @@
         autoCloseBrackets: true, // Auto close symbol
         styleActiveLine: true, // Display the style of the selected row
         styleSelectedText: true,
-
     };
     var myTextArea = $(".cm_test").get(0);
     var myCodeMirror = CodeMirror.fromTextArea(myTextArea, editor);
     myCodeMirror.setOption("value", initValue);
+
+    // various visualization
     var a = {{ trace|safe }};
     var b = {{ code|safe }};
     var cnt = -1;
     var total_len = a.length;
     var prev_line = 0
     var prev_prev_line = 0;
+    var is_playing = 0;
+    // various visualization
+    function sleep(ms) {
+        const wakeUpTime = Date.now() + ms;
+        while (Date.now() < wakeUpTime) {}
+    }
+    //viusalizing list function _RK
+    function visualizing(obj,num) {
+        var index = num;
+        console.log("index(json line) : " + index); // for test
+        var target = {{trace|safe}};
+        length = target[index].ordered_globals.length;  //how many variables we have in json line in index
+        for (var i = 0 ; i < length ; i ++){
+            //console.log("for i in " + i);
+            var tmp = target[index].ordered_globals[i];   // get variable name
+            var tmp2 = target[index].globals[tmp][1];   // can divide if it is int or list
+            if (tmp2 === undefined){
+                //console.log("now in int");
+                var targetint = target[index].globals[tmp];
+                console.log(tmp + " : " + targetint);
+                if (tmp === "pivot3"){var pivot3 = targetint;}
+                if (tmp === "pivot1"){var pivot1 = targetint;}
+                if (tmp === "pivot2"){var pivot2 = targetint;}
+            }
+            else{
+                var targetarr = target[index].heap[tmp2];//get the list componenet
+
+                console.log("tmp2 : "+ tmp2);
+                console.log("targetarr : "+targetarr);
+                console.log("NOW TARGET : "+JSON.stringify(target[index]));
+
+
+                var dataset = targetarr.slice(1);  //slice to use list data (not inclue key)
+
+                var dd = document.getElementById(tmp);
+                if (dd !== null){
+                        dd.remove();
+                }
+                if ( document.getElementsByTagName("h1").length === 6){//delete previous h1
+                    var toDelete = document.getElementsByTagName("h1");
+                    toDelete[0].remove();
+                    toDelete[0].remove();
+                    toDelete[0].remove();
+                }
+                var width = 500;
+                var height = 300;
+                var svg = d3.select("#visu").append("svg")  // insert svg in body  (insert everyday not delete previous list)
+                .attr("width", width)
+                .attr("height",height)
+                .attr("id",tmp);
+                for ( var j = 0 ; j < dataset.length ; j ++){//set svg bar attribute
+                    tmpClass = "bar";
+                    if (j === pivot1){
+                        tmpClass = "pivot1";
+                    }
+                    if (j === pivot2){
+                        tmpClass = "pivot2";
+                    }
+                    if (j === pivot3){
+                        tmpClass = "pivot3";
+                    }
+                    svg.append("rect")
+                        .attr("height", dataset[j]*15)
+                        .attr("width",40)
+                        .attr("x",50*j)
+                        .attr("y",300-dataset[j]*15)
+                        .attr("class",tmpClass);
+                }//targetNode.appendChild(newSvg);
+             } // if list end
+        }// for end
+    }//fuction end
+
     function highlightText(obj,txt){
         var tokens = myCodeMirror.getLineTokens(obj-1,true);
         var len = tokens.length;
@@ -76,31 +231,42 @@
         var start = CodeMirror.Pos(obj-1, tokens[0].start);
         var end = CodeMirror.Pos(obj-1, tokens[len-1].end);
         var markOptions ={
-                css: "background-color: "+txt,
+                css: "background-color : "+txt,
         };
         var mark = myCodeMirror.markText(start, end, markOptions);
     }
     function processing(obj){
-        console.log(cnt);
-        var result = "<table border='1'> <th>globals</th> <th>type</th> <th>value</th>";
+        var result = "<table> <thead><th>name</th> <th>value</th> <th>type</th><thead>";
         var len = obj.ordered_globals.length;
         for(var i=0; i<len; i++){
             if(obj.globals[obj.ordered_globals[i]][0]=="REF"){
                 var part = "";
                 var tmp = obj.ordered_globals[i];
                 var tmp2 = obj.globals[tmp][1];
-                part = "<tr> <td>"+tmp +"</td>"+"<td>"+obj.heap[tmp2][0]+"</td>"+"<td>"+obj.heap[tmp2].slice(1)+"</td> </tr>";
+                var store=""
+                console.log("!!!!!");
+                console.log(typeof JSON.stringify(obj.heap[tmp2][1]));
+                console.log(JSON.stringify(obj.heap[tmp2].length));
+                if(obj.heap[tmp2][0]=="DICT"){
+                    for(var j=1; j<JSON.stringify(obj.heap[tmp2].length);j++){
+                        store=store+JSON.stringify(obj.heap[tmp2][j])+"<br>";
+                    }
+                }
+                else{
+                    store=obj.heap[tmp2].slice(1);
+                }
+                part = "<tr> <td>"+tmp +"</td>"+"<td>"+store+"</td>"+"<td>"+obj.heap[tmp2][0]+"</td>"+"</tr>";
             }
             else{
                 var part = "";
                 var tmp = obj.ordered_globals[i];
                 var tmp2 = obj.globals[tmp];
-                part = "<tr> <td>"+tmp +"</td>"+"<td>"+typeof(tmp2)+"</td>"+"<td>"+tmp2+"</td> </tr>";
+                part = "<tr> <td>"+tmp +"</td>"+"<td>"+tmp2+"</td>"+"<td>"+typeof(tmp2)+"</td>"+ "</tr>";
             }
-            result = result + part;
+            result = result +"<tbody>"+ part+"</tbody>";
+
         }
-        result = "LINE : "+JSON.stringify(obj.line)+"<br>"
-        + result+"</table>";
+        result = "<br>"+result+"</table>";
         highlightText(prev_prev_line,'rgba(255,255,255,0)');
         prev_prev_line = prev_line;
         highlightText(prev_line,'rgba(255,204,102)');
@@ -111,9 +277,8 @@
     }
     function answer(obj, num, slider){
         var processed_code;
-        var o = obj.parentElement;
         var newP=document.getElementById("answer");
-
+        var o = newP.parentElement;
         if(num==-1&&cnt<=0&&slider==0){
             processed_code = processing(a[cnt]);
             newP.innerHTML = processed_code;
@@ -123,7 +288,7 @@
         }
         else if(num==1&&cnt>=total_len-1&&slider==0){
             processed_code = processing(a[cnt]);
-            newP.innerHTML = processed_code+"End";
+            newP.innerHTML = processed_code
             highlightText(a[cnt]+1,'rgb(36,37,47)');
             ShowSliderValue(cnt,0);
             o.appendChild(newP);
@@ -142,17 +307,14 @@
             cnt=total_len-1;
             processed_code = processing(a[cnt]);
             processed_code = processing(a[cnt]);
-            newP.innerHTML = processed_code+"End";
+            newP.innerHTML = processed_code;
             ShowSliderValue(cnt,0);
             o.appendChild(newP);
             return;
         }
         else{
             if(slider==0){
-                console.log("NUM : "+num);
-                console.log("NUM TYPE : "+typeof num);
                 cnt = cnt+num;
-                console.log("CNT TYPE : "+typeof cnt);
 
                 processed_code = processing(a[cnt]);
                 newP.innerHTML = processed_code;
@@ -168,38 +330,41 @@
                 o.appendChild(newP);
             }
         }
+        if(cnt>=0&&cnt<=total_len-3){
+            console.log("cnt : "+cnt);
+            console.log("obj : "+JSON.stringify(a[cnt]));
+            console.log("visualizing cnt : "+cnt);
+            visualizing(obj,cnt);
+        }
+    }
+    function play(obj){
+        if(cnt==total_len-1){
+            cnt=-1;
+        }
+        let timerId = setInterval(() => answer(obj,1,0), 300);
+        var timeStop = (total_len-cnt)*310;
+        setTimeout(() => { clearInterval(timerId); answer(obj,1,0); }, timeStop);
     }
     function ShowSliderValue(sVal, num) {
         var obValueView = document.getElementById("slider_value_view");
         var obSlider = document.getElementById("slider");
         var obj = document.getElementById("processing");
+        var step = total_len-1;
         obSlider.max = total_len-1;
         if(num==0){
             obSlider.value = sVal;
-            obValueView.innerHTML = sVal;
+            obValueView.innerHTML = "step "+sVal+" of "+step;
             console.log(sVal);
         }
         if(num==1){
-            obSlider.value = sVal;
+            obSlider.value = "step "+sVal+" of "+step;
             obValueView.innerHTML = sVal;
             answer(obj, Number(sVal), 1);
         }
     }
-</script>
-    <input type="submit" value="CONFIRM">
-</form>
 
-<hr>
-<button id="processing" onclick="answer(this, 0, 0)">FIRST</button>
-<button onclick="answer(this, 1, 0)">NEXT</button>
-<button onclick="answer(this, -1, 0)">PREV</button>
-<button onclick="answer(this, 100, 0)">LAST</button>
-<p id="answer"></p>
-<div class="Container" >
-    <input id="slider" size=100 oninput='ShowSliderValue(this.value, 1)'  type="range" min='0' max='100' value='0'>
-    <font size=2 id="slider_value_view">0</font>
-    <hr>
-</div>
+</script>
+
 
 
 </body>

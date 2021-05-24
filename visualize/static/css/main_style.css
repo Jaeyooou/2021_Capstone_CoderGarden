@@ -1,0 +1,170 @@
+/*전체 그리드*/
+.wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr 3fr;
+    grid-template-rows: 100px 850px 200px;
+    grid-gap: 10px;
+    padding-left:10%;
+    padding-right:10%;
+}
+
+.box1 {
+    grid-column: 1/4;
+    border-bottom : 4px solid rgb(252,217,181);
+}
+.box2 {
+    font-size : 14px;
+    grid-column: 1/2;
+}
+.box3 {
+    font-size:13px;
+    grid-column: 2/3;
+    border-left : 4px solid rgb(252,217,181);
+}
+.box4 {
+    padding-left : 5%;
+    grid-column: 3/4;
+}
+/*전체 그리드*/
+
+/*네비게이션 바*/
+#logo{
+    height:50%;
+    padding-top: 25px;
+    padding-left: 50px;
+}
+/*네비게이션 바*/
+
+/*BOX2 코드 입력창*/
+.box2 p{
+    font-size:13px;
+    text-align:center;
+    margin:5px;
+}
+/*BOX2 코드 입력창*/
+/*BOX3 변수테이블*/
+.box3 p{
+    text-align:right;
+}
+#answer_table_name{
+    font-size:13px;
+    text-align:right;
+    margin:5px;
+}
+#table_box{
+    text-align:center;
+}
+#answer{
+    text-align:center;
+    margin-top: 0px;
+}
+table {
+    margin-top: -17px;
+    padding-left: 20px;
+    margin-left: auto;
+    margin-right:3px;
+}
+th {
+    padding : 5px;
+    background: rgb(255,249,223);
+    border-bottom:none;
+}
+td {
+    text-align : center;
+    padding : 5px;
+    border-bottom : 1px solid whitesmoke;
+}
+/*BOX3 변수테이블*/
+
+
+/*BOX4 시각화파트*/
+.box4 p {
+    font-size: 13px;
+    text-align: left;
+    margin: 5px;
+}
+#visu_name{
+    text-align:  left;
+    font-size : 13px;
+    margin :5px;
+}
+/*BOX4 시각화파트*/
+
+
+
+/*코드 컨트롤 박스*/
+#confirm_btn{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+#confirm_btn_box1{
+    margin-top: 10px;
+    font-size : 11px;
+}
+#confirm_btn_box2{
+    grid-column: 2/3;
+    text-align:center;
+}
+#confirm_btn_real{
+    padding:5px;
+    padding-left:10px;
+    padding-right:10px;
+    border-radius:5px;
+    border:1px solid royalblue;
+    background-color:white;
+    color : royalblue;
+    box-shadow: 0 2px #999;
+}
+#confirm_btn_real:active{
+    box-shadow: 0 0px #666;
+    transform: translateY(2px);
+}
+#confirm_btn_real:hover{
+    color : white;
+    background-color:royalblue;
+}
+#confirm_btn_real:focus{
+    color : royalblue;
+    background-color:white;
+}
+#confirm_btn_box3{
+    grid-column: 3/4;
+    text-align:right;
+    padding:10px;
+}
+.slider_box{
+    text-align:center;
+}
+#slider{
+    width : 500px;
+}
+#control_box{
+    text-align:center;
+}
+#control_box button {
+    padding:8px;
+    margin : 7px;
+    border-radius: 5px;
+    font-size:13px;
+    border: 1px solid royalblue;
+    background-color: rgba(0,0,0,0);
+    color: royalblue;
+    box-shadow: 0 3px #999;
+}
+#control_box button:hover{
+    background-color: royalblue;
+    color:white;
+}
+#control_box button:active{
+    color:white;
+    background-color: royalblue;
+    box-shadow: 0 1px #666;
+    transform: translateY(2px);
+}
+#slider_value_view{
+    margin-top:14px;
+    font-size:13px;
+}
+#explanation{
+    text-align:left;
+}
