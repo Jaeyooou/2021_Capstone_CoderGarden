@@ -12,7 +12,7 @@
     padding-left:5%;
     padding-right:5%;
     display : grid;
-    grid-template-colums:3fr 1fr;
+    grid-template-colums:3fr;
     grid-column: 1/4;
     border-bottom : 1px solid lightgrey;
 }
@@ -20,12 +20,7 @@
     font-size : 14px;
     grid-column: 1/4;
     background-color: white;
-}
-.box3 {
-    margin-top:3%;
-    background-color: grey;
-    font-size:13px;
-    grid-column: 1/4;
+    margin-bottom:0;
 }
 
 body{
@@ -49,7 +44,7 @@ body{
     padding-left: 50px;
 }
 .button {
-    background-color: white;
+    background-color: rgba(255,255,255,0);
     font-size: 20px;
     border : none;
     color: black;
@@ -65,7 +60,7 @@ body{
 
 /*box1 part*/
 
-/*popup part*/
+/*popup signup&signin part*/
 .popup_signin {
     display:grid;
     text-align: center;
@@ -186,7 +181,7 @@ body{
     border-radius : 2opx/50px;
     color:white;
 }
-.popup_signup .close {
+.close {
     margin-right:10px;
     background-color: white;
     transition: all 200ms;
@@ -195,7 +190,7 @@ body{
     text-decoration: none;
     color: grey;
 }
-.popup_signup .close:hover {
+.close:hover {
   color: orange;
 }
 .popup_signup_btn2:hover {
@@ -234,7 +229,68 @@ body{
   visibility: visible;
   opacity: 1;
 }
-/*popup part*/
+/*popup signup&signin part*/
+
+/*popup guide*/
+.popup_guide{
+    display:grid;
+    text-align: center;
+    grid-template-rows: 15%  70% 12% 3%;
+    background-color: white;
+    font-size : 30px;
+    margin: 70px auto;
+    padding: 28px;
+    padding-bottom: 32px;
+    /*background: #fff;*/
+    border-radius: 5px;
+    width: 50%;
+    height:70%;
+    transition: all 1s ease-in-out;
+}
+.guide_content1{
+}
+.guide_content2{
+    text-align:center;
+    font-size:15px;
+    height:100%;
+}
+.guide_content2 img{
+    height:100%;
+}
+.guide3_img{
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+.guide_content1_1{
+    text-align:right;
+}
+.guide_content3{
+    margin-top:15px;
+    font-size:13px;
+}
+.guide_content4{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.left_btn{
+    text-align:left;
+    background-color:rgba(255,255,255,0);
+}
+.right_btn{
+    text-align:right;
+    background-color:rgba(255,255,255,0);
+}
+.guide_btn{
+    background-color:rgba(255,255,255,0);
+    border:none;
+    font-size:30px;
+}
+.guide_btn:hover{
+  color: orange;
+}
+/*popup guide*/
+
 
 /*box2 part*/
 .main_info_1{
@@ -250,9 +306,13 @@ body{
 }
 
 .main_info_3{
-    background-color: grey;
+    margin:0px;
+    margin-top:10%;
+    width:100%;
+    border:none;
 }
 /*box2 part*/
+
 
 
 /**{margin:0; padding:0;}*/

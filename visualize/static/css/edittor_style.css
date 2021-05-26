@@ -69,60 +69,155 @@ body{
 /*pop up part*/
 .popup_signin {
     display:grid;
-    background-color:red;
+    text-align: center;
+    grid-template-rows: 20% 35% 2% 35% 8%;
+    height:650px;
+    background-color: white;
     font-size : 30px;
     margin: 70px auto;
-    padding: 30px;
+    padding: 28px;
+    padding-bottom: 32px;
     /*background: #fff;*/
     border-radius: 5px;
-    width: 30%;
-    /*position: relative;*/
+    width: 450px;
     transition: all 1s ease-in-out;
 }
 .popup_signup {
-    background-color:red;
+    display:grid;
+    text-align: center;
+    grid-template-rows: 20% 35% 2% 35% 8%;
+    height:650px;
+    background-color: white;
     font-size : 30px;
     margin: 70px auto;
-    padding: 30px;
+    padding: 28px;
+    padding-bottom: 32px;
     /*background: #fff;*/
     border-radius: 5px;
-    width: 30%;
-    position: relative;
+    width: 450px;
     transition: all 1s ease-in-out;
 }
-.pop_btn {
-  margin-top : 10px;
-  background : black;
-  font-size : 1em;
-  padding : 5px;
-  color :white;
-  border : 1px solid orange;
-  border-radius : 2opx/50px;
-  text-decoration : none;
-  cursor : pointer;
-
+.popup_signin .content1{
+}
+.content1_1{
+    text-align:right;
+}
+.content1_2{
+    text-align:center;
+}
+.content1_2 img{
+    height:55px;
+}
+.content2{
+    text-align:center;
+}
+.content3{
+    margin-left:10%;
+    width:80%;
+    margin-top:3px;
+    color:grey;
+    font-size:13px;
+    display:grid;
+    grid-template-columns: 5fr 1fr 5fr;
+    text-align:center;
+}
+.content3 hr{
+    border:1px solid lightgrey;
+}
+.content4{
+    text-align:center;
+}
+.content4 p{
+    color:grey;
+    margin-right:10%;
+    text-align:right;
+    font-size:13px;
+}
+.content5{
+    color:grey;
+    font-size:13px;
+    text-align:center;
+}
+.texts{
+    border : none;
+    border-bottom:1px solid grey;
+    margin-top:5%;
+    width:80%;
+    height:40px;
 }
 
+.popup_signup_btn:hover{
+    background-color: rgb(220,167,93);
+    color:black;
+}
+.popup_signin_btn:hover{
+    background-color: rgb(220,167,93);
+    color:black;
+}
+.popup_signin_btn {
+    text-align:center;
+    margin-top : 10px;
+    background-color : rgb(106,128,170);
+    font-size : 20px;
+    width:80%;
+    height:50px;
+    border : none;
+    border-radius : 2opx/50px;
+    color:white;
+}
+.popup_signup_btn2 {
+    text-align:center;
+    margin-top : 35px;
+    background-color : rgb(106,128,170);
+    font-size : 20px;
+    width:80%;
+    height:50px;
+    border : none;
+    border-radius : 2opx/50px;
+    color:white;
+}
+.popup_signup_btn {
+    text-align:center;
+    margin-top : 10px;
+    background-color : grey;
+    font-size : 20px;
+    width:80%;
+    height:50px;
+    border : none;
+    border-radius : 2opx/50px;
+    color:white;
+}
+.popup_signup .close {
+    margin-right:10px;
+    background-color: white;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: grey;
+}
+.popup_signup .close:hover {
+  color: orange;
+}
+.popup_signup_btn2:hover {
+    color: black;
+    background-color : rgb(220,167,93);
+}
 .pop_btn:hover {
   background:orange;
   color:black;
 }
-.popup .close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  transition: all 200ms;
-  font-size: 30px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #333;
+.popup_signin .close {
+    margin-right:10px;
+    background-color: white;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: grey;
 }
-.popup .close:hover {
+.popup_signin .close:hover {
   color: orange;
-}
-.popup .content {
-  max-height: 30%;
-  overflow: auto;
 }
 
 .overlay {
@@ -139,11 +234,6 @@ body{
 .overlay:target {
   visibility: visible;
   opacity: 1;
-}
-.texts{
-  border : 2px solid orange;
-  height : 30px;
-  font-size : 25px;
 }
 /*pup up part*/
 /*BOX2 코드 입력창*/
@@ -279,3 +369,79 @@ td {
 #explanation{
     text-align:left;
 }
+/*코드 컨트롤 박스*/
+
+
+/*popup guide*/
+.popup_guide{
+    display:grid;
+    text-align: center;
+    grid-template-rows: 15%  70% 12% 3%;
+    background-color: white;
+    font-size : 30px;
+    margin: 70px auto;
+    padding: 28px;
+    padding-bottom: 32px;
+    /*background: #fff;*/
+    border-radius: 5px;
+    width: 50%;
+    height:70%;
+    transition: all 1s ease-in-out;
+}
+.guide_content1{
+}
+.guide_content2{
+    text-align:center;
+    font-size:15px;
+    height:100%;
+}
+.guide_content2 img{
+    height:100%;
+}
+.guide3_img{
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+.guide_content1_1{
+    text-align:right;
+}
+.guide_content3{
+    margin-top:15px;
+    font-size:13px;
+}
+.guide_content4{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.left_btn{
+    text-align:left;
+    background-color:rgba(255,255,255,0);
+}
+.right_btn{
+    text-align:right;
+    background-color:rgba(255,255,255,0);
+}
+.guide_btn{
+    background-color:rgba(255,255,255,0);
+    border:none;
+    font-size:30px;
+}
+.guide_btn:hover{
+  color: orange;
+}
+
+.close2{
+    margin-right:10px;
+    background-color: white;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: grey;
+}
+.close2:hover {
+  color: orange;
+}
+
+/*popup guide*/
