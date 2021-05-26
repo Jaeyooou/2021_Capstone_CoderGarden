@@ -20,7 +20,7 @@ import config.views
 import account.views
 import visualize.views
 urlpatterns = [
-    path('',config.views.index , name = 'index'),
+    path('',visualize.views.main_test , name = 'index'),
     path('admin/', admin.site.urls),
     path('login/' , account.views.login , name = 'login'),
     path('signup/' , account.views.signup , name = 'signup'),
@@ -31,7 +31,6 @@ urlpatterns = [
     path('test_h/', visualize.views.test_h, name='test_h'),
     path('test2_h/', visualize.views.test2_h, name='test2_h'),
     path('visualize/', visualize.views.visualize, name='visualize'),
-    path('main_test/', visualize.views.main_test, name='main_test'),
     path('logout/',account.views.logout , name = 'logout'),
 
 ]
