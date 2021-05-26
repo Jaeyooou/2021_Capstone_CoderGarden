@@ -68,3 +68,4 @@ def code(request):
         print("post method on!")
     return render(request , 'Code_visual.html')
 
+

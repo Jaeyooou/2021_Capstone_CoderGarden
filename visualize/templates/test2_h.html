@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/main_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/edittor_style.css' %}">
     <link  rel = "stylesheet" href ="../static/codemirror/lib/codemirror.css " >
     <link  rel = "stylesheet" href ="../static/codemirror/theme/elegant.css " >
     <link  rel = "stylesheet" href ="../static/codemirror/theme/idea.css " >
@@ -58,11 +58,22 @@
             fill:mediumslateblue;
         }
     </style>
+    <script>
+        function go_main(){
+
+        }
+    </script>
 </head>
 <body>
 <div class="wrapper">
     <div class="box1">
-        <img id="logo" src="../static/img/codergarden_logo2.png" alt="">
+         <div class="box1_logo">
+            <a href="/main_test/"><img id="logo" src="../static/img/codergarden_logo2.png" alt=""></a>
+        </div>
+        <div class="box1_nav_items" >
+            <button class = "button" onclick="location.href='#popup1'">GUIDE</button>
+            <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>
+        </div>
     </div>
     <div class="box2">
         <p>Python 3.8</p>
@@ -360,6 +371,51 @@
     }
 
 </script>
+<!--로그인 및 회원가입 팝업 창-->
+        <div id="popup1" class="overlay">
+            <div class="popup_signin">
+                <a class="close" href="#">×</a>
+                <div class="content">
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <p>userid</p>
+                        <input type="text" name="userid" class = "texts">
+                        <br>
+                        <p>password</p>
+                        <input type="text" name="password" class = "texts">
+                        <br>
+                        <input type="submit" value="로그인" class = "pop_btn">
+                        <br>
+                    </form>
+                    <button class = "button" onclick="location.href='#popup2'">SIGN UP</button>
+                </div>
+            </div>
+        </div>
+        <div id = "popup2" class = "overlay">
+            <div class="popup_signup">
+                <a class="close" href="#">×</a>
+                <div class="content">
+                    <form method="POST" action="{% url 'signup' %}">
+                         {% csrf_token %}
+                        <p>userID</p>
+                        <input type="text" name="userid" class = "texts">
+                        <br>
+                        <p>name</p>
+
+                        <input type="text" name="username" class = "texts">
+                        <br>
+                        <p>password</p>
+                        <input type="text" name="password" class = "texts">
+                        <br>
+                        <p>confirm</p>
+                        <input type="text" name="confirm" class = "texts">
+                        <br>
+                        <input type="submit" value="회원가입" class = "pop_btn">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--로그인 및 회원가입 팝업 창-->
 
 
 

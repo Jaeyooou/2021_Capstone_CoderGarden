@@ -11,6 +11,7 @@
 
 ### graduate_help 덤프파일 import 하기
 1. MySQL에서 `create database capstone` 로 'capstone' 데이터베이스 생성후 quit
+   
 2. db.sql 파일을 원하는 위치에 가져다 놓는다.
 3. 터미널 실행 후 동일한 위치로 터미널 이동 (MySQL 접속 X)
 3. `mysql -u root -p capstone < db.sql` 명령어 실행해서 import
