@@ -85,6 +85,7 @@ def code(request):
     return render(request , 'Code_visual.html')
 
 
+
 def mypage(request):
     # 세션 or 토큰 권한 없으면 로그인 페이지로 리다이렉트
     # 세션 or 토큰 유효성 있으면,  model.Member 에서 id 값 같은 애들 불러오기
@@ -106,4 +107,3 @@ def codeview(request , code_num):
     code = Sourcecode.objects.get(code_number = code_num)
     print(code.user_code)
     return render(request , 'detail.html' ,{'code' : code.user_code})
-

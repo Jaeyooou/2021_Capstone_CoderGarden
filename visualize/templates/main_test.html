@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main_style.css' %}">
+</head>
+<body>
+<div class="wrapper">
+    <div class="box1">
+        <div class="box1_logo">
+            <a href="/main_test/"><img id="logo" src="../static/img/codergarden_logo2.png" alt=""></a>
+        </div>
+        <div class="box1_nav_items" >
+            <button class = "button" onclick="location.href = '/test_h'">CODE EDIT</button>
+            <button class = "button" onclick="location.href='#popup1'">GUIDE</button>
+            <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>
+        </div>
+    </div>
+    <div class="box2">
+        <!--로그인 및 회원가입 팝업 창-->
+        <div id="popup1" class="overlay">
+            <div class="popup_signin">
+                <div class="content1">
+                    <div class="content1_1">
+                        <a class="close" href="#">×</a>
+                    </div>
+                    <div class="content1_2">
+                        <img src="../static/img/codergarden_logo2.png" alt="">
+                    </div>
+                </div>
+                <div class="content2">
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <input type="text" name="userid" placeholder="ID" class = "texts">
+                        <br>
+                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
+                        <br><br>
+                        <input type="submit" value="SIGN IN" class = "popup_signin_btn">
+                        <br>
+                    </form>
+                </div>
+                <div class="content3">
+                    <div><hr></div>
+                    <div>or</div>
+                    <div><hr></div>
+                </div>
+                <div class="content4">
+                    <button class = "popup_signup_btn" onclick="location.href='#popup2'">SIGN UP</button>
+                </div>
+            </div>
+        </div>
+        <div id = "popup2" class = "overlay">
+            <div class="popup_signup">
+                <a class="close" href="#">×</a>
+                <div class="content">
+                    <form method="POST" action="{% url 'signup' %}">
+                         {% csrf_token %}
+                        <p>userID</p>
+                        <input type="text" name="userid" class = "texts">
+                        <br>
+                        <p>name</p>
+
+                        <input type="text" name="username" class = "texts">
+                        <br>
+                        <p>password</p>
+                        <input type="text" name="password" class = "texts">
+                        <br>
+                        <p>confirm</p>
+                        <input type="text" name="confirm" class = "texts">
+                        <br>
+                        <input type="submit" value="회원가입" class = "pop_btn">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--로그인 및 회원가입 팝업 창-->
+    </div>
+    <div class="box3">셋</div>
+</div>
+</body>
+</html>

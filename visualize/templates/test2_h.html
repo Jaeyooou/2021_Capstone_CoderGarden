@@ -3,68 +3,419 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/edittor_style.css' %}">
+    <link  rel = "stylesheet" href ="../static/codemirror/lib/codemirror.css " >
+    <link  rel = "stylesheet" href ="../static/codemirror/theme/elegant.css " >
+    <link  rel = "stylesheet" href ="../static/codemirror/theme/idea.css " >
+    <link  rel = "stylesheet" href ="../static/codemirror/theme/base16-light.css " >
+    <link rel = "stylesheet" href = "../static/codemirror/addon/fold/foldgutter.css">
+    <link rel = "stylesheet" href = "../static/codemirror/addon/hint/show-hint.css">
+    <link rel = "stylesheet" href = "../static/codemirror/addon/lint/lint.css">
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
-<script>
+    <script src = "../static/codemirror/lib/codemirror.js"></script>
+    <script src = "../static/codemirror/mode/python/python.js"></script>
+    <script src = "../static/codemirror/addon/hint/show-hint.js"></script>
+    <script src="../static/codemirror/addon/comment/comment.js"></script>
+    <script src="../static/codemirror/addon/selection/active-line.js"></script>
+    <script src="../static/codemirror/keymap/sublime.js"></script>
+    <script src="../static/codemirror/addon/fold/foldcode.js"></script>
+    <script src="../static/codemirror/addon/fold/foldgutter.js"></script>
+    <script src="../static/codemirror/addon/fold/brace-fold.js"></script>
+    <script src="../static/codemirror/addon/fold/indent-fold.js"></script>
+    <script src="../static/codemirror/addon/fold/comment-fold.js"></script>
+    <script src="../static/codemirror/addon/edit/closebrackets.js"></script>
+    <script src="../static/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src = "../static/codemirror/addon/hint/python-hint.js"></script>
+    <script>
+        var el = document.getElementById("editor");
+        var version = "# version: Python3\n\n";
+        var codeAreaTip = "# please edit your code here:\n";
+        var codeStart = "# code start\n\n";
+        var codeEnd = "# code end\n\n";
+        var code = "def solution():\n\tpass\n\n";
+        var main = "if __name__ == '__main__':\n";
+        var a = {{ code|safe }};
+        var initValue = a[0];
+    </script>
+    <style>
+        .bar {
+            fill :gold;
+        }
 
-    //index = 1;
-    function dataMaking(index)
-    {
-    var tmp = {{trace|safe}};
-    heap = tmp[index].heap;
-    //list start from heap[index][1] ~~
+        .pivot1
+        {
+            fill:green;
+        }
+        .pivot2
+        {
+            fill:pink;
+        }
+        .pivot3
+        {
+            fill:mediumslateblue;
+        }
+    </style>
+    <script>
+        function go_main(){
 
-    targetarr = heap[index].slice(1,heap[index].length);
-
-    return targetarr;
-    };
-
-    var tmp = {{trace|safe}};
-    heap = tmp[index].heap;
-
-</script>
-<style>
-    .bar{
-    fill:gold;
-    }
-
-
-</style>
+        }
+    </script>
 </head>
 <body>
-<p>JsonData : {{trace}}</p>
-<h3>Yout Code: {{code}}</h3>
-
-<svg width="500" height="300"></svg>
+<div class="wrapper">
+    <div class="box1">
+         <div class="box1_logo">
+            <a href="/main_test/"><img id="logo" src="../static/img/codergarden_logo2.png" alt=""></a>
+        </div>
+        <div class="box1_nav_items" >
+            <button class = "button" onclick="location.href='#popup1'">GUIDE</button>
+            <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>
+        </div>
+    </div>
+    <div class="box2">
+        <p>Python 3.8</p>
+        <form action="/test2_h/">
+            <textarea class="cm_test" id = "code_editor" name="code"></textarea>
+            <div id="confirm_btn">
+                <div id="confirm_btn_box1"><img src="../static/img/orange.png" alt=""> &nbsp;line that just executed<br><img
+                        src="../static/img/blue.png" alt=""> &nbsp;next line to excute</div>
+                <div id="confirm_btn_box2"><p id="slider_value_view">step of</p></div>
+                <div id="confirm_btn_box3"><button id="confirm_btn_real" type="submit">CONFRIRM</button></div>
+            </div>
+            <div class="slider_box" >
+                <input id="slider" size=100 oninput='ShowSliderValue(this.value, 1)'  type="range" min='0' max='100' value='0'>
+            </div>
+        </form>
+        <div id="control_box">
+            <button id="processing" onclick="answer(this, 0, 0)">FIRST</button>
+            <button onclick="answer(this, -1, 0)">PREV</button>
+            <button id="PlayBtn" onclick="play(this)">PLAY</button>
+            <button onclick="answer(this, 1, 0)">NEXT</button>
+            <button onclick="answer(this, 100, 0)">LAST</button>
+        <hr>
+        </div>
+        <div>
+            <p id="explanation">
+                <h4>How to use</h4>
+                <span>First, edit your Python code in the code editor.</span><br>
+                <span>Second, if you're done editing the code, press the CONFIRM button.</span><br>
+                <span>Third, now your code is compiled. Control your code visualization with any of the five buttons below. <br>
+                    (FIRST : Go to the first line of your code, PREV : Visualize the previous line of current code line,
+                    PLAY : It automatically proceeds with code visualization from the current line to the last line,
+                    NEXT : Visualize next line of current code line, LAST : Visualize the last line of your code.)</span><br><br>
+                <span>Now enjoy code visualization. It will help you look at your code intuitively and improve learning efficiency.</span>
+                <br><br>
+                <h4>Guide line</h4>
+                <span>First, Variable names for pivot must be set to pivot1, pivot2, and pivot3</span><br>
+                <span>Second, Frames part shows what values the variables in the user's code have</span><br>
+                <span>Third, Visualize part shows how the 'list' in the user's code changes. </span><br>
+                <span>Fourth, The type of visualization chart color in the list <br> (YELLOW : the default, BLUE : the pivot, GREEN : the completion)  </span>
+            </p>
+        </div>
+    </div>
+    <div class="box3">
+        <p id="answer_table_name">Frames</p>
+        <div id="table_box">
+            <p id="answer"></p>
+        </div>
+    </div>
+    <div class="box4">
+        <p id="visu_name">Visualize</p>
+        <p id="visu">
+        <p></p>
+    </div>
+</div>
 <script>
-
-
-    function next(index)
-    {
-
-    var dataset = dataMaking(index);
-    document.write("<h1>now list is " , targetarr , "</h1>");
-    document.write("<h1> now code in line : ",index,"</h1><br>");
-
-        var svg = d3.select("svg");
-
-        for ( var i = 0 ; i < dataset.length ; i ++){
-            svg.append("rect")
-                .attr("height", dataset[i]*30)
-                .attr("width",40)
-                .attr("x",50*i)
-                .attr("y",300-dataset[i]*30)
-                .attr("class","bar");
-                }
-
-
+    var editor = {
+        mode :"python" ,
+        keyMap: "sublime", // Fast key style
+        value: "Test Default Value",
+        theme : "idea",
+        lineNumbers: true, // set number
+        smartIndent: true, // smart indent
+        indentUnit: 4, // Smart indent in 4 spaces
+        indentWithTabs: true, // Smart indent with tabs
+        lineWrapping: true, //
+        // Add line number display, folder and syntax detector to the slot
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
+        foldGutter: true, // Enable code folding in slots
+        autofocus: true, // Autofocus
+        matchBrackets: true, // Match end symbols, such as "],}"
+        autoCloseBrackets: true, // Auto close symbol
+        styleActiveLine: true, // Display the style of the selected row
+        styleSelectedText: true,
     };
+    var myTextArea = $(".cm_test").get(0);
+    var myCodeMirror = CodeMirror.fromTextArea(myTextArea, editor);
+    myCodeMirror.setOption("value", initValue);
 
-    index = 2;
-    next(index);
+    // various visualization
+    var a = {{ trace|safe }};
+    var b = {{ code|safe }};
+    var cnt = -1;
+    var total_len = a.length;
+    var prev_line = 0
+    var prev_prev_line = 0;
+    var is_playing = 0;
+    // various visualization
+    function sleep(ms) {
+        const wakeUpTime = Date.now() + ms;
+        while (Date.now() < wakeUpTime) {}
+    }
+    //viusalizing list function _RK
+    function visualizing(obj,num) {
+        var index = num;
+        console.log("index(json line) : " + index); // for test
+        var target = {{trace|safe}};
+        length = target[index].ordered_globals.length;  //how many variables we have in json line in index
+        for (var i = 0 ; i < length ; i ++){
+            //console.log("for i in " + i);
+            var tmp = target[index].ordered_globals[i];   // get variable name
+            var tmp2 = target[index].globals[tmp][1];   // can divide if it is int or list
+            if (tmp2 === undefined){
+                //console.log("now in int");
+                var targetint = target[index].globals[tmp];
+                console.log(tmp + " : " + targetint);
+                if (tmp === "pivot3"){var pivot3 = targetint;}
+                if (tmp === "pivot1"){var pivot1 = targetint;}
+                if (tmp === "pivot2"){var pivot2 = targetint;}
+            }
+            else{
+                var targetarr = target[index].heap[tmp2];//get the list componenet
+
+                console.log("tmp2 : "+ tmp2);
+                console.log("targetarr : "+targetarr);
+                console.log("NOW TARGET : "+JSON.stringify(target[index]));
+
+
+                var dataset = targetarr.slice(1);  //slice to use list data (not inclue key)
+
+                var dd = document.getElementById(tmp);
+                if (dd !== null){
+                        dd.remove();
+                }
+                if ( document.getElementsByTagName("h1").length === 6){//delete previous h1
+                    var toDelete = document.getElementsByTagName("h1");
+                    toDelete[0].remove();
+                    toDelete[0].remove();
+                    toDelete[0].remove();
+                }
+                var width = 500;
+                var height = 300;
+                var svg = d3.select("#visu").append("svg")  // insert svg in body  (insert everyday not delete previous list)
+                .attr("width", width)
+                .attr("height",height)
+                .attr("id",tmp);
+                for ( var j = 0 ; j < dataset.length ; j ++){//set svg bar attribute
+                    tmpClass = "bar";
+                    if (j === pivot1){
+                        tmpClass = "pivot1";
+                    }
+                    if (j === pivot2){
+                        tmpClass = "pivot2";
+                    }
+                    if (j === pivot3){
+                        tmpClass = "pivot3";
+                    }
+                    svg.append("rect")
+                        .attr("height", dataset[j]*15)
+                        .attr("width",40)
+                        .attr("x",50*j)
+                        .attr("y",300-dataset[j]*15)
+                        .attr("class",tmpClass);
+                }//targetNode.appendChild(newSvg);
+             } // if list end
+        }// for end
+    }//fuction end
+
+    function highlightText(obj,txt){
+        var tokens = myCodeMirror.getLineTokens(obj-1,true);
+        var len = tokens.length;
+        console.log(tokens);
+        var start = CodeMirror.Pos(obj-1, tokens[0].start);
+        var end = CodeMirror.Pos(obj-1, tokens[len-1].end);
+        var markOptions ={
+                css: "background-color : "+txt,
+        };
+        var mark = myCodeMirror.markText(start, end, markOptions);
+    }
+    function processing(obj){
+        var result = "<table> <thead><th>name</th> <th>value</th> <th>type</th><thead>";
+        var len = obj.ordered_globals.length;
+        for(var i=0; i<len; i++){
+            if(obj.globals[obj.ordered_globals[i]][0]=="REF"){
+                var part = "";
+                var tmp = obj.ordered_globals[i];
+                var tmp2 = obj.globals[tmp][1];
+                var store=""
+                console.log("!!!!!");
+                console.log(typeof JSON.stringify(obj.heap[tmp2][1]));
+                console.log(JSON.stringify(obj.heap[tmp2].length));
+                if(obj.heap[tmp2][0]=="DICT"){
+                    for(var j=1; j<JSON.stringify(obj.heap[tmp2].length);j++){
+                        store=store+JSON.stringify(obj.heap[tmp2][j])+"<br>";
+                    }
+                }
+                else{
+                    store=obj.heap[tmp2].slice(1);
+                }
+                part = "<tr> <td>"+tmp +"</td>"+"<td>"+store+"</td>"+"<td>"+obj.heap[tmp2][0]+"</td>"+"</tr>";
+            }
+            else{
+                var part = "";
+                var tmp = obj.ordered_globals[i];
+                var tmp2 = obj.globals[tmp];
+                part = "<tr> <td>"+tmp +"</td>"+"<td>"+tmp2+"</td>"+"<td>"+typeof(tmp2)+"</td>"+ "</tr>";
+            }
+            result = result +"<tbody>"+ part+"</tbody>";
+
+        }
+        result = "<br>"+result+"</table>";
+        highlightText(prev_prev_line,'rgba(255,255,255,0)');
+        prev_prev_line = prev_line;
+        highlightText(prev_line,'rgba(255,204,102)');
+        prev_line = obj.line;
+        highlightText(obj.line,'rgba(102,204,255)');
+
+        return result;
+    }
+    function answer(obj, num, slider){
+        var processed_code;
+        var newP=document.getElementById("answer");
+        var o = newP.parentElement;
+        if(num==-1&&cnt<=0&&slider==0){
+            processed_code = processing(a[cnt]);
+            newP.innerHTML = processed_code;
+            ShowSliderValue(cnt,0);
+            o.appendChild(newP);
+            return;
+        }
+        else if(num==1&&cnt>=total_len-1&&slider==0){
+            processed_code = processing(a[cnt]);
+            newP.innerHTML = processed_code
+            highlightText(a[cnt]+1,'rgb(36,37,47)');
+            ShowSliderValue(cnt,0);
+            o.appendChild(newP);
+            return;
+        }
+        else if(num==0&&slider==0){
+            cnt=num;
+            processed_code = processing(a[cnt]);
+            processed_code = processing(a[cnt]);
+            newP.innerHTML = processed_code;
+            ShowSliderValue(cnt,0);
+            o.appendChild(newP);
+            return;
+        }
+        else if(num==100&&slider==0){
+            cnt=total_len-1;
+            processed_code = processing(a[cnt]);
+            processed_code = processing(a[cnt]);
+            newP.innerHTML = processed_code;
+            ShowSliderValue(cnt,0);
+            o.appendChild(newP);
+            return;
+        }
+        else{
+            if(slider==0){
+                cnt = cnt+num;
+
+                processed_code = processing(a[cnt]);
+                newP.innerHTML = processed_code;
+                ShowSliderValue(cnt,0);
+                o.appendChild(newP);
+            }
+            else if(slider==1) {
+                console.log("NUM : "+num);
+                cnt = num;
+                processed_code = processing(a[cnt]);
+                newP.innerHTML = processed_code;
+                ShowSliderValue(cnt,0);
+                o.appendChild(newP);
+            }
+        }
+        if(cnt>=0&&cnt<=total_len-3){
+            console.log("cnt : "+cnt);
+            console.log("obj : "+JSON.stringify(a[cnt]));
+            console.log("visualizing cnt : "+cnt);
+            visualizing(obj,cnt);
+        }
+    }
+    function play(obj){
+        if(cnt==total_len-1){
+            cnt=-1;
+        }
+        let timerId = setInterval(() => answer(obj,1,0), 300);
+        var timeStop = (total_len-cnt)*310;
+        setTimeout(() => { clearInterval(timerId); answer(obj,1,0); }, timeStop);
+    }
+    function ShowSliderValue(sVal, num) {
+        var obValueView = document.getElementById("slider_value_view");
+        var obSlider = document.getElementById("slider");
+        var obj = document.getElementById("processing");
+        var step = total_len-1;
+        obSlider.max = total_len-1;
+        if(num==0){
+            obSlider.value = sVal;
+            obValueView.innerHTML = "step "+sVal+" of "+step;
+            console.log(sVal);
+        }
+        if(num==1){
+            obSlider.value = "step "+sVal+" of "+step;
+            obValueView.innerHTML = sVal;
+            answer(obj, Number(sVal), 1);
+        }
+    }
+
 </script>
+<!--로그인 및 회원가입 팝업 창-->
+        <div id="popup1" class="overlay">
+            <div class="popup_signin">
+                <a class="close" href="#">×</a>
+                <div class="content">
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <p>userid</p>
+                        <input type="text" name="userid" class = "texts">
+                        <br>
+                        <p>password</p>
+                        <input type="text" name="password" class = "texts">
+                        <br>
+                        <input type="submit" value="로그인" class = "pop_btn">
+                        <br>
+                    </form>
+                    <button class = "button" onclick="location.href='#popup2'">SIGN UP</button>
+                </div>
+            </div>
+        </div>
+        <div id = "popup2" class = "overlay">
+            <div class="popup_signup">
+                <a class="close" href="#">×</a>
+                <div class="content">
+                    <form method="POST" action="{% url 'signup' %}">
+                         {% csrf_token %}
+                        <p>userID</p>
+                        <input type="text" name="userid" class = "texts">
+                        <br>
+                        <p>name</p>
 
-<button onClick = next(2)> NEXT </button>
+                        <input type="text" name="username" class = "texts">
+                        <br>
+                        <p>password</p>
+                        <input type="text" name="password" class = "texts">
+                        <br>
+                        <p>confirm</p>
+                        <input type="text" name="confirm" class = "texts">
+                        <br>
+                        <input type="submit" value="회원가입" class = "pop_btn">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--로그인 및 회원가입 팝업 창-->
 </body>
 </html>
 

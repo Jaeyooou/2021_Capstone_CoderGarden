@@ -37,7 +37,7 @@
 //   want to feature detect the actual value you use here, for example
 //   !!window.Worker.
 // * workerScript: The main script of the worker. Point this to
-//   wherever you are hosting worker.js from this directory.
+//   wherever you are hosting worker.js_pytutor from this directory.
 // * workerDeps: An array of paths pointing (relative to workerScript)
 //   to the Acorn and Tern libraries and any Tern plugins you want to
 //   load. Or, if you minified those into a single script and included

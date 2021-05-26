@@ -35,7 +35,7 @@
       word = ""; start = end = cur.ch;
     }
 
-    var spec = CodeMirror.resolveMode("text/css");
+    var spec = CodeMirror.resolveMode("text/css_pytutor");
 
     var result = [];
     function add(keywords) {

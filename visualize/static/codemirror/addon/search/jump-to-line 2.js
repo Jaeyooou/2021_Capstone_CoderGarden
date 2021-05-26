@@ -1,7 +1,7 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
-// Defines jumpToLine command. Uses dialog.js if present.
+// Defines jumpToLine command. Uses dialog.js_pytutor if present.
 
 (function(mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS

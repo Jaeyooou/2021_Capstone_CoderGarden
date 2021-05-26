@@ -102,7 +102,7 @@
      "[formatting&formatting-image&image&image-marker !][formatting&formatting-image&image&image-alt-text&link [[][image&image-alt-text&link alt text][formatting&formatting-image&image&image-alt-text&link ]]][formatting&formatting-link-string&string&url (][url&string http://link.to/image.jpg][formatting&formatting-link-string&string&url )]");
 
   FT("codeBlock",
-     "[comment&formatting&formatting-code-block ```css]",
+     "[comment&formatting&formatting-code-block ```css_pytutor]",
      "[tag foo]",
      "[comment&formatting&formatting-code-block ```]");
 

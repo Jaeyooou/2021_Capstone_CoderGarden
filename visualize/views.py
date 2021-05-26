@@ -12,8 +12,14 @@ import json
 
 # Create your views here.
 main_json = ''
-main_option = {u'origin': u'opt-frontend.js', u'cumulative_mode': False, u'heap_primitives': False, u'show_only_outputs': False, u'py_crazy_mode': False}
+main_option = {u'origin': u'a',
+               u'cumulative_mode': False,
+               u'heap_primitives': False,
+               u'show_only_outputs': False,
+               u'py_crazy_mode': False}
 main_json_option = json.dumps(main_option)
+
+
 def code_write(request):
     return render(request , '../templates/code_visualize.html')
 
@@ -44,16 +50,28 @@ def get_exec(main_text):
                                   options['cumulative_mode'],
                                   options['heap_primitives'],
                                   json_finalizer)
+    print("MAINTEXT다이새끼야조")
+    print(main_text)
     return out_s.getvalue()
 
 
 def test_h(request):
     return render(request, 'test_h.html')
 
+def visualize(request):
+    return render(request, 'visualize.html')
+
+def main_test(request):
+    return render(request, 'main_test.html')
+
 def test2_h(request):
+    a=[]
     text = request.GET['code']
     start_time = time.time()
     trace = eval(get_exec(text))
+
+    a.append(trace['code'])
+    print(a)
     execution_time = time.time() - start_time
 
     user_session_numb = request.session.get('user_numb')# 유저 세션 있고 ,
@@ -73,7 +91,15 @@ def test2_h(request):
     print(trace)
     print(type(trace['trace']))
     context = {
-        'code' : trace['code'],
+        'code' : a,
         'trace' : trace['trace']
     }
+    print(context['code'])
     return render(request, 'test2_h.html', context)
+
+def search_table(request):
+    search_key = request.GET['search_key']
+    context = {'search_key':search_key}
+
+    return render(request,'only_table.html',context)
+

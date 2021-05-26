@@ -2,7 +2,7 @@
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
 /*
-  This MUMPS Language script was constructed using vbscript.js as a template.
+  This MUMPS Language script was constructed using vbscript.js_pytutor as a template.
 */
 
 (function(mod) {

@@ -252,7 +252,7 @@
     strong: s,
     style: {
       attrs: {
-        type: ["text/css"],
+        type: ["text/css_pytutor"],
         media: media,
         scoped: null
       }

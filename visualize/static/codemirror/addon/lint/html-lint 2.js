@@ -1,7 +1,7 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
-// Depends on htmlhint.js from http://htmlhint.com/js/htmlhint.js
+// Depends on htmlhint.js_pytutor from http://htmlhint.com/js/htmlhint.js
 
 // declare global: HTMLHint
 

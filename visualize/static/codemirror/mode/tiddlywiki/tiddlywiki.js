@@ -2,7 +2,7 @@
 // Distributed under an MIT license: https://codemirror.net/LICENSE
 
 /***
-    |''Name''|tiddlywiki.js|
+    |''Name''|tiddlywiki.js_pytutor|
     |''Description''|Enables TiddlyWikiy syntax highlighting using CodeMirror|
     |''Author''|PMario|
     |''Version''|0.1.7|
@@ -11,7 +11,7 @@
     |''Documentation''|https://codemirror.tiddlyspace.com/|
     |''License''|[[MIT License|http://www.opensource.org/licenses/mit-license.php]]|
     |''CoreVersion''|2.5.0|
-    |''Requires''|codemirror.js|
+    |''Requires''|codemirror.js_pytutor|
     |''Keywords''|syntax highlighting color code mirror codemirror|
     ! Info
     CoreVersion parameter is needed for TiddlyWiki only!
@@ -48,8 +48,8 @@ CodeMirror.defineMode("tiddlywiki", function () {
       reWikiCommentStop = /^\*\*\*\/$/,             // ***/
       reBlockQuote = /^<<<$/,
 
-      reJsCodeStart = /^\/\/\{\{\{$/,                       // //{{{ js block start
-      reJsCodeStop = /^\/\/\}\}\}$/,                        // //}}} js stop
+      reJsCodeStart = /^\/\/\{\{\{$/,                       // //{{{ js_pytutor block start
+      reJsCodeStop = /^\/\/\}\}\}$/,                        // //}}} js_pytutor stop
       reXmlCodeStart = /^<!--\{\{\{-->$/,           // xml block start
       reXmlCodeStop = /^<!--\}\}\}-->$/,            // xml stop
 
