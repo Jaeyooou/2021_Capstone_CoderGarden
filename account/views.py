@@ -22,23 +22,27 @@ def signup(request):
             #                                 )
             # member = Member.user_id =
             # auth.login(request , user)
-            if Member.objects.get(user_id = request.POST['userid']):
-                messages.info(request , '아이디가 중복되었습니다')
-                return render(request , 'signup.html')
-            else:
-                try:
-                    Member(
-                        user_name= request.POST['username'],
-                        user_id= request.POST['userid'],
-                        user_password=request.POST['password'],
-                    ).save()
-                    print("저장 됨 ")
-                    messages.info(request, '회원가입이 완료되었습니다')
 
-                    return redirect('/')
-                except:
-                    messages.info(request , '저장이 되지 않았습니다 다시 한번 시도해주세요')
-                    return render(request , 'signup.html')
+            # test = Member.objects.get(user_id = request.POST['userid'])
+            # print(test)
+            # if Member.objects.get(user_id = request.POST['userid']) != None :
+            #     messages.info(request , '아이디가 중복되었습니다')
+            #     return render(request , 'mainpage.html')
+
+            # else:
+            try:
+                Member(
+                    user_name= request.POST['username'],
+                    user_id= request.POST['userid'],
+                    user_password=request.POST['password'],
+                ).save()
+                print("저장 됨 ")
+                messages.info(request, '회원가입이 완료되었습니다')
+
+                return redirect('/')
+            except:
+                messages.info(request , '저장이 되지 않았습니다 다시 한번 시도해주세요')
+                return render(request , 'signup.html')
 
         else:
             print("비밀번호를 다시 확인 해 주세요")
