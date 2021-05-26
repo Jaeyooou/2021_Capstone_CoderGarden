@@ -52,6 +52,9 @@ def signup(request):
         return render(request , 'signup.html')
 
 def login(request):
+    login_check = 0
+    err_message = ''
+
     if request.method == 'POST':
         # 유저 아이디랑 비밀번호 가져오기
         userid = request.POST['userid']
@@ -64,9 +67,10 @@ def login(request):
                 if user.user_password == password:
                     print("login 성공하였습니다")
                     request.session['user_numb'] = user.user_number
-                    return redirect('/')
+                    return render(request , 'main_test.html')
                 else:
                     print("비밀번호 불일치")
+
                     messages.info(request , '비밀번호가 일치하지 않습니다')
                     return render(request , 'login.html')
             else:
@@ -76,13 +80,14 @@ def login(request):
         except:
             return 0
           #딕셔너리에 에러메시지 전달 , 다시 login.html 로 돌아감
-        return render(request , 'login.html' , {'error' : 'username or password is incorrect'})
+        return render(request , 'login.html')
 
     return render(request , 'login.html')
 def logout(request):# 로그아웃
     if request.session.get('user_numb'):
         del(request.session['user_numb'])
         return redirect('/')
+    return redirect('/',{'login_check' : 0})
 def code(request):
     if request.method == 'POST':
         print("post method on!")
