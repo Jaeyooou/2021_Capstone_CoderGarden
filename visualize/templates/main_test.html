@@ -8,6 +8,27 @@
     <title>Document</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/main_style.css' %}">
+
+    <script>
+        var onScrollHandler = function()
+        {
+            var newImageUrl = document.getElementById("scroll_target").src;
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if (scrollTop > 100)
+            {
+                newImageUrl = "../static/img/main_info_li_1.png";
+            }
+            if(scrollTop > 200)
+            {
+                newImageUrl = "../static/img/main_info_li_2.png";
+            }
+            document.getElementById("scroll_target").src = newImageUrl;
+        };
+        object.addEventListener ("scroll", onScrollHandler);
+
+    </script>
+
+
 </head>
 <body>
 <div class="wrapper">
@@ -16,8 +37,8 @@
             <a href="/main_test/"><img id="logo" src="../static/img/codergarden_logo2.png" alt=""></a>
         </div>
         <div class="box1_nav_items" >
-            <button class = "button" onclick="location.href = '/test_h'">CODE EDIT</button>
-            <button class = "button" onclick="location.href='#popup1'">GUIDE</button>
+            <button class = "button" onclick="location.href = '/test_h'">CODE EDIT</button> &nbsp;&nbsp;&nbsp;&nbsp;
+            <button class = "button" onclick="location.href='#popup1'">GUIDE</button>&nbsp;&nbsp;&nbsp;&nbsp;
             <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>
         </div>
     </div>
@@ -51,36 +72,60 @@
                 </div>
                 <div class="content4">
                     <button class = "popup_signup_btn" onclick="location.href='#popup2'">SIGN UP</button>
+                    <p>아이디 찾기 | 비밀번호 찾기</p>
+                </div>
+                <div class="content5">
+                    <hr>
+                    <br>
+                    Copyright&copy; Philip J. Guo (philip@pgbovine.net)<br>
+                    Copyright&copy; CorderGarden Corp. All rights reserved.
                 </div>
             </div>
         </div>
         <div id = "popup2" class = "overlay">
             <div class="popup_signup">
-                <a class="close" href="#">×</a>
-                <div class="content">
+                <div class="content1">
+                    <div class="content1_1">
+                        <a class="close" href="#">×</a>
+                    </div>
+                    <div class="content1_2">
+                        <img src="../static/img/codergarden_logo2.png" alt="">
+                    </div>
+                </div>
+                <div class="content2">
                     <form method="POST" action="{% url 'signup' %}">
                          {% csrf_token %}
-                        <p>userID</p>
-                        <input type="text" name="userid" class = "texts">
+                        <input type="text" name="userid" placeholder="ID" class = "texts">
                         <br>
-                        <p>name</p>
-
-                        <input type="text" name="username" class = "texts">
+                        <input type="text" name="username" placeholder="USERNAME" class = "texts">
                         <br>
-                        <p>password</p>
-                        <input type="text" name="password" class = "texts">
+                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
                         <br>
-                        <p>confirm</p>
-                        <input type="text" name="confirm" class = "texts">
+                        <input type="text" name="confirm" placeholder="PASSWORD CONFIRM" class = "texts">
                         <br>
-                        <input type="submit" value="회원가입" class = "pop_btn">
+                        <input type="submit" value="SIGN UP" class = "popup_signup_btn2">
                     </form>
+                </div>
+                <div></div>
+                <div></div>
+                <div class="content5">
+                    <hr>
+                    <br>
+                    Copyright&copy; Philip J. Guo (philip@pgbovine.net)<br>
+                    Copyright&copy; CorderGarden Corp. All rights reserved.
                 </div>
             </div>
         </div>
         <!--로그인 및 회원가입 팝업 창-->
+        <img class="main_info_1" src="../static/img/main_info_1.png" alt="">
+        <img class="main_info_li" src="../static/img/main_info_li_1.png" alt="">
+        <img class="main_info_li" src="../static/img/main_info_li_2.png" alt="">
     </div>
-    <div class="box3">셋</div>
+    <div class="box3">
+        <h1>GUIDE TO BEST CHOICE<br><br><br><br><br><br><br><br><br><br><br><br><br></h1>
+    </div>
 </div>
 </body>
+<footer>
+</footer>
 </html>

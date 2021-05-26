@@ -20,7 +20,7 @@ import config.views
 import account.views
 import visualize.views
 urlpatterns = [
-    path('',config.views.index , name = 'index'),
+    path('',visualize.views.main_test , name = 'index'),
     path('admin/', admin.site.urls),
     path('login/' , account.views.login , name = 'login'),
     path('signup/' , account.views.signup , name = 'signup'),
