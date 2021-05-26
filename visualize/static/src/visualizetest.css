@@ -1,0 +1,14 @@
+div{
+    border: 1px solid red;
+
+    height : 600px;
+    width : 900px;
+}
+
+h1{
+    color : blue;
+}
+
+.bar{
+    fill:skyblue;
+}

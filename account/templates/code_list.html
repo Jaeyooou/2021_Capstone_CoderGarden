@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block contents %}
+<div class="row mt-5">
+    <div class="col-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>제목</th>
+                    <th>실행시간</th>
+                    <th>일시</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            {%  for list in codelist %}
+                <tr>
+                    <th>{{forloop.counter}}</th>
+                    <td><a href = "/code/{{list.code_number}}">{{list.code_title}}</a></td>
+
+                    <td>{{list.process_time}}</td>
+                    <td>{{list.code_date}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+<div class="row">
+    <div class="col-12">
+        <button class="btn btn-primary">글쓰기</button>
+    </div>
+</div>
+
+{% endblock %}
+
+{#<table>#}
+{#        {% for list in postlist %}#}
+{#            <ul>#}
+{#                <li>{{list.user_code}}</li>#}
+{#                <li>{{list.code_date}}</li>#}
+{#                <li>{{list.code_title}}</li>#}
+{#                <li>{{list.process_time}}</li>#}
+{#            </ul>#}
+{#        {% endfor %}#}
+{#        </table>#}

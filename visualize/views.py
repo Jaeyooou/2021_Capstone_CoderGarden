@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-
+import time , datetime
 #---------------------------------python tutor import--------------------------------
+from account.models import Member, Sourcecode
 from visualize.code_processing import pg_logger
 import io as StringIO # NB: don't use cStringIO since it doesn't support unicode!!!
 import json
@@ -66,9 +67,29 @@ def main_test(request):
 def test2_h(request):
     a=[]
     text = request.GET['code']
+    start_time = time.time()
     trace = eval(get_exec(text))
+
     a.append(trace['code'])
     print(a)
+    execution_time = time.time() - start_time
+
+    user_session_numb = request.session.get('user_numb')# 유저 세션 있고 ,
+    if user_session_numb:# 세션이 존재한다면
+        print(user_session_numb)
+        print(type(user_session_numb))
+        Sourcecode(
+           user_code = text ,
+           code_date = datetime.datetime.now() ,
+           code_title = 'Bubble_sort' ,
+           process_time= execution_time ,
+           user_number = Member.objects.get(user_number = user_session_numb)
+        ).save()
+    print(text)
+    print(trace)
+    print(type(trace['code']))
+    print(trace)
+    print(type(trace['trace']))
     context = {
         'code' : a,
         'trace' : trace['trace']

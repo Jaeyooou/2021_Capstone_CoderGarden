@@ -24,12 +24,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/' , account.views.login , name = 'login'),
     path('signup/' , account.views.signup , name = 'signup'),
+    path('mypage/' , account.views.mypage , name = 'mypage'),
+    path('code/<int:code_num>/' , account.views.codeview , name = 'codeview'),
     path('code_write/' ,visualize.views.code_write  , name = 'code_write') ,
     path('compile/' , visualize.views.compiler , name = 'compile') ,
     path('test_h/', visualize.views.test_h, name='test_h'),
     path('test2_h/', visualize.views.test2_h, name='test2_h'),
     path('visualize/', visualize.views.visualize, name='visualize'),
     path('main_test/', visualize.views.main_test, name='main_test'),
-
+    path('logout/',account.views.logout , name = 'logout'),
 
 ]
