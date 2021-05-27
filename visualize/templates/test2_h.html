@@ -3,242 +3,398 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main_style.css' %}">
+    <link  rel = "stylesheet" href ="../static/codemirror/lib/codemirror.css " >
+    <link  rel = "stylesheet" href ="../static/codemirror/theme/elegant.css " >
+    <link  rel = "stylesheet" href ="../static/codemirror/theme/idea.css " >
+    <link  rel = "stylesheet" href ="../static/codemirror/theme/base16-light.css " >
+    <link rel = "stylesheet" href = "../static/codemirror/addon/fold/foldgutter.css">
+    <link rel = "stylesheet" href = "../static/codemirror/addon/hint/show-hint.css">
+    <link rel = "stylesheet" href = "../static/codemirror/addon/lint/lint.css">
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
-<!--<script>
-
-    //index = 1;
-    index = 2;
-   
-    
-    var target = {{trace|safe}};
-    //heap = tmp[index].heap;
-    //list start from heap[index][1] ~~
-    //targetarr = heap[index].slice(1,heap[index].length);
-    var tmp = target[index].ordered_globals[0];
-    var tmp2 = target[index].globals[tmp][1];
-    var targetarr = target[index].heap[tmp2];
-    
-
-
-    //return targetarr;
-    
-    
-    //var tmp = {{trace|safe}};
-    
-    //heap = tmp[index].heap;
-
-</script>
--->
-<style>
-    .bar{
-    fill:gold;
-    }
-
-    .pivot1
-    {
-        fill:green;
-    }
-    
-    .pivot2
-    {
-        fill:pink;
-    }
-
-    .pivot3
-    {
-        fill:mediumslateblue;
-    }
-</style>
-</head>
-<body>
-<!--
-<p>JsonData : {{trace}}</p>
-<h3>Yout Code: {{code}}</h3>
--->
-
-<!--<svg width="500" height="300"></svg>-->
-<script>
-
-    index = 0;
-    var pivot1;
-    var pivot2;
-    var pivot3;
-    //var targets = {{trace|safe}};
-    //document.write(JSON.stringify(targets));
-
-
-
-    //var target = {{trace|safe}};
-    function next(obj)
-    {
-        
-        index = index + 1;
-        console.log("index(json line) : " + index); // for test
-        //console.log("next is started");
-        var target = {{trace|safe}};
-        //heap = tmp[index].heap;
-        //list start from heap[index][1] ~~
-        //targetarr = heap[index].slice(1,heap[index].length);
-        if (index === target.length)  // line out of index
-        {
-            document.write("<h1>next 그만 누르세요. 라인 범위를 벗어남.</h1>");
-            return;
+    <script src = "../static/codemirror/lib/codemirror.js"></script>
+    <script src = "../static/codemirror/mode/python/python.js"></script>
+    <script src = "../static/codemirror/addon/hint/show-hint.js"></script>
+    <script src="../static/codemirror/addon/comment/comment.js"></script>
+    <script src="../static/codemirror/addon/selection/active-line.js"></script>
+    <script src="../static/codemirror/keymap/sublime.js"></script>
+    <script src="../static/codemirror/addon/fold/foldcode.js"></script>
+    <script src="../static/codemirror/addon/fold/foldgutter.js"></script>
+    <script src="../static/codemirror/addon/fold/brace-fold.js"></script>
+    <script src="../static/codemirror/addon/fold/indent-fold.js"></script>
+    <script src="../static/codemirror/addon/fold/comment-fold.js"></script>
+    <script src="../static/codemirror/addon/edit/closebrackets.js"></script>
+    <script src="../static/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src = "../static/codemirror/addon/hint/python-hint.js"></script>
+    <script>
+        var el = document.getElementById("editor");
+        var version = "# version: Python3\n\n";
+        var codeAreaTip = "# please edit your code here:\n";
+        var codeStart = "# code start\n\n";
+        var codeEnd = "# code end\n\n";
+        var code = "def solution():\n\tpass\n\n";
+        var main = "if __name__ == '__main__':\n";
+        var a = {{ code|safe }};
+        var initValue = a[0];
+    </script>
+    <style>
+        .bar {
+            fill :gold;
         }
 
-        length = target[index].ordered_globals.length;  //how many variables we have in json line in index
-        for (var i = 0 ; i < length ; i ++)
+        .pivot1
         {
+            fill:#008080;
+        }
+        .pivot2
+        {
+            fill:pink;
+        }
+        .pivot3
+        {
+            fill:mediumslateblue;
+        }
+        .d3text{
+            fill : lavenderblush;
+            font-weight:bold;   
+            font-size : 14px;    
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="box1">
+        <img id="logo" src="../static/img/codergarden_logo.png" alt="">
+    </div>
+    <div class="box2">
+        <p>Python 3.8</p>
+        <form action="/test2_h/">
+            <textarea class="cm_test" id = "code_editor" name="code"></textarea>
+            <div id="confirm_btn">
+                <div id="confirm_btn_box1"><img src="../static/img/orange.png" alt=""> &nbsp;line that just executed<br><img
+                        src="../static/img/blue.png" alt=""> &nbsp;next line to excute</div>
+                <div id="confirm_btn_box2"><p id="slider_value_view">step of</p></div>
+                <div id="confirm_btn_box3"><button id="confirm_btn_real" type="submit">CONFRIRM</button></div>
+            </div>
+            <div class="slider_box" >
+                <input id="slider" size=100 oninput='ShowSliderValue(this.value, 1)'  type="range" min='0' max='100' value='0'>
+            </div>
+        </form>
+        <div id="control_box">
+            <button id="processing" onclick="answer(this, 0, 0)">FIRST</button>
+            <button onclick="answer(this, -1, 0)">PREV</button>
+            <button id="PlayBtn" onclick="play(this)">PLAY</button>
+            <button onclick="answer(this, 1, 0)">NEXT</button>
+            <button onclick="answer(this, 100, 0)">LAST</button>
+        <hr>
+        </div>
+        <div>
+            <p id="explanation">
+                <h4>How to use</h4>
+                <span>First, edit your Python code in the code editor.</span><br>
+                <span>Second, if you're done editing the code, press the CONFIRM button.</span><br>
+                <span>Third, now your code is compiled. Control your code visualization with any of the five buttons below. <br>
+                    (FIRST : Go to the first line of your code, PREV : Visualize the previous line of current code line,
+                    PLAY : It automatically proceeds with code visualization from the current line to the last line,
+                    NEXT : Visualize next line of current code line, LAST : Visualize the last line of your code.)</span><br><br>
+                <span>Now enjoy code visualization. It will help you look at your code intuitively and improve learning efficiency.</span>
+                <br><br>
+                <h4>Guide line</h4>
+                <span>First, Variable names for pivot must be set to pivot1, pivot2, and pivot3</span><br>
+                <span>Second, Frames part shows what values the variables in the user's code have</span><br>
+                <span>Third, Visualize part shows how the 'list' in the user's code changes. </span><br>
+                <span>Fourth, The type of visualization chart color in the list <br> (YELLOW : the default, BLUE : the pivot, GREEN : the completion)  </span>
+            </p>
+        </div>
+    </div>
+    <div class="box3">
+        <p id="answer_table_name">Frames</p>
+        <div id="table_box">
+            <p id="answer"></p>
+        </div>
+    </div>
+    <div class="box4">
+        <p id="visu_name">Visualize</p>
+        <p id="visu">
+        <p></p>
+    </div>
+</div>
+
+<script>
+    var editor = {
+        mode :"python" ,
+        keyMap: "sublime", // Fast key style
+        value: "Test Default Value",
+        theme : "idea",
+        lineNumbers: true, // set number
+        smartIndent: true, // smart indent
+        indentUnit: 4, // Smart indent in 4 spaces
+        indentWithTabs: true, // Smart indent with tabs
+        lineWrapping: true, //
+        // Add line number display, folder and syntax detector to the slot
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
+        foldGutter: true, // Enable code folding in slots
+        autofocus: true, // Autofocus
+        matchBrackets: true, // Match end symbols, such as "],}"
+        autoCloseBrackets: true, // Auto close symbol
+        styleActiveLine: true, // Display the style of the selected row
+        styleSelectedText: true,
+    };
+    var myTextArea = $(".cm_test").get(0);
+    var myCodeMirror = CodeMirror.fromTextArea(myTextArea, editor);
+    myCodeMirror.setOption("value", initValue);
+
+    // various visualization
+    var a = {{ trace|safe }};
+    var b = {{ code|safe }};
+    var cnt = -1;
+    var total_len = a.length;
+    var prev_line = 0
+    var prev_prev_line = 0;
+    var is_playing = 0;
+    var pivot3_list = []
+    var pivot1;
+    var pivot2;
+    // various visualization
+    function sleep(ms) {
+        const wakeUpTime = Date.now() + ms;
+        while (Date.now() < wakeUpTime) {}
+    }
+    //viusalizing list function _RK
+    function visualizing(obj,num) {
+
+        //delete all the svg when button onclick
+        var svgdelete = document.getElementsByTagName("svg");
+        if (svgdelete.length === 0){
+            console.log("svg not detected");
+        }
+        else{
+            for (var q = 0 ; q < svgdelete.length ; q ++){
+                svgdelete[0].remove();
+            }
+        }
+
+        var index = num;
+        console.log("index(json line) : " + index); // for test
+        var target = {{trace|safe}};           
+        length = target[index].ordered_globals.length;  //how many variables we have in json line in index
+        for (var i = 0 ; i < length ; i ++){
             //console.log("for i in " + i);
-            var tmp = target[index].ordered_globals[i];   // get variable name 
+            var tmp = target[index].ordered_globals[i];   // get variable name
             var tmp2 = target[index].globals[tmp][1];   // can divide if it is int or list
-            if (tmp2 === undefined)     //this variable is int
-            {
+            if (tmp2 === undefined){
                 //console.log("now in int");
                 var targetint = target[index].globals[tmp];
                 console.log(tmp + " : " + targetint);
-                if (tmp === "pivot3"){pivot3 = targetint;}
+                if (tmp === "pivot3"){pivot3_list.push(targetint);}
+                console.log("pivot3_list :::" + pivot3_list);
                 if (tmp === "pivot1"){pivot1 = targetint;}
                 if (tmp === "pivot2"){pivot2 = targetint;}
-                
             }
-            else{      //this variable is list
-            //console.log("now in list");
-            //var tmp2 = target[index].globals[tmp][1];    //get REF if list  or get value if int
+            else{
+                var targetarr = target[index].heap[tmp2];//get the list componenet
 
-            var targetarr = target[index].heap[tmp2];  //get the list componenet
-            
-            
-            
-            var dataset = targetarr.slice(1);  //slice to use list data (not inclue key)
+                console.log("tmp2 : "+ tmp2);
+                console.log("targetarr : "+targetarr);
+                console.log("NOW TARGET : "+JSON.stringify(target[index]));
 
+                var dataset = targetarr.slice(1);  //slice to use list data (not inclue key)
 
-            var newDiv = document.createElement("div");
-            var newH1_1 = document.createElement("h1");
-            var newH1_2 = document.createElement("h1");
-            console.log(tmp + " : " + dataset);
-            newH1_1.innerHTML = "now list is " +  dataset;
-            newH1_2.innerHTML = "now code in line : " + index;
-            //document.write("<h1>now list is " , dataset , "</h1>");
-            //document.write("<h1> now code in line : ",index,"</h1><br>");
-            
-            
-            //var newSvg = document.createElementNS("svg");
-            
-            //newSvg.style.width = "500px";
-            //newSvg.style.height = "300px";
-            
-            newDiv.appendChild(newH1_1);     //showing json status about line variable
-            newDiv.appendChild(newH1_2);
-            //newDiv.appendChild(newSvg);
-            var targetNode = obj.parentNode;
-            targetNode.appendChild(newDiv);
-            //document.write("<svg width='500' height='300'></svg>");
-            
-              // here is D3 part
-            //d3.selectAll("svg > *").remove();    
-            
-            //var svg = d3.select("svg");
+                // var dd = document.getElementById(tmp); // 이미 있는 D3 list를 삭제.
+                // if (dd !== null){
+                //         dd.remove();
+                // }
 
-            //delete previous svg
-            
-            if ( document.getElementsByTagName("svg").length !== 0)   //delete previous svg
-            {
-            var toDelete = document.getElementsByTagName("svg");
-            var toDelete = toDelete[0];
-            toDelete.remove();
-            }
+                // if ( document.getElementsByTagName("h1").length === 6){//delete previous h1
+                //     var toDelete = document.getElementsByTagName("h1");
+                //     toDelete[0].remove();
+                //     toDelete[0].remove();
+                //     toDelete[0].remove();
+                // }
 
-            if ( document.getElementsByTagName("h1").length === 4)    //delete previous h1 
-            {
-                var toDelete = document.getElementsByTagName("h1");
-                toDelete[0].remove();
-                toDelete[0].remove();
-            }
-
-            var width = 500;
-            var height = 300;
-            var svg = d3.select("body").append("svg")  // insert svg in body  (insert everyday not delete previous list)
+                var width = 500;
+                var height = 300;
+                var svg = d3.select("#visu").append("svg")  // insert svg in #visu (p)  (insert everyday not delete previous list)
                 .attr("width", width)
                 .attr("height",height)
-            
+                .attr("id",tmp);  //tmp is the name of variable
 
-
-            for ( var j = 0 ; j < dataset.length ; j ++)   //set svg bar attribute
-            {
-                
-                tmpClass = "bar";
-                if (j === pivot1){
-                    tmpClass = "pivot1";
+                for ( var j = 0 ; j < dataset.length ; j ++){//set svg bar attribute
+                    tmpClass = "bar";
+                    console.log("j :::" + j);
+                    if (j === pivot1){
+                        tmpClass = "pivot1";
+                    }
+                    if (j === pivot2){
+                        tmpClass = "pivot2";
+                    }
+                    if (pivot3_list.includes(j)){
+                        tmpClass = "pivot3";
+                    }
+                    
+                    svg.append("rect")
+                        .attr("height", dataset[j]*15)
+                        .attr("width",40)
+                        .attr("x",50*j)
+                        .attr("y",100-dataset[j]*15)
+                        .attr("class",tmpClass);
+                    
+                    svg.append("text")
+                        .text(function(d){return dataset[j]})
+                        .attr("data",dataset[j])
+                        .attr("x",50*j+15)
+                        .attr("y",113-dataset[j]*15)
+                        .attr("class","d3text");
                 }
-                if (j === pivot2){
-                    tmpClass = "pivot2";
-                }
-                if (j === pivot3){
-                    tmpClass = "pivot3";
-                }
-                svg.append("rect")
-                    .attr("height", dataset[j]*30)
-                    .attr("width",40)
-                    .attr("x",50*j)
-                    .attr("y",300-dataset[j]*30)
-                    .attr("class",tmpClass);
-            }
-            //targetNode.appendChild(newSvg);
-           
-
-            
-            } // if list end 
-    
-        } // for end
-       
-        
+             } // else list end
+        }// for end
     }//fuction end
 
-   
-    
-    //index = 2;
-    //next(index);
+    function highlightText(obj,txt){
+        var tokens = myCodeMirror.getLineTokens(obj-1,true);
+        var len = tokens.length;
+        console.log(tokens);
+        var start = CodeMirror.Pos(obj-1, tokens[0].start);
+        var end = CodeMirror.Pos(obj-1, tokens[len-1].end);
+        var markOptions ={
+                css: "background-color : "+txt,
+        };
+        var mark = myCodeMirror.markText(start, end, markOptions);
+    }
+    function processing(obj){
+        var result = "<table> <thead><th>name</th> <th>value</th> <th>type</th><thead>";
+        var len = obj.ordered_globals.length;
+        for(var i=0; i<len; i++){
+            if(obj.globals[obj.ordered_globals[i]][0]=="REF"){
+                var part = "";
+                var tmp = obj.ordered_globals[i];
+                var tmp2 = obj.globals[tmp][1];
+                var store=""
+                console.log("!!!!!");
+                console.log(typeof JSON.stringify(obj.heap[tmp2][1]));
+                console.log(JSON.stringify(obj.heap[tmp2].length));
+                if(obj.heap[tmp2][0]=="DICT"){
+                    for(var j=1; j<JSON.stringify(obj.heap[tmp2].length);j++){
+                        store=store+JSON.stringify(obj.heap[tmp2][j])+"<br>";
+                    }
+                }
+                else{
+                    store=obj.heap[tmp2].slice(1);
+                }
+                part = "<tr> <td>"+tmp +"</td>"+"<td>"+store+"</td>"+"<td>"+obj.heap[tmp2][0]+"</td>"+"</tr>";
+            }
+            else{
+                var part = "";
+                var tmp = obj.ordered_globals[i];
+                var tmp2 = obj.globals[tmp];
+                part = "<tr> <td>"+tmp +"</td>"+"<td>"+tmp2+"</td>"+"<td>"+typeof(tmp2)+"</td>"+ "</tr>";
+            }
+            result = result +"<tbody>"+ part+"</tbody>";
+
+        }
+        result = "<br>"+result+"</table>";
+        highlightText(prev_prev_line,'rgba(255,255,255,0)');
+        prev_prev_line = prev_line;
+        highlightText(prev_line,'rgba(255,204,102)');
+        prev_line = obj.line;
+        highlightText(obj.line,'rgba(102,204,255)');
+
+        return result;
+    }
+    function answer(obj, num, slider){
+        var processed_code;
+        var newP=document.getElementById("answer");
+        var o = newP.parentElement;
+        if(num==-1&&cnt<=0&&slider==0){
+            processed_code = processing(a[cnt]);
+            newP.innerHTML = processed_code;
+            ShowSliderValue(cnt,0);
+            o.appendChild(newP);
+            return;
+        }
+        else if(num==1&&cnt>=total_len-1&&slider==0){
+            processed_code = processing(a[cnt]);
+            newP.innerHTML = processed_code
+            highlightText(a[cnt]+1,'rgb(36,37,47)');
+            ShowSliderValue(cnt,0);
+            o.appendChild(newP);
+            return;
+        }
+        else if(num==0&&slider==0){
+            cnt=num;
+            processed_code = processing(a[cnt]);
+            processed_code = processing(a[cnt]);
+            newP.innerHTML = processed_code;
+            ShowSliderValue(cnt,0);
+            o.appendChild(newP);
+            return;
+        }
+        else if(num==100&&slider==0){
+            cnt=total_len-1;
+            processed_code = processing(a[cnt]);
+            processed_code = processing(a[cnt]);
+            newP.innerHTML = processed_code;
+            ShowSliderValue(cnt,0);
+            o.appendChild(newP);
+            return;
+        }
+        else{
+            if(slider==0){
+                cnt = cnt+num;
+
+                processed_code = processing(a[cnt]);
+                newP.innerHTML = processed_code;
+                ShowSliderValue(cnt,0);
+                o.appendChild(newP);
+            }
+            else if(slider==1) {
+                console.log("NUM : "+num);
+                cnt = num;
+                processed_code = processing(a[cnt]);
+                newP.innerHTML = processed_code;
+                ShowSliderValue(cnt,0);
+                o.appendChild(newP);
+            }
+        }
+        if(cnt>=0&&cnt<=total_len-3){
+            console.log("cnt : "+cnt);
+            console.log("obj : "+JSON.stringify(a[cnt]));
+            console.log("visualizing cnt : "+cnt);
+            visualizing(obj,cnt);
+        }
+    }
+    function play(obj){
+        if(cnt==total_len-1){
+            cnt=-1;
+        }
+        let timerId = setInterval(() => answer(obj,1,0), 300);
+        var timeStop = (total_len-cnt)*310;
+        setTimeout(() => { clearInterval(timerId); answer(obj,1,0); }, timeStop);
+    }
+    function ShowSliderValue(sVal, num) {
+        var obValueView = document.getElementById("slider_value_view");
+        var obSlider = document.getElementById("slider");
+        var obj = document.getElementById("processing");
+        var step = total_len-1;
+        obSlider.max = total_len-1;
+        if(num==0){
+            obSlider.value = sVal;
+            obValueView.innerHTML = "step "+sVal+" of "+step;
+            console.log(sVal);
+        }
+        if(num==1){
+            obSlider.value = "step "+sVal+" of "+step;
+            obValueView.innerHTML = sVal;
+            answer(obj, Number(sVal), 1);
+        }
+    }
+
 </script>
-    <div>
-        <button onclick = "next(this)"> NEXT </button>
-        <button onclick = "testing(this)"> testing </button>
-    </div>
+
+
+
 </body>
 </html>
-
-<!--
-
-list1 = [3,1,5,4,2]
-for pivot2 in range(1,len(list1)):
-	for pivot1 in range(pivot2,0,-1):
-		if list1[pivot1-1] > list1[pivot1]:
-			list1[pivot1 - 1], list1[pivot1] = list1[pivot1], list1[pivot1 - 1]
-
-
-
-list1 = [1,2,3,4,5]
-
-for pivot1 in range(4):
-	if pivot1%2 == 0:
-		pivot2 = pivot1 + 2
-	if pivot1%2 == 1:
-		pivot2 = pivot1 + 1
-   
-        
-
-
-
-a = [3,5,1,4,2]
-n = len(a)
-for i in range(0, n-1):
-	pivot1 = i
-	index = i
-	for j in range(i+1, n):
-		pivot2 = j
-		if a[j] < a[index]:
-			index = j
-			pivot3 = index
-	a[i], a[index] = a[index],a[i]
-	
--->

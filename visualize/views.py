@@ -49,16 +49,16 @@ def get_exec(main_text):
 def test_h(request):
     return render(request, 'test_h.html')
 
+    
 def test2_h(request):
+    a=[]
     text = request.GET['code']
     trace = eval(get_exec(text))
-    print(text)
-    print(trace)
-    print(type(trace['code']))
-    print(trace)
-    print(type(trace['trace']))
+    a.append(trace['code'])
+    print(a)
     context = {
-        'code' : trace['code'],
+        'code' : a,
         'trace' : trace['trace']
     }
+    print(context['code'])
     return render(request, 'test2_h.html', context)

@@ -30,3 +30,4 @@ urlpatterns = [
     path('test2_h/', visualize.views.test2_h, name='test2_h'),
 
 ]
+
