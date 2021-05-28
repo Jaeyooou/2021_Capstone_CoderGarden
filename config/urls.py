@@ -31,7 +31,6 @@ urlpatterns = [
     path('test_h/', visualize.views.test_h, name='test_h'),
     path('test2_h/', visualize.views.test2_h, name='test2_h'),
     path('visualize/', visualize.views.visualize, name='visualize'),
-    path('main_test/', visualize.views.main_test, name='main_test'),
     path('logout/',account.views.logout , name = 'logout'),
 
 ]

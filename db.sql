@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.23, for osx10.16 (x86_64)
 --
 -- Host: localhost    Database: capstone
 -- ------------------------------------------------------
@@ -294,7 +294,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('4bk146ly3u6hk7spn6jj02ed5tqgnoap','.eJxVjEEOwiAQRe_C2hCgKINL956BzDBTqRpISrsy3l2bdKHb_977L5VwXUpau8xpYnVWVh1-N8L8kLoBvmO9NZ1bXeaJ9KbonXZ9bSzPy-7-HRTs5VsTGvBAo_dDcNaiM3HAMVqJAJzJu2wF3BCDJWYOWeQE3kFAOFIOzqj3B9b-N6c:1lX6Iw:LAPxZbJYUl5odX6nOxtwaMfZT4QZWGE0kjTJ_IOM-NA','2021-04-29 18:01:26.904206'),('6slttgvxfwekmjxadnrr8isb0qcm12bt','e30:1lUkte:w-ke0GXJO4TlzXe4SVj_aOQixP7hYjCZz3BoO0tb5ro','2021-04-23 06:45:38.759358'),('7n337vudf51mym7inzzrg2n5bigc7oej','.eJxVjDsOwyAQRO9CHSEDhrVTpvcZ0MIuwUkEkj9VlLvHSG7cTPHmzXzFvvIi7gJzETfhcd-yb8jPdFB1ZQHjm0sr6IXlWWWsZVvmIJsiz3aVUyX-PE73cpBxzceaHRjoQogaWZNm29uUWBnSpicNkY8ck3W204AA5CiYAVSiUQ0OOYjfH6lNPBw:1lhC33:2NwY7H2TSOdlaT5cArwsF4Ih2Ca0D_RNamj_HPyLTnk','2021-05-27 14:10:45.864543'),('cxg4kajr5pi9qe9ho4hw9k9mqnv8qgi7','.eJxVjEEOwiAQRe_C2hCgKINL956BzDBTqRpISrsy3l2bdKHb_977L5VwXUpau8xpYnVWVh1-N8L8kLoBvmO9NZ1bXeaJ9KbonXZ9bSzPy-7-HRTs5VsTGvBAo_dDcNaiM3HAMVqJAJzJu2wF3BCDJWYOWeQE3kFAOFIOzqj3B9b-N6c:1lVmgd:BGmML4pLDL7EqasSk0jyPdyHOuI7bwD5vWR7qpFgznQ','2021-04-26 02:52:27.596646'),('ovpq3ryidae5gkk4895yn6s4euo091qj','.eJxVjEEOwiAQRe_C2hCgKINL956BzDBTqRpISrsy3l2bdKHb_977L5VwXUpau8xpYnVWVh1-N8L8kLoBvmO9NZ1bXeaJ9KbonXZ9bSzPy-7-HRTs5VsTGvBAo_dDcNaiM3HAMVqJAJzJu2wF3BCDJWYOWeQE3kFAOFIOzqj3B9b-N6c:1lUlgE:Jv-wvJPPxsHD2tdsAm892HYW35HjfZ3wpjAmgF4Dnr4','2021-04-23 07:35:50.982266'),('pfjojmr03aqr98jztm0rja1kr9n8diav','e30:1lUkw8:beQnMqY1l0_fOB15A6daIwXyQlCJBeFKWm83EecyuxM','2021-04-23 06:48:12.598870'),('s4w0v95abda5udk9gauqvtkx2af0zi3r','.eJxVjDsOwjAQBe_iGln-rT-U9JzBWttrHECOFCcV4u4QKQW0b2bei0Xc1ha3QUucCjszyU6_W8L8oL6Dcsd-m3me-7pMie8KP-jg17nQ83K4fwcNR_vWBKCs1E6AyEZ6K4O0DlQlbYJwujoKmJJSHrW3PiSFgApFLRp8lsaz9wegqzaF:1lSDl5:f_gRnrRZ1n9v8S1LSnZPnNYKmOTUeENhRhnXSM_bnKE','2021-04-16 06:58:19.578130');
+INSERT INTO `django_session` VALUES ('4bk146ly3u6hk7spn6jj02ed5tqgnoap','.eJxVjEEOwiAQRe_C2hCgKINL956BzDBTqRpISrsy3l2bdKHb_977L5VwXUpau8xpYnVWVh1-N8L8kLoBvmO9NZ1bXeaJ9KbonXZ9bSzPy-7-HRTs5VsTGvBAo_dDcNaiM3HAMVqJAJzJu2wF3BCDJWYOWeQE3kFAOFIOzqj3B9b-N6c:1lX6Iw:LAPxZbJYUl5odX6nOxtwaMfZT4QZWGE0kjTJ_IOM-NA','2021-04-29 18:01:26.904206'),('6slttgvxfwekmjxadnrr8isb0qcm12bt','e30:1lUkte:w-ke0GXJO4TlzXe4SVj_aOQixP7hYjCZz3BoO0tb5ro','2021-04-23 06:45:38.759358'),('7n337vudf51mym7inzzrg2n5bigc7oej','.eJxVjDsOwyAQRO9CHSEDhrVTpvcZ0MIuwUkEkj9VlLvHSG7cTPHmzXzFvvIi7gJzETfhcd-yb8jPdFB1ZQHjm0sr6IXlWWWsZVvmIJsiz3aVUyX-PE73cpBxzceaHRjoQogaWZNm29uUWBnSpicNkY8ck3W204AA5CiYAVSiUQ0OOYjfH6lNPBw:1lhC33:2NwY7H2TSOdlaT5cArwsF4Ih2Ca0D_RNamj_HPyLTnk','2021-05-27 14:10:45.864543'),('cxg4kajr5pi9qe9ho4hw9k9mqnv8qgi7','.eJxVjEEOwiAQRe_C2hCgKINL956BzDBTqRpISrsy3l2bdKHb_977L5VwXUpau8xpYnVWVh1-N8L8kLoBvmO9NZ1bXeaJ9KbonXZ9bSzPy-7-HRTs5VsTGvBAo_dDcNaiM3HAMVqJAJzJu2wF3BCDJWYOWeQE3kFAOFIOzqj3B9b-N6c:1lVmgd:BGmML4pLDL7EqasSk0jyPdyHOuI7bwD5vWR7qpFgznQ','2021-04-26 02:52:27.596646'),('lpubo8nxe1k179e9820kb2q76hosd992','e30:1lixsJ:964YjivtZZ_zWO6jS7FVsFxKH2Fi7R4e5wRhhJ_r-yM','2021-06-01 11:26:59.168893'),('ovpq3ryidae5gkk4895yn6s4euo091qj','.eJxVjEEOwiAQRe_C2hCgKINL956BzDBTqRpISrsy3l2bdKHb_977L5VwXUpau8xpYnVWVh1-N8L8kLoBvmO9NZ1bXeaJ9KbonXZ9bSzPy-7-HRTs5VsTGvBAo_dDcNaiM3HAMVqJAJzJu2wF3BCDJWYOWeQE3kFAOFIOzqj3B9b-N6c:1lUlgE:Jv-wvJPPxsHD2tdsAm892HYW35HjfZ3wpjAmgF4Dnr4','2021-04-23 07:35:50.982266'),('pfjojmr03aqr98jztm0rja1kr9n8diav','e30:1lUkw8:beQnMqY1l0_fOB15A6daIwXyQlCJBeFKWm83EecyuxM','2021-04-23 06:48:12.598870'),('s4w0v95abda5udk9gauqvtkx2af0zi3r','.eJxVjDsOwjAQBe_iGln-rT-U9JzBWttrHECOFCcV4u4QKQW0b2bei0Xc1ha3QUucCjszyU6_W8L8oL6Dcsd-m3me-7pMie8KP-jg17nQ83K4fwcNR_vWBKCs1E6AyEZ6K4O0DlQlbYJwujoKmJJSHrW3PiSFgApFLRp8lsaz9wegqzaF:1lSDl5:f_gRnrRZ1n9v8S1LSnZPnNYKmOTUeENhRhnXSM_bnKE','2021-04-16 06:58:19.578130'),('yn3im9y2hoa48dr1yycwx93dlvzb6ilq','e30:1llyGC:oxoS0EMdAGzxNsUCNCdv6QJdplhr1LwrFxSVjpw41-s','2021-06-09 18:28:04.801915');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,10 +308,13 @@ DROP TABLE IF EXISTS `member`;
 CREATE TABLE `member` (
   `User_number` int NOT NULL AUTO_INCREMENT,
   `User_name` varchar(20) DEFAULT NULL,
-  `User_id` varchar(20) NOT NULL,
+  `user_id` varchar(20) DEFAULT NULL,
   `User_password` varchar(20) NOT NULL,
-  PRIMARY KEY (`User_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`User_number`),
+  UNIQUE KEY `user_id` (`user_id`),
+  UNIQUE KEY `user_id_2` (`user_id`),
+  UNIQUE KEY `user_id_3` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -320,7 +323,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'jaehyun','jaehyen2','wogus12'),(2,'ahn','jaeyooou','1234'),(3,'최락현','fkr123','1234'),(4,'ahn','ahn','1234');
+INSERT INTO `member` VALUES (1,'jaehyun','jaehyen2','wogus12'),(2,'ahn','jaeyooou','1234'),(3,'최락현','fkr123','1234'),(4,'ahn','ahn','1234'),(5,'hon','hon','1234'),(8,'asdf','asdf','1234');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -332,7 +335,7 @@ DROP TABLE IF EXISTS `sourcecode`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sourcecode` (
-  `User_code` varchar(100) NOT NULL,
+  `User_code` longtext,
   `code_date` date DEFAULT NULL,
   `code_title` varchar(30) DEFAULT NULL,
   `process_time` double DEFAULT NULL,
@@ -341,7 +344,7 @@ CREATE TABLE `sourcecode` (
   PRIMARY KEY (`code_number`),
   KEY `User_number` (`User_number`),
   CONSTRAINT `sourcecode_ibfk_1` FOREIGN KEY (`User_number`) REFERENCES `member` (`User_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,7 +353,7 @@ CREATE TABLE `sourcecode` (
 
 LOCK TABLES `sourcecode` WRITE;
 /*!40000 ALTER TABLE `sourcecode` DISABLE KEYS */;
-INSERT INTO `sourcecode` VALUES ('print(hi\")',NULL,NULL,NULL,NULL,1),('hi','2020-01-16','init',NULL,NULL,2),('asdf',NULL,'init2',123,1,3),('hi',NULL,'example',2,4,4);
+INSERT INTO `sourcecode` VALUES ('print(hi\")',NULL,NULL,NULL,NULL,1),('hi','2020-01-16','init',NULL,NULL,2),('asdf',NULL,'init2',123,1,3),('hi',NULL,'example',2,4,4),('print(\"hi\")','2021-05-14','제목',0.0007679462432861328,4,5),('a = 10\r\nb = 20\r\nc = 30\r\nprint(a+b+c)','2021-05-14','Bubble_sort',0.0007901191711425781,4,6),('def a()\r\n	print(hi)\r\n	\r\na','2021-05-20','Bubble_sort',0.01025700569152832,4,7),('def a :\r\n	print(hi)\r\n	\r\na','2021-05-20','Bubble_sort',0.0006830692291259766,4,8),('\r\ndef solution(int a , int b):\r\n	pass\r\n\r\nif __name__ == \'__main__\':\r\n	print(\"hi\")','2021-05-20','Bubble_sort',0.000701904296875,4,9),('a = input()\r\n','2021-05-21','Bubble_sort',0.012362957000732422,4,10),('a = input(\"hi\")\r\n','2021-05-21','Bubble_sort',0.0026679039001464844,4,11),('asdf',NULL,NULL,NULL,NULL,12),('asdf',NULL,NULL,NULL,NULL,13),('asdf',NULL,NULL,NULL,NULL,14),('# include <stdio.h>\n# define SWAP(x, y, temp) ( (temp)=(x), (x)=(y), (y)=(temp) )\n# define MAX_SIZE 5\n\n// 선택 정렬\nvoid selection_sort(int list[], int n){\n  int i, j, least, temp;\n\n  // 마지막 숫자는 자동으로 정렬되기 때문에 (숫자 개수-1) 만큼 반복한다.\n  for(i=0; i<n-1; i++){\n    least = i;\n\n    // 최솟값을 탐색한다.\n    for(j=i+1; j<n; j++){\n      if(list[j]<list[least])\n        least = j;\n    }\n\n    // 최솟값이 자기 자신이면 자료 이동을 하지 않는다.\n    if(i != least){\n        SWAP(list[i], list[least], temp);\n    }\n  }\n}\n\nvoid main(){\n  int i;\n  i\n\n;\n;\n',NULL,NULL,NULL,NULL,15),('# include <stdio.h>\n# define SWAP(x, y, temp) ( (temp)=(x), (x)=(y), (y)=(temp) )\n# define MAX_SIZE 5\n\n// 선택 정렬\nvoid selection_sort(int list[], int n){\n  int i, j, least, temp;\n\n  // 마지막 숫자는 자동으로 정렬되기 때문에 (숫자 개수-1) 만큼 반복한다.\n  for(i=0; i<n-1; i++){\n    least = i;\n\n    // 최솟값을 탐색한다.\n    for(j=i+1; j<n; j++){\n      if(list[j]<list[least])\n      ',NULL,NULL,NULL,NULL,16),('# include <stdio.h>\n# define SWAP(x, y, temp) ( (temp)=(x), (x)=(y), (y)=(temp) )\n# define MAX_SIZE 5\n\n// 선택 정렬\nvoid selection_sort(int list[], int n){\n  int i, j, least, temp;\n\n  // 마지막 숫자는 자동으로 정렬되기 때문에 (숫자 개수-1) 만큼 반복한다.\n  for(i=0; i<n-1; i++){\n    least = i;\n\n    // 최솟값을 탐색한다.\n    for(j=i+1; j<n; j++){\n      if(list[j]<list[least])\n        least = j;\n    }\n\n    // 최솟값이 자기 자신이면 자료 이동을 하지 않는다.\n    if(i != least){\n        SWAP(list[i], list[least], temp);\n    }\n  }\n}\n\nvoid main(){\n  int i;\n  i\n\n;\n;',NULL,NULL,NULL,NULL,17),('def ff(a[]):\r\n	print(\"hi\")\r\n	\r\n	\r\na[] = [1,2,3,4,5]\r\nff(a)','2021-05-22','Bubble_sort',0.010567903518676758,4,18),('print(\"hi\")','2021-05-26','Bubble_sort',0.0019190311431884766,4,19),('print(\"hi\")','2021-05-26','Bubble_sort',0.0006339550018310547,4,20),('print(\"hi\")\r\nprint(\"hi\")\r\n','2021-05-27','Bubble_sort',0.0006148815155029297,4,21),('# version: Python3\r\n\r\n# please edit your code here:\r\n# code start\r\n\r\ndef solution():\r\n	pass\r\n\r\nif __name__ == \'__main__\':\r\n\r\n# code end\r\n\r\n','2021-05-27','Bubble_sort',0.005453824996948242,4,22);
 /*!40000 ALTER TABLE `sourcecode` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -363,4 +366,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-13 23:28:24
+-- Dump completed on 2021-05-27  3:34:02

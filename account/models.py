@@ -1,7 +1,12 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-from django import forms
-import datetime as pydatetime
-# Create your models here.
+
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -116,7 +121,7 @@ class DjangoSession(models.Model):
 class Member(models.Model):
     user_number = models.AutoField(db_column='User_number', primary_key=True)  # Field name made lowercase.
     user_name = models.CharField(db_column='User_name', max_length=20, blank=True, null=True)  # Field name made lowercase.
-    user_id = models.CharField(db_column='User_id', max_length=20)  # Field name made lowercase.
+    user_id = models.CharField(unique=True, max_length=20, blank=True, null=True)
     user_password = models.CharField(db_column='User_password', max_length=20)  # Field name made lowercase.
 
     class Meta:
@@ -125,11 +130,11 @@ class Member(models.Model):
 
 
 class Sourcecode(models.Model):
-    user_code = models.CharField(db_column='User_code', max_length=100)  # Field name made lowercase.
+    user_code = models.TextField(db_column='User_code', blank=True, null=True)  # Field name made lowercase.
     code_date = models.DateField(blank=True, null=True)
     code_title = models.CharField(max_length=30, blank=True, null=True)
     process_time = models.FloatField(blank=True, null=True)
-    user_number = models.ForeignKey(Member, models.DO_NOTHING, db_column='User_number', blank=True, null=True )  # Field name made lowercase.
+    user_number = models.ForeignKey(Member, models.DO_NOTHING, db_column='User_number', blank=True, null=True)  # Field name made lowercase.
     code_number = models.AutoField(primary_key=True)
 
     class Meta:
