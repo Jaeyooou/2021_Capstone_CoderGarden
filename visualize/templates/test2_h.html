@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>CoderGarden</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/edittor_style.css' %}">
     <link  rel = "stylesheet" href ="../static/codemirror/lib/codemirror.css " >
@@ -409,7 +409,11 @@
     }
     //viusalizing list function _RK
     function visualizing(obj,num) {
-
+        var pivot1;
+        var pivot2;
+        if(num==1){
+            pivot3_list=[];
+        }
         //delete all the svg when button onclick
         var svgdelete = document.getElementsByTagName("svg");
         if (svgdelete.length === 0){
@@ -422,7 +426,8 @@
         }
 
         var index = num;
-        console.log("index(json line) : " + index); // for test
+
+        console.log("index(json line)Visuali() : " + index); // for test
         var target = {{trace|safe}};
         length = target[index].ordered_globals.length;  //how many variables we have in json line in index
         for (var i = 0 ; i < length ; i ++){
@@ -432,25 +437,25 @@
             if (tmp2 === undefined){
                 //console.log("now in int");
                 var targetint = target[index].globals[tmp];
-                console.log(tmp + " : " + targetint);
+                //console.log(tmp + " : " + targetint);
                 if (tmp === "pivot3"){pivot3_list.push(targetint);}
-                console.log("pivot3_list :::" + pivot3_list);
+                //console.log("pivot3_list :::" + pivot3_list);
                 if (tmp === "pivot1"){pivot1 = targetint;}
                 if (tmp === "pivot2"){pivot2 = targetint;}
             }
             else{
                 var targetarr = target[index].heap[tmp2];//get the list componenet
 
-                console.log("tmp2 : "+ tmp2);
-                console.log("targetarr : "+targetarr);
-                console.log("NOW TARGET : "+JSON.stringify(target[index]));
+                //console.log("tmp2 : "+ tmp2);
+                //console.log("targetarr : "+targetarr);
+                //console.log("NOW TARGET : "+JSON.stringify(target[index]));
 
                 var dataset = targetarr.slice(1);  //slice to use list data (not inclue key)
 
-                // var dd = document.getElementById(tmp); // 이미 있는 D3 list를 삭제.
-                // if (dd !== null){
-                //         dd.remove();
-                // }
+                var dd = document.getElementById(tmp); // 이미 있는 D3 list를 삭제.
+                if (dd !== null){
+                         dd.remove();
+                }
 
                 // if ( document.getElementsByTagName("h1").length === 6){//delete previous h1
                 //     var toDelete = document.getElementsByTagName("h1");
@@ -459,16 +464,24 @@
                 //     toDelete[0].remove();
                 // }
 
-                var width = 500;
+                var width = 40*dataset.length + 100;
                 var height = 300;
                 var svg = d3.select("#visu").append("svg")  // insert svg in #visu (p)  (insert everyday not delete previous list)
                 .attr("width", width)
                 .attr("height",height)
                 .attr("id",tmp);  //tmp is the name of variable
 
+                var max = Math.max.apply(null,dataset);
+                var adjust = 110/max;
+                svg.append("text")
+                .text(tmp)
+                .attr("x",10)
+                .attr("y",20)
+                .attr("class","namefont");
+
                 for ( var j = 0 ; j < dataset.length ; j ++){//set svg bar attribute
                     tmpClass = "bar";
-                    console.log("j :::" + j);
+                    //console.log("j :::" + j);
                     if (j === pivot1){
                         tmpClass = "pivot1";
                     }
@@ -478,19 +491,31 @@
                     if (pivot3_list.includes(j)){
                         tmpClass = "pivot3";
                     }
-
+                    var font_x = 10;
+                    if (dataset[j]>=10)
+                    {
+                        font_x = 7;
+                    }
+                    if (dataset[j] >= 100)
+                    {
+                        font_x = 3;
+                    }
+                    if ( dataset[j] >= 1000)
+                    {
+                         font_x = -1;
+                    }
                     svg.append("rect")
-                        .attr("height", dataset[j]*15)
-                        .attr("width",40)
-                        .attr("x",50*j)
-                        .attr("y",100-dataset[j]*15)
+                        .attr("height", dataset[j]*adjust)
+                        .attr("width",30)
+                        .attr("x",40*j)
+                        .attr("y",150-dataset[j]*adjust)
                         .attr("class",tmpClass);
 
                     svg.append("text")
                         .text(function(d){return dataset[j]})
                         .attr("data",dataset[j])
-                        .attr("x",50*j+15)
-                        .attr("y",113-dataset[j]*15)
+                        .attr("x",40*j + font_x)
+                        .attr("y",163-dataset[j]*adjust)
                         .attr("class","d3text");
                 }
              } // else list end
@@ -568,19 +593,23 @@
             return;
         }
         else if(num==0&&slider==0){
-            cnt=num;
+            cnt=num+1;
             processed_code = processing(a[cnt]);
+            visualizing(obj,cnt);
             processed_code = processing(a[cnt]);
             newP.innerHTML = processed_code;
             ShowSliderValue(cnt,0);
             o.appendChild(newP);
+            visualizing(obj,cnt);
             return;
         }
         else if(num==100&&slider==0){
             cnt=total_len-1;
             processed_code = processing(a[cnt]);
+            visualizing(obj,cnt);
             processed_code = processing(a[cnt]);
             newP.innerHTML = processed_code;
+            visualizing(obj,cnt);
             ShowSliderValue(cnt,0);
             o.appendChild(newP);
             return;
@@ -603,7 +632,7 @@
                 o.appendChild(newP);
             }
         }
-        if(cnt>=0&&cnt<=total_len-3){
+        if(cnt>-1&&cnt<total_len){
             console.log("cnt : "+cnt);
             console.log("obj : "+JSON.stringify(a[cnt]));
             console.log("visualizing cnt : "+cnt);
