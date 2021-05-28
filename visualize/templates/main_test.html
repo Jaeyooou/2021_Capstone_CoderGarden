@@ -5,9 +5,30 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>CoderGarden</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/main_style.css' %}">
+
+    <script>
+        var onScrollHandler = function()
+        {
+            var newImageUrl = document.getElementById("scroll_target").src;
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if (scrollTop > 100)
+            {
+                newImageUrl = "../static/img/main_info_li_1.png";
+            }
+            if(scrollTop > 200)
+            {
+                newImageUrl = "../static/img/main_info_li_2.png";
+            }
+            document.getElementById("scroll_target").src = newImageUrl;
+        };
+        object.addEventListener ("scroll", onScrollHandler);
+
+    </script>
+
+
 </head>
 <body>
 <div class="wrapper">
@@ -57,35 +78,204 @@
                 </div>
                 <div class="content4">
                     <button class = "popup_signup_btn" onclick="location.href='#popup2'">SIGN UP</button>
+                    <p>아이디 찾기 | 비밀번호 찾기</p>
+                </div>
+                <div class="content5">
+                    <hr>
+                    <br>
+                    Copyright&copy; Philip J. Guo (philip@pgbovine.net)<br>
+                    Copyright&copy; CorderGarden Corp. All rights reserved.
                 </div>
             </div>
         </div>
         <div id = "popup2" class = "overlay">
             <div class="popup_signup">
-                <a class="close" href="#">×</a>
-                <div class="content">
+                <div class="content1">
+                    <div class="content1_1">
+                        <a class="close" href="#">×</a>
+                    </div>
+                    <div class="content1_2">
+                        <img src="../static/img/codergarden_logo2.png" alt="">
+                    </div>
+                </div>
+                <div class="content2">
                     <form method="POST" action="{% url 'signup' %}">
                          {% csrf_token %}
-                        <p>userID</p>
-                        <input type="text" name="userid" class = "texts">
+                        <input type="text" name="userid" placeholder="ID" class = "texts">
                         <br>
-                        <p>name</p>
-                        <input type="text" name="username" class = "texts">
+                        <input type="text" name="username" placeholder="USERNAME" class = "texts">
                         <br>
-                        <p>password</p>
-                        <input type="text" name="password" class = "texts">
+                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
                         <br>
-                        <p>confirm</p>
-                        <input type="text" name="confirm" class = "texts">
+                        <input type="text" name="confirm" placeholder="PASSWORD CONFIRM" class = "texts">
                         <br>
-                        <input type="submit" value="회원가입" class = "pop_btn">
+                        <input type="submit" value="SIGN UP" class = "popup_signup_btn2">
                     </form>
+                </div>
+                <div></div>
+                <div></div>
+                <div class="content5">
+                    <hr>
+                    <br>
+                    Copyright&copy; Philip J. Guo (philip@pgbovine.net)<br>
+                    Copyright&copy; CorderGarden Corp. All rights reserved.
                 </div>
             </div>
         </div>
         <!--로그인 및 회원가입 팝업 창-->
+        <!--가이드 팝업 창-->
+        <!--GUIDE POP UP 1-->
+        <div id="popup3" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close" href="#">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img src="../static/img/guide1.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP1.</strong> 파이썬 코드를 코드에디터에 입력하세요.
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_2'">></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--GUIDE POP UP 2-->
+        <div id="popup3_2" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close" href="#">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img src="../static/img/guide2.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP2.</strong> 코드 입력을 완료하면 아래의 CONFIRM 버튼을 누르세요. <br>
+                    FIRST : 코드의 첫번째 라인으로 이동합니다. PREV : 현재 라인에서 이전 라인으로 이동합니다. PLAY : 현재 라인에서 마지막 라인까지 자동 재생합니다. NEXT : 현재 라인에서 다음 라인으로 이동합니다. LAST : 코드의 마지막 라인으로 이동합니다. <br>
+                    추가적으로 슬라이더를 이용하여 라인을 이동할 수 있습니다.
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3'"><</button>
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_3'">></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--GUIDE POP UP 3-->
+        <div id="popup3_3" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close" href="#">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img class="guide3_img" src="../static/img/guide3.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP3.</strong> 코드 에디터의 주황색 파트는 현재 실행 코드, 파란색 파트는 다음 실행 코드입니다. <br>
+                    Frames는 해당 라인까지 읽어진 변수를 표현합니다. <br>
+                    Visualize는 리스트의 변화를 시각적으로 보여줍니다.(Yellow: 기본, Green: pivot1로 설정된 index, Pink: pivot2로 설정된 index)
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_2'"><</button>
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_4'">></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--GUIDE POP UP 4-->
+        <div id="popup3_4" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close" href="#">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img class="guide3_img" src="../static/img/guide4.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP4.</strong> 추가적으로 pivot3으로 설정하면, 정렬이 완료된 리스트를 보라색 Bar로 시각화할 수 있습니다.
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_3'"><</button>
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--GUIDE POP UP 5-->
+        <div id="popup3_4" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close" href="#">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img class="guide3_img" src="../static/img/guide4.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP4.</strong> 추가적으로 pivot3으로 설정하면, 정렬이 완료된 리스트를 보라색 Bar로 시각화할 수 있습니다.
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_3'"><</button>
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--가이드 팝업 창-->
+        <img class="main_info_1" src="../static/img/main_info_1.png" alt="">
+        <img class="main_info_li" src="../static/img/main_info_li_1.png" alt="">
+        <img class="main_info_li" src="../static/img/main_info_li_2.png" alt="">
+        <img class="main_info_3" src="../static/img/main_info_3_real.png" alt="">
     </div>
-    <div class="box3">셋</div>
 </div>
 </body>
 </html>

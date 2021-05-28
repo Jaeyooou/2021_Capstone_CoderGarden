@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>CoderGarden</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/edittor_style.css' %}">
     <link  rel = "stylesheet" href ="../static/codemirror/lib/codemirror.css " >
@@ -47,7 +47,7 @@
 
         .pivot1
         {
-            fill:green;
+            fill:#008080;
         }
         .pivot2
         {
@@ -57,10 +57,26 @@
         {
             fill:mediumslateblue;
         }
+        .d3text{
+            fill : black;
+            font-weight:bold;
+            font-size : 14px;
+        }
     </style>
     <script>
-        function go_main(){
-
+        function hide_codeedit(){
+            console.log("!!!!!!!!");
+            document.getElementById("hong").style.display = 'none';
+            location.href='#popup3'
+        }
+        function unhide_codeedit(){
+            console.log("!!!!!!!!");
+            document.getElementById("hong").style.display = 'block';
+        }
+        function hide_codeedit_signin(){
+            console.log("!!!!!!!!");
+            document.getElementById("hong").style.display = 'none';
+            location.href='#popup1'
         }
     </script>
 </head>
@@ -78,12 +94,12 @@
             {% else %}
                 <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>
             {% endif %}
-        </div>
+      </div>
     </div>
     <div class="box2">
         <p>Python 3.8</p>
         <form action="/test2_h/">
-            <textarea class="cm_test" id = "code_editor" name="code"></textarea>
+            <div id="hong"><textarea class="cm_test" id = "code_editor" name="code"></textarea></div>
             <div id="confirm_btn">
                 <div id="confirm_btn_box1"><img src="../static/img/orange.png" alt=""> &nbsp;line that just executed<br><img
                         src="../static/img/blue.png" alt=""> &nbsp;next line to excute</div>
@@ -120,6 +136,228 @@
                 <span>Fourth, The type of visualization chart color in the list <br> (YELLOW : the default, BLUE : the pivot, GREEN : the completion)  </span>
             </p>
         </div>
+                <!--로그인 및 회원가입 팝업 창-->
+         <div id="popup1" class="overlay">
+            <div class="popup_signin">
+                <div class="content1">
+                    <div class="content1_1">
+                        <a class="close" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="content1_2">
+                        <img src="../static/img/codergarden_logo2.png" alt="">
+                    </div>
+                </div>
+                <div class="content2">
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <input type="text" name="userid" placeholder="ID" class = "texts">
+                        <br>
+                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
+                        <br><br>
+                        <input type="submit" value="SIGN IN" class = "popup_signin_btn">
+                        <br>
+                    </form>
+                </div>
+                <div class="content3">
+                    <div><hr></div>
+                    <div>or</div>
+                    <div><hr></div>
+                </div>
+                <div class="content4">
+                    <button class = "popup_signup_btn" onclick="location.href='#popup2'">SIGN UP</button>
+                    <p>아이디 찾기 | 비밀번호 찾기</p>
+                </div>
+                <div class="content5">
+                    <hr>
+                    <br>
+                    Copyright&copy; Philip J. Guo (philip@pgbovine.net)<br>
+                    Copyright&copy; CorderGarden Corp. All rights reserved.
+                </div>
+            </div>
+        </div>
+        <div id = "popup2" class = "overlay">
+            <div class="popup_signup">
+                <div class="content1">
+                    <div class="content1_1">
+                        <a class="close" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="content1_2">
+                        <img src="../static/img/codergarden_logo2.png" alt="">
+                    </div>
+                </div>
+                <div class="content2">
+                    <form method="POST" action="{% url 'signup' %}">
+                         {% csrf_token %}
+                        <input type="text" name="userid" placeholder="ID" class = "texts">
+                        <br>
+                        <input type="text" name="username" placeholder="USERNAME" class = "texts">
+                        <br>
+                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
+                        <br>
+                        <input type="text" name="confirm" placeholder="PASSWORD CONFIRM" class = "texts">
+                        <br>
+                        <input type="submit" value="SIGN UP" class = "popup_signup_btn2">
+                    </form>
+                </div>
+                <div></div>
+                <div></div>
+                <div class="content5">
+                    <hr>
+                    <br>
+                    Copyright&copy; Philip J. Guo (philip@pgbovine.net)<br>
+                    Copyright&copy; CorderGarden Corp. All rights reserved.
+                </div>
+            </div>
+        </div>
+        <!--로그인 및 회원가입 팝업 창-->
+         <!--가이드 팝업 창-->
+        <!--GUIDE POP UP 1-->
+        <div id="popup3" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close2" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img src="../static/img/guide1.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP1.</strong> 파이썬 코드를 코드에디터에 입력하세요.
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_2'">></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--GUIDE POP UP 2-->
+        <div id="popup3_2" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close2" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img src="../static/img/guide2.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP2.</strong> 코드 입력을 완료하면 아래의 CONFIRM 버튼을 누르세요. <br>
+                    FIRST : 코드의 첫번째 라인으로 이동합니다. PREV : 현재 라인에서 이전 라인으로 이동합니다. PLAY : 현재 라인에서 마지막 라인까지 자동 재생합니다. NEXT : 현재 라인에서 다음 라인으로 이동합니다. LAST : 코드의 마지막 라인으로 이동합니다. <br>
+                    추가적으로 슬라이더를 이용하여 라인을 이동할 수 있습니다.
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3'"><</button>
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_3'">></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--GUIDE POP UP 3-->
+        <div id="popup3_3" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close2" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img class="guide3_img" src="../static/img/guide3.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP3.</strong> 코드 에디터의 주황색 파트는 현재 실행 코드, 파란색 파트는 다음 실행 코드입니다. <br>
+                    Frames는 해당 라인까지 읽어진 변수를 표현합니다. <br>
+                    Visualize는 리스트의 변화를 시각적으로 보여줍니다.(Yellow: 기본, Green: pivot1로 설정된 index, Pink: pivot2로 설정된 index)
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_2'"><</button>
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_4'">></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--GUIDE POP UP 4-->
+        <div id="popup3_4" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close2" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img class="guide3_img" src="../static/img/guide4.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP4.</strong> 추가적으로 pivot3으로 설정하면, 정렬이 완료된 리스트를 보라색 Bar로 시각화할 수 있습니다.
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_3'"><</button>
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--GUIDE POP UP 5-->
+        <div id="popup3_4" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img class="guide3_img" src="../static/img/guide4.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP4.</strong> 추가적으로 pivot3으로 설정하면, 정렬이 완료된 리스트를 보라색 Bar로 시각화할 수 있습니다.
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_3'"><</button>
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--가이드 팝업 창-->
     </div>
     <div class="box3">
         <p id="answer_table_name">Frames</p>
@@ -133,6 +371,7 @@
         <p></p>
     </div>
 </div>
+
 <script>
     var editor = {
         mode :"python" ,
@@ -165,6 +404,9 @@
     var prev_line = 0
     var prev_prev_line = 0;
     var is_playing = 0;
+    var pivot3_list = []
+    var pivot1;
+    var pivot2;
     // various visualization
     function sleep(ms) {
         const wakeUpTime = Date.now() + ms;
@@ -172,8 +414,25 @@
     }
     //viusalizing list function _RK
     function visualizing(obj,num) {
+        var pivot1;
+        var pivot2;
+        if(num==1){
+            pivot3_list=[];
+        }
+        //delete all the svg when button onclick
+        var svgdelete = document.getElementsByTagName("svg");
+        if (svgdelete.length === 0){
+            console.log("svg not detected");
+        }
+        else{
+            for (var q = 0 ; q < svgdelete.length ; q ++){
+                svgdelete[0].remove();
+            }
+        }
+
         var index = num;
-        console.log("index(json line) : " + index); // for test
+
+        console.log("index(json line)Visuali() : " + index); // for test
         var target = {{trace|safe}};
         length = target[index].ordered_globals.length;  //how many variables we have in json line in index
         for (var i = 0 ; i < length ; i ++){
@@ -183,56 +442,88 @@
             if (tmp2 === undefined){
                 //console.log("now in int");
                 var targetint = target[index].globals[tmp];
-                console.log(tmp + " : " + targetint);
-                if (tmp === "pivot3"){var pivot3 = targetint;}
-                if (tmp === "pivot1"){var pivot1 = targetint;}
-                if (tmp === "pivot2"){var pivot2 = targetint;}
+                //console.log(tmp + " : " + targetint);
+                if (tmp === "pivot3"){pivot3_list.push(targetint);}
+                //console.log("pivot3_list :::" + pivot3_list);
+                if (tmp === "pivot1"){pivot1 = targetint;}
+                if (tmp === "pivot2"){pivot2 = targetint;}
             }
             else{
                 var targetarr = target[index].heap[tmp2];//get the list componenet
 
-                console.log("tmp2 : "+ tmp2);
-                console.log("targetarr : "+targetarr);
-                console.log("NOW TARGET : "+JSON.stringify(target[index]));
-
+                //console.log("tmp2 : "+ tmp2);
+                //console.log("targetarr : "+targetarr);
+                //console.log("NOW TARGET : "+JSON.stringify(target[index]));
 
                 var dataset = targetarr.slice(1);  //slice to use list data (not inclue key)
 
-                var dd = document.getElementById(tmp);
+                var dd = document.getElementById(tmp); // 이미 있는 D3 list를 삭제.
                 if (dd !== null){
-                        dd.remove();
+                         dd.remove();
                 }
-                if ( document.getElementsByTagName("h1").length === 6){//delete previous h1
-                    var toDelete = document.getElementsByTagName("h1");
-                    toDelete[0].remove();
-                    toDelete[0].remove();
-                    toDelete[0].remove();
-                }
-                var width = 500;
+
+                // if ( document.getElementsByTagName("h1").length === 6){//delete previous h1
+                //     var toDelete = document.getElementsByTagName("h1");
+                //     toDelete[0].remove();
+                //     toDelete[0].remove();
+                //     toDelete[0].remove();
+                // }
+
+                var width = 40*dataset.length + 100;
                 var height = 300;
-                var svg = d3.select("#visu").append("svg")  // insert svg in body  (insert everyday not delete previous list)
+                var svg = d3.select("#visu").append("svg")  // insert svg in #visu (p)  (insert everyday not delete previous list)
                 .attr("width", width)
                 .attr("height",height)
-                .attr("id",tmp);
+                .attr("id",tmp);  //tmp is the name of variable
+
+                var max = Math.max.apply(null,dataset);
+                var adjust = 110/max;
+                svg.append("text")
+                .text(tmp)
+                .attr("x",10)
+                .attr("y",20)
+                .attr("class","namefont");
+
                 for ( var j = 0 ; j < dataset.length ; j ++){//set svg bar attribute
                     tmpClass = "bar";
+                    //console.log("j :::" + j);
                     if (j === pivot1){
                         tmpClass = "pivot1";
                     }
                     if (j === pivot2){
                         tmpClass = "pivot2";
                     }
-                    if (j === pivot3){
+                    if (pivot3_list.includes(j)){
                         tmpClass = "pivot3";
                     }
+                    var font_x = 10;
+                    if (dataset[j]>=10)
+                    {
+                        font_x = 7;
+                    }
+                    if (dataset[j] >= 100)
+                    {
+                        font_x = 3;
+                    }
+                    if ( dataset[j] >= 1000)
+                    {
+                         font_x = -1;
+                    }
                     svg.append("rect")
-                        .attr("height", dataset[j]*15)
-                        .attr("width",40)
-                        .attr("x",50*j)
-                        .attr("y",300-dataset[j]*15)
+                        .attr("height", dataset[j]*adjust)
+                        .attr("width",30)
+                        .attr("x",40*j)
+                        .attr("y",150-dataset[j]*adjust)
                         .attr("class",tmpClass);
-                }//targetNode.appendChild(newSvg);
-             } // if list end
+
+                    svg.append("text")
+                        .text(function(d){return dataset[j]})
+                        .attr("data",dataset[j])
+                        .attr("x",40*j + font_x)
+                        .attr("y",163-dataset[j]*adjust)
+                        .attr("class","d3text");
+                }
+             } // else list end
         }// for end
     }//fuction end
 
@@ -307,19 +598,23 @@
             return;
         }
         else if(num==0&&slider==0){
-            cnt=num;
+            cnt=num+1;
             processed_code = processing(a[cnt]);
+            visualizing(obj,cnt);
             processed_code = processing(a[cnt]);
             newP.innerHTML = processed_code;
             ShowSliderValue(cnt,0);
             o.appendChild(newP);
+            visualizing(obj,cnt);
             return;
         }
         else if(num==100&&slider==0){
             cnt=total_len-1;
             processed_code = processing(a[cnt]);
+            visualizing(obj,cnt);
             processed_code = processing(a[cnt]);
             newP.innerHTML = processed_code;
+            visualizing(obj,cnt);
             ShowSliderValue(cnt,0);
             o.appendChild(newP);
             return;
@@ -342,7 +637,7 @@
                 o.appendChild(newP);
             }
         }
-        if(cnt>=0&&cnt<=total_len-3){
+        if(cnt>-1&&cnt<total_len){
             console.log("cnt : "+cnt);
             console.log("obj : "+JSON.stringify(a[cnt]));
             console.log("visualizing cnt : "+cnt);
@@ -353,8 +648,8 @@
         if(cnt==total_len-1){
             cnt=-1;
         }
-        let timerId = setInterval(() => answer(obj,1,0), 300);
-        var timeStop = (total_len-cnt)*310;
+        let timerId = setInterval(() => answer(obj,1,0), 100);
+        var timeStop = (total_len-cnt)*105;
         setTimeout(() => { clearInterval(timerId); answer(obj,1,0); }, timeStop);
     }
     function ShowSliderValue(sVal, num) {
@@ -376,51 +671,6 @@
     }
 
 </script>
-<!--로그인 및 회원가입 팝업 창-->
-        <div id="popup1" class="overlay">
-            <div class="popup_signin">
-                <a class="close" href="#">×</a>
-                <div class="content">
-                    <form method="POST" action="{% url 'login' %}">
-                        {% csrf_token %}
-                        <p>userid</p>
-                        <input type="text" name="userid" class = "texts">
-                        <br>
-                        <p>password</p>
-                        <input type="text" name="password" class = "texts">
-                        <br>
-                        <input type="submit" value="로그인" class = "pop_btn">
-                        <br>
-                    </form>
-                    <button class = "button" onclick="location.href='#popup2'">SIGN UP</button>
-                </div>
-            </div>
-        </div>
-        <div id = "popup2" class = "overlay">
-            <div class="popup_signup">
-                <a class="close" href="#">×</a>
-                <div class="content">
-                    <form method="POST" action="{% url 'signup' %}">
-                         {% csrf_token %}
-                        <p>userID</p>
-                        <input type="text" name="userid" class = "texts">
-                        <br>
-                        <p>name</p>
-
-                        <input type="text" name="username" class = "texts">
-                        <br>
-                        <p>password</p>
-                        <input type="text" name="password" class = "texts">
-                        <br>
-                        <p>confirm</p>
-                        <input type="text" name="confirm" class = "texts">
-                        <br>
-                        <input type="submit" value="회원가입" class = "pop_btn">
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!--로그인 및 회원가입 팝업 창-->
 </body>
 </html>
 

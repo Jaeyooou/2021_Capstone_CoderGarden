@@ -1,7 +1,7 @@
 /*전체 그리드*/
 .wrapper {
     display: grid;
-    grid-template-columns: 2fr 1fr 3fr;
+    grid-template-columns: 1fr 1fr 3fr;
     grid-template-rows: 100px 950px 200px;
     grid-gap: 10px;
     padding-left:10%;
@@ -12,6 +12,10 @@
     grid-column: 1/4;
     border-bottom : 4px solid rgb(252,217,181);
     display : grid;
+    width:90%;
+    height:70px;
+    padding-left:5%;
+    padding-right:5%;
     grid-template-columns : 3fr 1fr;
 }
 .box2 {
@@ -27,31 +31,35 @@
     padding-left : 5%;
     grid-column: 3/4;
 }
+body{
+    margin:0px;
+}
 /*전체 그리드*/
 
 /*네비게이션 바*/
 .box1_logo{
+    margin-left:-100px;
     grid-column:1/3;
 }
 .box1_nav_items{
+    margin-right:-50px;
     grid-column:3/4;
     text-align : right;
     padding-top: 25px;
-    padding-right: 50px;
 }
 #logo{
-    height:50%;
+    height:35%;
     padding-top: 25px;
     padding-left: 50px;
 }
 .button {
     background-color: white;
-    font-size: 23px;
+    font-size: 20px;
     border : none;
     color: black;
     cursor: pointer;
     transition: all 0.3s ease-out;
-    padding:17px;
+    padding:5px;
 }
 .button:hover {
     border-bottom : 2px solid grey;
@@ -61,60 +69,155 @@
 /*pop up part*/
 .popup_signin {
     display:grid;
-    background-color:red;
+    text-align: center;
+    grid-template-rows: 20% 35% 2% 35% 8%;
+    height:650px;
+    background-color: white;
     font-size : 30px;
     margin: 70px auto;
-    padding: 30px;
+    padding: 28px;
+    padding-bottom: 32px;
     /*background: #fff;*/
     border-radius: 5px;
-    width: 30%;
-    /*position: relative;*/
+    width: 450px;
     transition: all 1s ease-in-out;
 }
 .popup_signup {
-    background-color:red;
+    display:grid;
+    text-align: center;
+    grid-template-rows: 20% 35% 2% 35% 8%;
+    height:650px;
+    background-color: white;
     font-size : 30px;
     margin: 70px auto;
-    padding: 30px;
+    padding: 28px;
+    padding-bottom: 32px;
     /*background: #fff;*/
     border-radius: 5px;
-    width: 30%;
-    position: relative;
+    width: 450px;
     transition: all 1s ease-in-out;
 }
-.pop_btn {
-  margin-top : 10px;
-  background : black;
-  font-size : 1em;
-  padding : 5px;
-  color :white;
-  border : 1px solid orange;
-  border-radius : 2opx/50px;
-  text-decoration : none;
-  cursor : pointer;
-
+.popup_signin .content1{
+}
+.content1_1{
+    text-align:right;
+}
+.content1_2{
+    text-align:center;
+}
+.content1_2 img{
+    height:55px;
+}
+.content2{
+    text-align:center;
+}
+.content3{
+    margin-left:10%;
+    width:80%;
+    margin-top:3px;
+    color:grey;
+    font-size:13px;
+    display:grid;
+    grid-template-columns: 5fr 1fr 5fr;
+    text-align:center;
+}
+.content3 hr{
+    border:1px solid lightgrey;
+}
+.content4{
+    text-align:center;
+}
+.content4 p{
+    color:grey;
+    margin-right:10%;
+    text-align:right;
+    font-size:13px;
+}
+.content5{
+    color:grey;
+    font-size:13px;
+    text-align:center;
+}
+.texts{
+    border : none;
+    border-bottom:1px solid grey;
+    margin-top:5%;
+    width:80%;
+    height:40px;
 }
 
+.popup_signup_btn:hover{
+    background-color: rgb(220,167,93);
+    color:black;
+}
+.popup_signin_btn:hover{
+    background-color: rgb(220,167,93);
+    color:black;
+}
+.popup_signin_btn {
+    text-align:center;
+    margin-top : 10px;
+    background-color : rgb(106,128,170);
+    font-size : 20px;
+    width:80%;
+    height:50px;
+    border : none;
+    border-radius : 2opx/50px;
+    color:white;
+}
+.popup_signup_btn2 {
+    text-align:center;
+    margin-top : 35px;
+    background-color : rgb(106,128,170);
+    font-size : 20px;
+    width:80%;
+    height:50px;
+    border : none;
+    border-radius : 2opx/50px;
+    color:white;
+}
+.popup_signup_btn {
+    text-align:center;
+    margin-top : 10px;
+    background-color : grey;
+    font-size : 20px;
+    width:80%;
+    height:50px;
+    border : none;
+    border-radius : 2opx/50px;
+    color:white;
+}
+.popup_signup .close {
+    margin-right:10px;
+    background-color: white;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: grey;
+}
+.popup_signup .close:hover {
+  color: orange;
+}
+.popup_signup_btn2:hover {
+    color: black;
+    background-color : rgb(220,167,93);
+}
 .pop_btn:hover {
   background:orange;
   color:black;
 }
-.popup .close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  transition: all 200ms;
-  font-size: 30px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #333;
+.popup_signin .close {
+    margin-right:10px;
+    background-color: white;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: grey;
 }
-.popup .close:hover {
+.popup_signin .close:hover {
   color: orange;
-}
-.popup .content {
-  max-height: 30%;
-  overflow: auto;
 }
 
 .overlay {
@@ -131,11 +234,6 @@
 .overlay:target {
   visibility: visible;
   opacity: 1;
-}
-.texts{
-  border : 2px solid orange;
-  height : 30px;
-  font-size : 25px;
 }
 /*pup up part*/
 /*BOX2 코드 입력창*/
@@ -271,3 +369,79 @@ td {
 #explanation{
     text-align:left;
 }
+/*코드 컨트롤 박스*/
+
+
+/*popup guide*/
+.popup_guide{
+    display:grid;
+    text-align: center;
+    grid-template-rows: 15%  70% 12% 3%;
+    background-color: white;
+    font-size : 30px;
+    margin: 70px auto;
+    padding: 28px;
+    padding-bottom: 32px;
+    /*background: #fff;*/
+    border-radius: 5px;
+    width: 50%;
+    height:70%;
+    transition: all 1s ease-in-out;
+}
+.guide_content1{
+}
+.guide_content2{
+    text-align:center;
+    font-size:15px;
+    height:100%;
+}
+.guide_content2 img{
+    height:100%;
+}
+.guide3_img{
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+.guide_content1_1{
+    text-align:right;
+}
+.guide_content3{
+    margin-top:15px;
+    font-size:13px;
+}
+.guide_content4{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.left_btn{
+    text-align:left;
+    background-color:rgba(255,255,255,0);
+}
+.right_btn{
+    text-align:right;
+    background-color:rgba(255,255,255,0);
+}
+.guide_btn{
+    background-color:rgba(255,255,255,0);
+    border:none;
+    font-size:30px;
+}
+.guide_btn:hover{
+  color: orange;
+}
+
+.close2{
+    margin-right:10px;
+    background-color: white;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: grey;
+}
+.close2:hover {
+  color: orange;
+}
+
+/*popup guide*/
