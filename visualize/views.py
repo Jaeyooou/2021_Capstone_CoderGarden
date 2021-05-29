@@ -8,7 +8,7 @@ from visualize.code_processing import pg_logger
 import io as StringIO # NB: don't use cStringIO since it doesn't support unicode!!!
 import json
 #---------------------------------python tutor import--------------------------------
-
+import ast
 
 # Create your views here.
 main_json = ''
@@ -50,8 +50,6 @@ def get_exec(main_text):
                                   options['cumulative_mode'],
                                   options['heap_primitives'],
                                   json_finalizer)
-    print("MAINTEXT다이새끼야조")
-    print(main_text)
     return out_s.getvalue()
 
 
@@ -65,13 +63,17 @@ def main_test(request):
     return render(request, 'main_test.html')
 
 def test2_h(request):
-    a=[]
+    hong=[]
     text = request.GET['code']
     start_time = time.time()
-    trace = eval(get_exec(text))
-
-    a.append(trace['code'])
-    print(a)
+    test=get_exec(text)
+    test =''.join(test)
+    test = test.replace("null","\'None\'")
+    test = test.replace("false","\'False\'")
+    test = test.replace("true","\'True\'")
+    # trace = eval(get_exec(text))
+    trace=eval(test)
+    hong.append(trace['code'])
     execution_time = time.time() - start_time
 
     user_session_numb = request.session.get('user_numb')# 유저 세션 있고 ,
@@ -85,16 +87,14 @@ def test2_h(request):
            process_time= execution_time ,
            user_number = Member.objects.get(user_number = user_session_numb)
         ).save()
-    print(text)
-    print(trace)
-    print(type(trace['code']))
-    print(trace)
-    print(type(trace['trace']))
     context = {
-        'code' : a,
-        'trace' : trace['trace']
+        'code' : hong,
+        'trace' : trace['trace'],
+        'fuck' : trace['trace']
     }
-    print(context['code'])
+    print("!!!!!!!!!!")
+    print(context['fuck'])
+    print(type(context['fuck']))
     return render(request, 'test2_h.html', context)
 
 def search_table(request):
