@@ -63,6 +63,12 @@
             font-weight:bold;
             font-size : 14px;
         }
+        .namefont
+        {
+            fill:black;
+            {#font-weight:bold;#}
+            font-size:12px;
+        }
     </style>
     <script>
         function hide_codeedit(){
@@ -88,17 +94,17 @@
             <a href="/"><img id="logo" src="../static/img/codergarden_logo2.png" alt=""></a>
         </div>
         <div class="box1_nav_items" >
-            <button class = "button" onclick="location.href='#popup1'">GUIDE</button>
-            {% if request.session.user_numb %}
-                <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>
+            <button class = "button" onclick="hide_codeedit()">GUIDE</button>&nbsp;&nbsp;&nbsp;&nbsp;
+           {% if request.session.user_numb %}
+                <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>&nbsp;&nbsp;&nbsp;&nbsp;
                 <button class = "button" onclick ="location.href ='/logout'">LOGOUT</button>
             {% else %}
                 <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>
             {% endif %}
-      </div>
+        </div>
     </div>
     <div class="box2">
-        <p>Python 3.8</p>
+        <p><strong>Python 3.8</strong></p>
         <form action="/test2_h/">
             <div id="hong"><textarea class="cm_test" id = "code_editor" name="code"></textarea></div>
             <div id="confirm_btn">
@@ -112,11 +118,11 @@
             </div>
         </form>
         <div id="control_box">
-            <button id="processing" onclick="answer(this, 0, 0)">FIRST</button>
-            <button onclick="answer(this, -1, 0)">PREV</button>
+            <button id="processing" onclick="answer_hong(this, 0, 0)">FIRST</button>
+            <button onclick="answer_hong(this, -1, 0)">PREV</button>
             <button id="PlayBtn" onclick="play(this)">PLAY</button>
-            <button onclick="answer(this, 1, 0)">NEXT</button>
-            <button onclick="answer(this, 100, 0)">LAST</button>
+            <button onclick="answer_hong(this, 1, 0)">NEXT</button>
+            <button onclick="answer_hong(this, 100, 0)">LAST</button>
         <hr>
         </div>
         <div>
@@ -153,7 +159,7 @@
                         {% csrf_token %}
                         <input type="text" name="userid" placeholder="ID" class = "texts">
                         <br>
-                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
+                        <input type="password" name="password" placeholder="PASSWORD" class = "texts">
                         <br><br>
                         <input type="submit" value="SIGN IN" class = "popup_signin_btn">
                         <br>
@@ -193,9 +199,9 @@
                         <br>
                         <input type="text" name="username" placeholder="USERNAME" class = "texts">
                         <br>
-                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
+                        <input type="password" name="password" placeholder="PASSWORD" class = "texts">
                         <br>
-                        <input type="text" name="confirm" placeholder="PASSWORD CONFIRM" class = "texts">
+                        <input type="password" name="confirm" placeholder="PASSWORD CONFIRM" class = "texts">
                         <br>
                         <input type="submit" value="SIGN UP" class = "popup_signup_btn2">
                     </form>
@@ -318,7 +324,7 @@
                 </div>
                 <div class="guide_content3">
                     <hr>
-                    <strong>STEP4.</strong> 추가적으로 pivot3으로 설정하면, 정렬이 완료된 리스트를 보라색 Bar로 시각화할 수 있습니다.
+                    <strong>STEP4.</strong> 정렬 알고리즘을 학습할땐, 정렬이된 인덱스를 pivot3로 설정하여 정렬이 완료된 범위를 보라색을 통해 확인할 수 있습니다.
                 </div>
                 <div class="guide_content4">
                     <div class="left_btn">
@@ -361,13 +367,13 @@
         <!--가이드 팝업 창-->
     </div>
     <div class="box3">
-        <p id="answer_table_name">Frames</p>
+        <p id="answer_table_name"><strong>Frames</strong></p>
         <div id="table_box">
-            <p id="answer"></p>
+            <p id="answer_t"></p>
         </div>
     </div>
     <div class="box4">
-        <p id="visu_name">Visualize</p>
+        <p id="visu_name"><strong>Visualize</strong></p>
         <p id="visu">
         <p></p>
     </div>
@@ -398,8 +404,8 @@
     myCodeMirror.setOption("value", initValue);
 
     // various visualization
-    var a = {{ trace|safe }};
     var b = {{ code|safe }};
+    var a = {{ fuck|safe }};
     var cnt = -1;
     var total_len = a.length;
     var prev_line = 0
@@ -415,9 +421,8 @@
     }
     //viusalizing list function _RK
     function visualizing(obj,num) {
-        var pivot1;
-        var pivot2;
-        if(num==1){
+
+        if(num == 0){
             pivot3_list=[];
         }
         //delete all the svg when button onclick
@@ -437,6 +442,8 @@
         var target = {{trace|safe}};
         length = target[index].ordered_globals.length;  //how many variables we have in json line in index
         for (var i = 0 ; i < length ; i ++){
+            var flag = true;
+            var flag2 = true;
             //console.log("for i in " + i);
             var tmp = target[index].ordered_globals[i];   // get variable name
             var tmp2 = target[index].globals[tmp][1];   // can divide if it is int or list
@@ -470,22 +477,37 @@
                 //     toDelete[0].remove();
                 // }
 
+                for ( var q = 0 ; q < dataset.length ; q ++)
+                {
+                    if (typeof(dataset[q]) === "string")
+                    {
+                        flag = false;
+                    }
+                }
+                if ( flag === false)
+                {
+                    continue;
+                }
+
                 var width = 40*dataset.length + 100;
-                var height = 300;
+                var height = 180;
                 var svg = d3.select("#visu").append("svg")  // insert svg in #visu (p)  (insert everyday not delete previous list)
-                .attr("width", width)
-                .attr("height",height)
-                .attr("id",tmp);  //tmp is the name of variable
+                    .attr("width", width)
+                    .attr("height",height)
+                    .attr("id",tmp);  //tmp is the name of variable
+
+
 
                 var max = Math.max.apply(null,dataset);
                 var adjust = 110/max;
                 svg.append("text")
-                .text(tmp)
-                .attr("x",10)
-                .attr("y",20)
-                .attr("class","namefont");
+                    .text(tmp)
+                    .attr("x",1)
+                    .attr("y",20)
+                    .attr("class","namefont");
 
                 for ( var j = 0 ; j < dataset.length ; j ++){//set svg bar attribute
+
                     tmpClass = "bar";
                     //console.log("j :::" + j);
                     if (j === pivot1){
@@ -510,6 +532,7 @@
                     {
                          font_x = -1;
                     }
+
                     svg.append("rect")
                         .attr("height", dataset[j]*adjust)
                         .attr("width",30)
@@ -559,6 +582,7 @@
                 else{
                     store=obj.heap[tmp2].slice(1);
                 }
+
                 part = "<tr> <td>"+tmp +"</td>"+"<td>"+store+"</td>"+"<td>"+obj.heap[tmp2][0]+"</td>"+"</tr>";
             }
             else{
@@ -579,9 +603,9 @@
 
         return result;
     }
-    function answer(obj, num, slider){
+    function answer_hong(obj, num, slider){
         var processed_code;
-        var newP=document.getElementById("answer");
+        var newP=document.getElementById("answer_t");
         var o = newP.parentElement;
         if(num==-1&&cnt<=0&&slider==0){
             processed_code = processing(a[cnt]);
@@ -649,9 +673,9 @@
         if(cnt==total_len-1){
             cnt=-1;
         }
-        let timerId = setInterval(() => answer(obj,1,0), 100);
+        let timerId = setInterval(() => answer_hong(obj,1,0), 100);
         var timeStop = (total_len-cnt)*105;
-        setTimeout(() => { clearInterval(timerId); answer(obj,1,0); }, timeStop);
+        setTimeout(() => { clearInterval(timerId); answer_hong(obj,1,0); }, timeStop);
     }
     function ShowSliderValue(sVal, num) {
         var obValueView = document.getElementById("slider_value_view");
@@ -667,7 +691,7 @@
         if(num==1){
             obSlider.value = "step "+sVal+" of "+step;
             obValueView.innerHTML = sVal;
-            answer(obj, Number(sVal), 1);
+            answer_hong(obj, Number(sVal), 1);
         }
     }
 
@@ -675,7 +699,7 @@
 </body>
 </html>
 
-<!--
+<!—
 list = [1,3,4,2,5]
 list = [5,1,2,3,4]
 list = [4,5,1,2,3]
@@ -683,4 +707,4 @@ list = [3,4,5,1,2]
 list = [2,3,4,5,1]
 list = [1,2,3,4,5]
 
--->
+—>

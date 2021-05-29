@@ -39,7 +39,7 @@
         </div>
         <div class="box1_nav_items" >
             <button class = "button" onclick="location.href = '/test_h'">CODE EDIT</button>
-            <button class = "button" onclick="location.href='#popup1'">GUIDE</button>
+            <button class = "button" onclick="location.href='#popup3'">GUIDE</button>
             {% if request.session.user_numb %}
                 <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>
                 <button class = "button" onclick ="location.href ='/logout'">LOGOUT</button>
@@ -66,7 +66,7 @@
                         {% csrf_token %}
                         <input type="text" name="userid" placeholder="ID" class = "texts">
                         <br>
-                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
+                        <input type="password" name="password" placeholder="PASSWORD" class = "texts">
                         <br><br>
                         <input type="submit" value="SIGN IN" class = "popup_signin_btn">
                         <br>
@@ -106,9 +106,9 @@
                         <br>
                         <input type="text" name="username" placeholder="USERNAME" class = "texts">
                         <br>
-                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
+                        <input type="password" name="password" placeholder="PASSWORD" class = "texts">
                         <br>
-                        <input type="text" name="confirm" placeholder="PASSWORD CONFIRM" class = "texts">
+                        <input type="password"  name="confirm" placeholder="PASSWORD CONFIRM" class = "texts">
                         <br>
                         <input type="submit" value="SIGN UP" class = "popup_signup_btn2">
                     </form>

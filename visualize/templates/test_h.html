@@ -64,9 +64,9 @@
             <a href="/"><img id="logo" src="../static/img/codergarden_logo2.png" alt=""></a>
         </div>
         <div class="box1_nav_items" >
-            <button class = "button" onclick="location.href='#popup1'">GUIDE</button>
+            <button class = "button" onclick="hide_codeedit()">GUIDE</button>&nbsp;&nbsp;&nbsp;&nbsp;
             {% if request.session.user_numb %}
-                <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>
+                <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>&nbsp;&nbsp;&nbsp;&nbsp;
                 <button class = "button" onclick ="location.href ='/logout'">LOGOUT</button>
             {% else %}
                 <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>
@@ -129,7 +129,7 @@
                         {% csrf_token %}
                         <input type="text" name="userid" placeholder="ID" class = "texts">
                         <br>
-                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
+                        <input type="password" name="password" placeholder="PASSWORD" class = "texts">
                         <br><br>
                         <input type="submit" value="SIGN IN" class = "popup_signin_btn">
                         <br>
@@ -169,9 +169,9 @@
                         <br>
                         <input type="text" name="username" placeholder="USERNAME" class = "texts">
                         <br>
-                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
+                        <input type="password" name="password" placeholder="PASSWORD" class = "texts">
                         <br>
-                        <input type="text" name="confirm" placeholder="PASSWORD CONFIRM" class = "texts">
+                        <input type="password" name="confirm" placeholder="PASSWORD CONFIRM" class = "texts">
                         <br>
                         <input type="submit" value="SIGN UP" class = "popup_signup_btn2">
                     </form>
@@ -294,7 +294,7 @@
                 </div>
                 <div class="guide_content3">
                     <hr>
-                    <strong>STEP4.</strong> 추가적으로 pivot3으로 설정하면, 정렬이 완료된 리스트를 보라색 Bar로 시각화할 수 있습니다.
+                    <strong>STEP4.</strong> 정렬 알고리즘을 학습할땐, 정렬이된 인덱스를 pivot3로 설정하여 정렬이 완료된 범위를 보라색을 통해 확인할 수 있습니다.
                 </div>
                 <div class="guide_content4">
                     <div class="left_btn">
