@@ -3,10 +3,7 @@
 ## 커밋규칙 
 ### 1. 파일을 추가할때는 Add 파일명_작성자 (세부 내용에는 어떠 기능을 하는 파일을 추가했는지 적기)
 ### 2. 파일을 수정할때는 Mod 파일명_작성자 (세부 내용에는 어떠한 기능을 수정하였는지 적기)
-### 3. 파일을 삭제할때는 Del 파일명_작성자 
-<<<<<<< HEAD
-=======
-
+### 3. 파일을 삭제할때는 Del 파일명_작성자
 
 
 ### graduate_help 덤프파일 import 하기
@@ -21,4 +18,3 @@
 1. 각자 로컬에서 MySQL 실행
 2. config > my_Settings.py > DATABASE 파트에서 PASSWORD를 자신의 MySQL 비밀번호로 설정
 3. `python manage.py inspectdb` 명령어로 연동 DB 감지 테스트.
->>>>>>> 276285d6c9caee60f1d2af9ae88a4702624d3a17

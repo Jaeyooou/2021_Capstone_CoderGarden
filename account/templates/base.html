@@ -16,13 +16,25 @@
         <title>My Page</title>
         {% load static %}
     <link rel="stylesheet" href="{% static 'css/main_style.css' %}">
+        <style>
+            #list{
+                margin-top:50px;
+            }
+            .mylogo{
+                width:180px;
+                margin:auto;
+            }
+            .box1_logo{
+                margin:auto;
+            }
+        </style>
     </head>
 
     <body>
         <div class="wrapper">
         <div class="box1">
          <div class="box1_logo">
-            <a href="/"><img id="logo" src="../static/img/codergarden_logo2.png" alt=""></a>
+            <a href="/"><img width="100px" class="mylogo" src="{% static 'img/codergarden_logo2.png' %}" alt=""></a>
          </div>
             <div class="box1_nav_items" >
                 <button class = "button" onclick="location.href='#popup1'">GUIDE</button>
@@ -34,7 +46,7 @@
                 {% endif %}
             </div>
         </div>
-        <div class = "box2">
+        <div class = "box2" id="list">
             <div class="container">
                 {% block contents %}
                 {% endblock %}
