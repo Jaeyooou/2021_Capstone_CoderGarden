@@ -69,6 +69,14 @@
             {#font-weight:bold;#}
             font-size:12px;
         }
+        .special1
+        {
+            fill:orangered;
+        }
+        .special2
+        {
+            fill:#75787b;
+        }
     </style>
     <script>
         function hide_codeedit(){
@@ -447,6 +455,49 @@
             //console.log("for i in " + i);
             var tmp = target[index].ordered_globals[i];   // get variable name
             var tmp2 = target[index].globals[tmp][1];   // can divide if it is int or list
+            if (tmp === "max" || tmp == "min") //max and min exceptional color int
+            {
+
+                var tt = document.getElementById(tmp);
+                if (tt != null)
+                {
+                    tt.remove();
+                }
+
+
+                var targetint = target[index].globals[tmp];
+                dataset = [targetint];
+
+                var width = 40*dataset.length + 100;
+                var height = 180;
+                var svg = d3.select("#visu").append("svg")  // insert svg in #visu (p)  (insert everyday not delete previous list)
+                .attr("width", width)
+                .attr("height",height)
+                .attr("id",tmp);  //tmp is the name of variable
+
+                var max = Math.max.apply(null,dataset);
+                var adjust = 110/max;
+                svg.append("text")
+                .text(tmp)
+                .attr("x",1)
+                .attr("y",20)
+                .attr("class","namefont");
+                var tmpClass = "special2"
+                svg.append("rect")
+                        .attr("height", dataset[0]*adjust)
+                        .attr("width",30)
+                        .attr("x",40*0)
+                        .attr("y",150-dataset[0]*adjust)
+                        .attr("class",tmpClass);
+
+                    svg.append("text")
+                        .text(function(d){return dataset[0]})
+                        .attr("data",dataset[0])
+                        .attr("x",40*0 + font_x)
+                        .attr("y",163-dataset[0]*adjust)
+                        .attr("class","d3text");
+
+            }
             if (tmp2 === undefined){
                 //console.log("now in int");
                 var targetint = target[index].globals[tmp];
@@ -518,6 +569,10 @@
                     }
                     if (pivot3_list.includes(j)){
                         tmpClass = "pivot3";
+                    }
+                    if (tmp === "answer")
+                    {
+                        tmpClass = "special1";
                     }
                     var font_x = 10;
                     if (dataset[j]>=10)
