@@ -58,9 +58,26 @@
             fill:mediumslateblue;
         }
         .d3text{
-            fill : lavenderblush;
+            fill : black;
             font-weight:bold;   
             font-size : 14px;    
+        }
+        .namefont
+        {
+            fill:black;
+            font-weight:bold;
+            font-size:18px;
+        }
+        .special1
+        {
+            fill : crimson;
+        }
+        .special2
+        {
+            fill:chocolate;
+        }
+        svg{
+            display:block;
         }
     </style>
 </head>
@@ -93,6 +110,13 @@
         </div>
         <div>
             <p id="explanation">
+                <div class="userIO">
+                    <textarea name="output" id="" cols="30" rows="10"></textarea>
+                    <form action="">
+                        <textarea name="input" id="" cols="30" rows="10"></textarea>
+                        <button type="submit">input</button>
+                    </form>
+                </div>
                 <h4>How to use</h4>
                 <span>First, edit your Python code in the code editor.</span><br>
                 <span>Second, if you're done editing the code, press the CONFIRM button.</span><br>
@@ -149,15 +173,15 @@
 
     // various visualization
     var a = {{ trace|safe }};
+    var target = {{ trace|safe }};
     var b = {{ code|safe }};
     var cnt = -1;
     var total_len = a.length;
     var prev_line = 0
     var prev_prev_line = 0;
     var is_playing = 0;
-    var pivot3_list = []
-    var pivot1;
-    var pivot2;
+    
+    
     // various visualization
     function sleep(ms) {
         const wakeUpTime = Date.now() + ms;
@@ -165,6 +189,14 @@
     }
     //viusalizing list function _RK
     function visualizing(obj,num) {
+        
+        var pivot1;
+        var pivot2;
+        var pivot3_list = []
+        if ( num == 0)
+        {
+            pivot3_list = [];
+        }
 
         //delete all the svg when button onclick
         var svgdelete = document.getElementsByTagName("svg");
@@ -178,35 +210,83 @@
         }
 
         var index = num;
-        console.log("index(json line) : " + index); // for test
+
+        console.log("index(json line)Visuali() : " + index); // for test
         var target = {{trace|safe}};           
         length = target[index].ordered_globals.length;  //how many variables we have in json line in index
+        
+
         for (var i = 0 ; i < length ; i ++){
             //console.log("for i in " + i);
             var tmp = target[index].ordered_globals[i];   // get variable name
             var tmp2 = target[index].globals[tmp][1];   // can divide if it is int or list
+
+            if (tmp === "max" || tmp == "min") //max and min exceptional color int
+            {
+                var tt = document.getElementById(tmp);
+                if (tt != null)
+                {
+                    tt.remove();
+                }
+
+
+
+                var targetint = target[index].globals[tmp];
+                dataset = [targetint];
+                
+                var width = 500;
+                var height = 300;
+                var svg = d3.select("#visu").append("svg")  // insert svg in #visu (p)  (insert everyday not delete previous list)
+                .attr("width", width)
+                .attr("height",height)
+                .attr("id",tmp);  //tmp is the name of variable
+                
+                var max = Math.max.apply(null,dataset);
+                var adjust = 110/max;
+                svg.append("text")
+                .text(tmp)
+                .attr("x",10)
+                .attr("y",20)
+                .attr("class","namefont");
+                var tmpClass = "special2"
+                svg.append("rect")
+                        .attr("height", dataset[0]*adjust)
+                        .attr("width",30)
+                        .attr("x",40*0)
+                        .attr("y",150-dataset[0]*adjust)
+                        .attr("class",tmpClass);
+                    
+                    svg.append("text")
+                        .text(function(d){return dataset[0]})
+                        .attr("data",dataset[0])
+                        .attr("x",40*0 + font_x)
+                        .attr("y",163-dataset[0]*adjust)
+                        .attr("class","d3text");
+
+            }
             if (tmp2 === undefined){
                 //console.log("now in int");
                 var targetint = target[index].globals[tmp];
-                console.log(tmp + " : " + targetint);
+                //console.log(tmp + " : " + targetint);
                 if (tmp === "pivot3"){pivot3_list.push(targetint);}
-                console.log("pivot3_list :::" + pivot3_list);
+                //console.log("pivot3_list :::" + pivot3_list);
                 if (tmp === "pivot1"){pivot1 = targetint;}
                 if (tmp === "pivot2"){pivot2 = targetint;}
             }
             else{
+                
                 var targetarr = target[index].heap[tmp2];//get the list componenet
 
-                console.log("tmp2 : "+ tmp2);
-                console.log("targetarr : "+targetarr);
-                console.log("NOW TARGET : "+JSON.stringify(target[index]));
+                //console.log("tmp2 : "+ tmp2);
+                //console.log("targetarr : "+targetarr);
+                //console.log("NOW TARGET : "+JSON.stringify(target[index]));
 
                 var dataset = targetarr.slice(1);  //slice to use list data (not inclue key)
 
-                // var dd = document.getElementById(tmp); // 이미 있는 D3 list를 삭제.
-                // if (dd !== null){
-                //         dd.remove();
-                // }
+                var dd = document.getElementById(tmp); // 이미 있는 D3 list를 삭제.
+                if (dd !== null){
+                         dd.remove();
+                }
 
                 // if ( document.getElementsByTagName("h1").length === 6){//delete previous h1
                 //     var toDelete = document.getElementsByTagName("h1");
@@ -221,10 +301,18 @@
                 .attr("width", width)
                 .attr("height",height)
                 .attr("id",tmp);  //tmp is the name of variable
+                
+                var max = Math.max.apply(null,dataset);
+                var adjust = 110/max;
+                svg.append("text")
+                .text(tmp)
+                .attr("x",10)
+                .attr("y",20)
+                .attr("class","namefont");
 
                 for ( var j = 0 ; j < dataset.length ; j ++){//set svg bar attribute
                     tmpClass = "bar";
-                    console.log("j :::" + j);
+                    //console.log("j :::" + j);
                     if (j === pivot1){
                         tmpClass = "pivot1";
                     }
@@ -234,19 +322,36 @@
                     if (pivot3_list.includes(j)){
                         tmpClass = "pivot3";
                     }
+                    if(tmp === "answer" )
+                    {
+                        tmpClass = "special1";
+                    }
+                    var font_x = 10;
+                    if (dataset[j] >= 10)
+                    {
+                        font_x = 7;
+                    }
+                    if (dataset[j] >= 100)
+                    {
+                        font_x = 3;
+                    }
+                    if ( dataset[j] >= 1000)
+                    {
+                        font_x = -1;
+                    }
                     
                     svg.append("rect")
-                        .attr("height", dataset[j]*15)
-                        .attr("width",40)
-                        .attr("x",50*j)
-                        .attr("y",100-dataset[j]*15)
+                        .attr("height", dataset[j]*adjust)
+                        .attr("width",30)
+                        .attr("x",40*j)
+                        .attr("y",150-dataset[j]*adjust)
                         .attr("class",tmpClass);
                     
                     svg.append("text")
                         .text(function(d){return dataset[j]})
                         .attr("data",dataset[j])
-                        .attr("x",50*j+15)
-                        .attr("y",113-dataset[j]*15)
+                        .attr("x",40*j + font_x)
+                        .attr("y",163-dataset[j]*adjust)
                         .attr("class","d3text");
                 }
              } // else list end
@@ -256,7 +361,7 @@
     function highlightText(obj,txt){
         var tokens = myCodeMirror.getLineTokens(obj-1,true);
         var len = tokens.length;
-        console.log(tokens);
+        //console.log(tokens);
         var start = CodeMirror.Pos(obj-1, tokens[0].start);
         var end = CodeMirror.Pos(obj-1, tokens[len-1].end);
         var markOptions ={
@@ -265,7 +370,11 @@
         var mark = myCodeMirror.markText(start, end, markOptions);
     }
     function processing(obj){
-        var result = "<table> <thead><th>name</th> <th>value</th> <th>type</th><thead>";
+        var result = "<table> <thead><th>name</th> <th>value</th> <th>type</th><thead>"; 
+        console.log(JSON.stringify(obj));
+        if(obj.event=="raw_input"){
+            console.log("!!!haha!!")
+        }
         var len = obj.ordered_globals.length;
         for(var i=0; i<len; i++){
             if(obj.globals[obj.ordered_globals[i]][0]=="REF"){
@@ -273,9 +382,9 @@
                 var tmp = obj.ordered_globals[i];
                 var tmp2 = obj.globals[tmp][1];
                 var store=""
-                console.log("!!!!!");
-                console.log(typeof JSON.stringify(obj.heap[tmp2][1]));
-                console.log(JSON.stringify(obj.heap[tmp2].length));
+                //console.log("!!!!!");
+                //console.log(typeof JSON.stringify(obj.heap[tmp2][1]));
+                //console.log(JSON.stringify(obj.heap[tmp2].length));
                 if(obj.heap[tmp2][0]=="DICT"){
                     for(var j=1; j<JSON.stringify(obj.heap[tmp2].length);j++){
                         store=store+JSON.stringify(obj.heap[tmp2][j])+"<br>";
@@ -313,7 +422,7 @@
             newP.innerHTML = processed_code;
             ShowSliderValue(cnt,0);
             o.appendChild(newP);
-            return;
+            //return;
         }
         else if(num==1&&cnt>=total_len-1&&slider==0){
             processed_code = processing(a[cnt]);
@@ -321,7 +430,7 @@
             highlightText(a[cnt]+1,'rgb(36,37,47)');
             ShowSliderValue(cnt,0);
             o.appendChild(newP);
-            return;
+            //return;
         }
         else if(num==0&&slider==0){
             cnt=num;
@@ -330,7 +439,7 @@
             newP.innerHTML = processed_code;
             ShowSliderValue(cnt,0);
             o.appendChild(newP);
-            return;
+            //return;
         }
         else if(num==100&&slider==0){
             cnt=total_len-1;
@@ -339,7 +448,7 @@
             newP.innerHTML = processed_code;
             ShowSliderValue(cnt,0);
             o.appendChild(newP);
-            return;
+            //return;
         }
         else{
             if(slider==0){
@@ -351,7 +460,7 @@
                 o.appendChild(newP);
             }
             else if(slider==1) {
-                console.log("NUM : "+num);
+                //console.log("NUM : "+num);
                 cnt = num;
                 processed_code = processing(a[cnt]);
                 newP.innerHTML = processed_code;
@@ -359,12 +468,14 @@
                 o.appendChild(newP);
             }
         }
-        if(cnt>=0&&cnt<=total_len-3){
+
+        if(cnt>=-1&&cnt<total_len){
             console.log("cnt : "+cnt);
-            console.log("obj : "+JSON.stringify(a[cnt]));
+            //console.log("obj : "+JSON.stringify(a[cnt]));
             console.log("visualizing cnt : "+cnt);
             visualizing(obj,cnt);
         }
+        return;
     }
     function play(obj){
         if(cnt==total_len-1){
@@ -383,7 +494,7 @@
         if(num==0){
             obSlider.value = sVal;
             obValueView.innerHTML = "step "+sVal+" of "+step;
-            console.log(sVal);
+            //console.log(sVal);
         }
         if(num==1){
             obSlider.value = "step "+sVal+" of "+step;

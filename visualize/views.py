@@ -60,5 +60,6 @@ def test2_h(request):
         'code' : a,
         'trace' : trace['trace']
     }
+    print(context['trace'])
     print(context['code'])
     return render(request, 'test2_h.html', context)
