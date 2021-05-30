@@ -38,10 +38,10 @@
             <a href="/"><img id="logo" src="../static/img/codergarden_logo2.png" alt=""></a>
         </div>
         <div class="box1_nav_items" >
-            <button class = "button" onclick="location.href = '/test_h'">CODE EDIT</button>
-            <button class = "button" onclick="location.href='#popup3'">GUIDE</button>
+            <button class = "button" onclick="location.href = '/test_h'">CODE EDIT</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class = "button" onclick="location.href='#popup3'">GUIDE</button>&nbsp;&nbsp;&nbsp;&nbsp;
             {% if request.session.user_numb %}
-                <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>
+                <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>&nbsp;&nbsp;&nbsp;&nbsp;
                 <button class = "button" onclick ="location.href ='/logout'">LOGOUT</button>
             {% else %}
                 <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>

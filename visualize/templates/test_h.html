@@ -67,9 +67,9 @@
             <button class = "button" onclick="hide_codeedit()">GUIDE</button>&nbsp;&nbsp;&nbsp;&nbsp;
             {% if request.session.user_numb %}
                 <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                <button class = "button" onclick ="location.href ='/logout'">LOGOUT</button>
+                <button class = "button" onclick ="location.href ='/logout'">SIGN OUT</button>&nbsp;&nbsp;&nbsp;&nbsp;
             {% else %}
-                <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>
+                <button class = "button" onclick="hide_codeedit_signin()">SIGN IN</button>
             {% endif %}
         </div>
     </div>

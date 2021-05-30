@@ -105,9 +105,9 @@
             <button class = "button" onclick="hide_codeedit()">GUIDE</button>&nbsp;&nbsp;&nbsp;&nbsp;
            {% if request.session.user_numb %}
                 <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                <button class = "button" onclick ="location.href ='/logout'">LOGOUT</button>
+                <button class = "button" onclick ="location.href ='/logout'">SIGN OUT</button>
             {% else %}
-                <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>
+                <button class = "button" onclick="hide_codeedit_signin()">SIGN IN</button>
             {% endif %}
         </div>
     </div>
@@ -378,6 +378,7 @@
         <p id="answer_table_name"><strong>Frames</strong></p>
         <div id="table_box">
             <p id="answer_t"></p>
+            <p id="answer_f"></p>
         </div>
     </div>
     <div class="box4">
@@ -605,7 +606,22 @@
              } // else list end
         }// for end
     }//fuction end
-
+    //function or globals
+    function isFunction(obj,cnt){
+        var result = false;
+        if(cnt==-1){
+            return result;
+        }
+        len = obj['stack_to_render'].length;
+        if(len>=1){
+            console.log("FUNCTION : ",cnt);
+            result=true;
+        }
+        else{
+            result=false;
+        }
+        return result;
+    }
     function highlightText(obj,txt){
         var tokens = myCodeMirror.getLineTokens(obj-1,true);
         var len = tokens.length;
@@ -618,14 +634,15 @@
         var mark = myCodeMirror.markText(start, end, markOptions);
     }
     function processing(obj){
-        var result = "<table> <thead><th>name</th> <th>value</th> <th>type</th><thead>";
+        var result = "Global<br><br><br><table> <thead><th>name</th> <th>value</th> <th>type</th><thead>";
         var len = obj.ordered_globals.length;
         for(var i=0; i<len; i++){
             if(obj.globals[obj.ordered_globals[i]][0]=="REF"){
                 var part = "";
                 var tmp = obj.ordered_globals[i];
                 var tmp2 = obj.globals[tmp][1];
-                var store=""
+                var store="";
+                var square="";
                 console.log("!!!!!");
                 console.log(typeof JSON.stringify(obj.heap[tmp2][1]));
                 console.log(JSON.stringify(obj.heap[tmp2].length));
@@ -634,10 +651,23 @@
                         store=store+JSON.stringify(obj.heap[tmp2][j])+"<br>";
                     }
                 }
+                else if(obj.heap[tmp2][0]=="FUNCTION"){
+                    store=obj.heap[tmp2].slice(1,2);
+                }
                 else{
                     store=obj.heap[tmp2].slice(1);
+                    console.log("STORE:",store);
+                    for(var k=0; k<store.length; k++){
+                        console.log("!!!!!!!!!!!");
+                        if(store[k][0]=="REF"){
+                            console.log("HHHHHHHHHHHHH");
+                            console.log(k,store[k]);
+                            console.log("ANSWER : ",obj.heap[store[k][1]].slice(1));
+                            square+="["+obj.heap[store[k][1]].slice(1)+"]";
+                        }
+                    }
+                    store=square;
                 }
-
                 part = "<tr> <td>"+tmp +"</td>"+"<td>"+store+"</td>"+"<td>"+obj.heap[tmp2][0]+"</td>"+"</tr>";
             }
             else{
@@ -647,7 +677,60 @@
                 part = "<tr> <td>"+tmp +"</td>"+"<td>"+tmp2+"</td>"+"<td>"+typeof(tmp2)+"</td>"+ "</tr>";
             }
             result = result +"<tbody>"+ part+"</tbody>";
+        }
+        result = "<br>"+result+"</table>";
+        highlightText(prev_prev_line,'rgba(255,255,255,0)');
+        prev_prev_line = prev_line;
+        highlightText(prev_line,'rgba(255,204,102)');
+        prev_line = obj.line;
+        highlightText(obj.line,'rgba(102,204,255)');
 
+        return result;
+    }
+    function processing_f(obj){
+        if(obj['stack_to_render'].length==0){
+            var result = '';
+            return result;
+        }
+        var test1=obj['stack_to_render'][0];
+        var len = test1['ordered_varnames'].length;
+        var test2=test1['ordered_varnames'];
+        var result = test1['func_name']+"<br><br><br><table> <thead><th>name</th> <th>value</th> <th>type</th><thead>";
+        for(var i=0; i<len; i++){
+            var part = "";
+            var tmp=test2[i];
+            var tmp2=test1['encoded_locals'][tmp];
+            if(tmp2[0]=="REF"){
+                var part = "";
+                var fmp2 = test1['encoded_locals'][tmp][0];
+                var store="";
+                var square="";
+                if(obj.heap[tmp2[1]]=="DICT"){
+                    for(var j=1; j<JSON.stringify(obj.heap[tmp2].length);j++){
+                        store=store+JSON.stringify(obj.heap[tmp2][j])+"<br>";
+                    }
+                }
+                else{
+                    store=obj.heap[tmp2[1]].slice(1);
+                    for(var k=0; k<store.length; k++){
+                        if(store[k][0]=="REF"){
+                            square+="["+obj.heap[store[k][1]].slice(1)+"]";
+                        }
+                    }
+                    store=square;
+                }
+                part = "<tr> <td>"+tmp +"</td>"+"<td>"+store+"</td>"+"<td>"+obj.heap[tmp2[1]][0]+"</td>"+"</tr>";
+            }
+            else{
+                var part = "";
+                var tmp=test2[i];
+                var tmp2=test1['encoded_locals'][tmp];
+                console.log("LEN!!!!"+len);
+                part = "<tr> <td>"+tmp +"</td>"+"<td>"+tmp2+"</td>"+"<td>"+typeof(tmp2)+"</td>"+ "</tr>";
+                console.log("!~~~~~~~~~~~~~~~~~~~~~!");
+                console.log(tmp, tmp2);
+            }
+            result = result +"<tbody>"+ part+"</tbody>";
         }
         result = "<br>"+result+"</table>";
         highlightText(prev_prev_line,'rgba(255,255,255,0)');
@@ -661,60 +744,125 @@
     function answer_hong(obj, num, slider){
         var processed_code;
         var newP=document.getElementById("answer_t");
+        var newF=document.getElementById("answer_f");
         var o = newP.parentElement;
+        var f = newF.parentElement;
         if(num==-1&&cnt<=0&&slider==0){
-            processed_code = processing(a[cnt]);
-            newP.innerHTML = processed_code;
-            ShowSliderValue(cnt,0);
-            o.appendChild(newP);
-            return;
+            if(isFunction(a[cnt],cnt)){
+                processed_code = processing(a[cnt]);
+                newF.innerHTML = processed_code;
+                ShowSliderValue(cnt,0);
+                f.appendChild(newF);
+                return;
+            }
+            else{
+                processed_code = processing(a[cnt]);
+                newP.innerHTML = processed_code;
+                ShowSliderValue(cnt,0);
+                o.appendChild(newP);
+                return;
+            }
         }
         else if(num==1&&cnt>=total_len-1&&slider==0){
-            processed_code = processing(a[cnt]);
-            newP.innerHTML = processed_code
-            highlightText(a[cnt]+1,'rgb(36,37,47)');
-            ShowSliderValue(cnt,0);
-            o.appendChild(newP);
-            return;
+            if(isFunction(a[cnt],cnt)){
+                processed_code = processing(a[cnt]);
+                newF.innerHTML = processed_code
+                highlightText(a[cnt]+1,'rgb(36,37,47)');
+                ShowSliderValue(cnt,0);
+                f.appendChild(newF);
+                return;
+            }
+            else{
+                processed_code = processing(a[cnt]);
+                newP.innerHTML = processed_code
+                highlightText(a[cnt]+1,'rgb(36,37,47)');
+                ShowSliderValue(cnt,0);
+                o.appendChild(newP);
+                return;
+            }
         }
         else if(num==0&&slider==0){
-            cnt=num+1;
-            processed_code = processing(a[cnt]);
-            visualizing(obj,cnt);
-            processed_code = processing(a[cnt]);
-            newP.innerHTML = processed_code;
-            ShowSliderValue(cnt,0);
-            o.appendChild(newP);
-            visualizing(obj,cnt);
-            return;
+            if(isFunction(a[cnt],cnt)){
+                cnt=num+1;
+                processed_code = processing_f(a[cnt]);
+                visualizing(obj,cnt);
+                processed_code = processing_f(a[cnt]);
+                newF.innerHTML = processed_code;
+                ShowSliderValue(cnt,0);
+                f.appendChild(newF);
+                visualizing(obj,cnt);
+                return;
+            }
+            else{
+                cnt=num+1;
+                processed_code = processing(a[cnt]);
+                visualizing(obj,cnt);
+                processed_code = processing(a[cnt]);
+                newP.innerHTML = processed_code;
+                ShowSliderValue(cnt,0);
+                o.appendChild(newP);
+                visualizing(obj,cnt);
+                return;
+            }
         }
         else if(num==100&&slider==0){
-            cnt=total_len-1;
-            processed_code = processing(a[cnt]);
-            visualizing(obj,cnt);
-            processed_code = processing(a[cnt]);
-            newP.innerHTML = processed_code;
-            visualizing(obj,cnt);
-            ShowSliderValue(cnt,0);
-            o.appendChild(newP);
-            return;
+            if(isFunction(a[cnt],cnt)){
+                cnt=total_len-1;
+                processed_code = processing_f(a[cnt]);
+                visualizing(obj,cnt);
+                processed_code = processing_f(a[cnt]);
+                newF.innerHTML = processed_code;
+                visualizing(obj,cnt);
+                ShowSliderValue(cnt,0);
+                f.appendChild(newF);
+                return;
+            }
+            else{
+                cnt=total_len-1;
+                processed_code = processing(a[cnt]);
+                visualizing(obj,cnt);
+                processed_code = processing(a[cnt]);
+                newP.innerHTML = processed_code;
+                visualizing(obj,cnt);
+                ShowSliderValue(cnt,0);
+                o.appendChild(newP);
+                return;
+            }
         }
         else{
             if(slider==0){
-                cnt = cnt+num;
-
-                processed_code = processing(a[cnt]);
-                newP.innerHTML = processed_code;
-                ShowSliderValue(cnt,0);
-                o.appendChild(newP);
+                if(isFunction(a[cnt],cnt)){
+                    cnt=cnt+num;
+                    processed_code = processing_f(a[cnt]);
+                    newF.innerHTML = processed_code;
+                    ShowSliderValue(cnt,0);
+                    f.appendChild(newF);
+                }
+                else{
+                    cnt = cnt+num;
+                    processed_code = processing(a[cnt]);
+                    newP.innerHTML = processed_code;
+                    ShowSliderValue(cnt,0);
+                    o.appendChild(newP);
+                }
             }
             else if(slider==1) {
-                console.log("NUM : "+num);
-                cnt = num;
-                processed_code = processing(a[cnt]);
-                newP.innerHTML = processed_code;
-                ShowSliderValue(cnt,0);
-                o.appendChild(newP);
+                if(isFunction(a[cnt],cnt)){
+                    console.log("NUM : "+num);
+                    cnt = num;
+                    processed_code = processing_f(a[cnt]);
+                    newF.innerHTML = processed_code;
+                    ShowSliderValue(cnt,0);
+                    f.appendChild(newF);
+                }
+                else{
+                    console.log("NUM : "+num);
+                    cnt = num;
+                    processed_code = processing(a[cnt]);
+                    newP.innerHTML = processed_code;
+                    ShowSliderValue(cnt,0);
+                    o.appendChild(newP);
+                }
             }
         }
         if(cnt>-1&&cnt<total_len){
