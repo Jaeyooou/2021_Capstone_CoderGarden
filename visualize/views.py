@@ -51,6 +51,7 @@ def get_exec(main_text):
                                   options['heap_primitives'],
                                   json_finalizer)
     # print(main_text)
+
     return out_s.getvalue()
 
 
@@ -59,7 +60,7 @@ def test_h(request):
     # 만약 여기서
     print("hi")
     return render(request, 'test_h.html' , context = {
-        'code' : """""",
+        'code' : ["d"],
         'error' : '',
         'catch' : 0
     })
@@ -77,48 +78,47 @@ def test2_h(request):
     print(text)
     # 예외처리
     try:
+        print("try context")
         exec(text)
+        print("after text")
     except Exception as e:
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("1111111111111111111")
+        print("the code  is " + eval(get_exec(text))['code'])
         context = {
             'code' : eval(get_exec(text))['code'] ,
             'catch' : 1 ,
             'error' : e
         }
-        print("Exception is " + str(e))
         return render(request , 'test_h.html' , context)
         # 예외처리 하였지만 js 에서 출력이 되지않음
-    else:
-        start_time = time.time()
-        trace = eval(get_exec(text))
-        print(trace)
-        a.append(trace['code'])
-        execution_time = time.time() - start_time
+    start_time = time.time()
+    trace = eval(get_exec(text))
+    print(trace)
+    a.append(trace['code'])
+    execution_time = time.time() - start_time
 
-        user_session_numb = request.session.get('user_numb')# 유저 세션 있고 ,
-        if user_session_numb:# 세션이 존재한다면
-            # print(user_session_numb)
-            # print(type(user_session_numb))
-            Sourcecode(
-               user_code = text ,
-               code_date = datetime.datetime.now() ,
-               code_title = 'Bubble_sort' ,
-               process_time= execution_time ,
-               user_number = Member.objects.get(user_number = user_session_numb)
-            ).save()
-        print(type(trace))
-        #print(trace['exception_msg'])
-        # print(text)
-        # print(trace)
-        # print(type(trace['code']))
-        # print(trace)
-        print((trace['trace']))
-        context = {
-            'code' : a,
-            'trace' : trace['trace'],
-        }
-        # print(context['code'])
-        return render(request, 'test2_h.html', context)
+    user_session_numb = request.session.get('user_numb')# 유저 세션 있고 ,
+    if user_session_numb:# 세션이 존재한다면
+        # print(user_session_numb)
+        # print(type(user_session_numb))
+        Sourcecode(
+           user_code = text ,
+           code_date = datetime.datetime.now() ,
+           code_title = 'Bubble_sort' ,
+           process_time= execution_time ,
+           user_number = Member.objects.get(user_number = user_session_numb)
+        ).save()
+    #print(trace['exception_msg'])
+    # print(text)
+    # print(trace)
+    # print(type(trace['code']))
+    # print(trace)
+    context = {
+        'code' : a,
+        'trace' : trace['trace'],
+    }
+    # print(context['code'])
+    return render(request, 'test2_h.html', context)
 
 def search_table(request):
     search_key = request.GET['search_key']
