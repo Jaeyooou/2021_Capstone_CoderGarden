@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import time , datetime
@@ -6,6 +6,7 @@ import time , datetime
 from account.models import Member, Sourcecode
 from visualize.code_processing import pg_logger
 import io as StringIO # NB: don't use cStringIO since it doesn't support unicode!!!
+
 import json
 #---------------------------------python tutor import--------------------------------
 
@@ -27,11 +28,10 @@ def code_write(request):
 def compiler(request):
     if request.method == 'POST':
         text = request.POST['code']
-        print(text)
-        print(type(text))
+        # print(text)
+        # print(type(text))
 
-        exec(text)
-        get_exec(text)
+        # get_exec(text)
     return render(request , '../templates/compile.html')
 
 
@@ -50,13 +50,19 @@ def get_exec(main_text):
                                   options['cumulative_mode'],
                                   options['heap_primitives'],
                                   json_finalizer)
-    print("MAINTEXT다이새끼야조")
-    print(main_text)
+    # print(main_text)
     return out_s.getvalue()
 
 
 def test_h(request):
-    return render(request, 'test_h.html')
+    # confirm -> post 로 설정하고
+    # 만약 여기서
+    print("hi")
+    return render(request, 'test_h.html' , context = {
+        'code' : """""",
+        'error' : '',
+        'catch' : 0
+    })
 
 def visualize(request):
     return render(request, 'visualize.html')
@@ -65,37 +71,54 @@ def main_test(request):
     return render(request, 'main_test.html')
 
 def test2_h(request):
+    print("start")
     a=[]
     text = request.GET['code']
-    start_time = time.time()
-    trace = eval(get_exec(text))
-
-    a.append(trace['code'])
-    print(a)
-    execution_time = time.time() - start_time
-
-    user_session_numb = request.session.get('user_numb')# 유저 세션 있고 ,
-    if user_session_numb:# 세션이 존재한다면
-        print(user_session_numb)
-        print(type(user_session_numb))
-        Sourcecode(
-           user_code = text ,
-           code_date = datetime.datetime.now() ,
-           code_title = 'Bubble_sort' ,
-           process_time= execution_time ,
-           user_number = Member.objects.get(user_number = user_session_numb)
-        ).save()
     print(text)
-    print(trace)
-    print(type(trace['code']))
-    print(trace)
-    print(type(trace['trace']))
-    context = {
-        'code' : a,
-        'trace' : trace['trace']
-    }
-    print(context['code'])
-    return render(request, 'test2_h.html', context)
+    # 예외처리
+    try:
+        exec(text)
+    except Exception as e:
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        context = {
+            'code' : eval(get_exec(text))['code'] ,
+            'catch' : 1 ,
+            'error' : e
+        }
+        print("Exception is " + str(e))
+        return render(request , 'test_h.html' , context)
+        # 예외처리 하였지만 js 에서 출력이 되지않음
+    else:
+        start_time = time.time()
+        trace = eval(get_exec(text))
+        print(trace)
+        a.append(trace['code'])
+        execution_time = time.time() - start_time
+
+        user_session_numb = request.session.get('user_numb')# 유저 세션 있고 ,
+        if user_session_numb:# 세션이 존재한다면
+            # print(user_session_numb)
+            # print(type(user_session_numb))
+            Sourcecode(
+               user_code = text ,
+               code_date = datetime.datetime.now() ,
+               code_title = 'Bubble_sort' ,
+               process_time= execution_time ,
+               user_number = Member.objects.get(user_number = user_session_numb)
+            ).save()
+        print(type(trace))
+        #print(trace['exception_msg'])
+        # print(text)
+        # print(trace)
+        # print(type(trace['code']))
+        # print(trace)
+        print((trace['trace']))
+        context = {
+            'code' : a,
+            'trace' : trace['trace'],
+        }
+        # print(context['code'])
+        return render(request, 'test2_h.html', context)
 
 def search_table(request):
     search_key = request.GET['search_key']

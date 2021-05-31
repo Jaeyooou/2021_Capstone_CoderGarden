@@ -38,7 +38,16 @@
         var codeEnd = "# code end\n\n";
         var code = "def solution():\n\tpass\n\n";
         var main = "if __name__ == '__main__':\n\n";
-        var initValue = version + codeAreaTip + codeStart + code + main + codeEnd ;
+        var a  = {{catch|safe}};
+        var initValue;
+        if(a == 0){
+            initValue = version + codeAreaTip + codeStart + code + main + codeEnd ;}
+        else{
+            initValue = "{{ code|safe }}";
+            console.log(initValue);
+            alert("{{ error|safe}}");
+        }
+
     </script>
     <script>
         function hide_codeedit(){
@@ -372,7 +381,6 @@
         if (input.text[0] === ';' || input.text[0] === ' ' || input.text[0] === ":") {
             return;
         }
-
         editor.showHint({
             hint: CodeMirror.pythonHint
         });

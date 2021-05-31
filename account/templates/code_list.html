@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block contents %}
+
 <div class="row mt-5">
     <div class="col-12">
         <table class="table">
@@ -18,7 +19,7 @@
                     <th>{{forloop.counter}}</th>
                     <td><a href = "/code/{{list.code_number}}">{{list.code_title}}</a></td>
                     <td>{{list.process_time}}</td>
-                    <td>{{list.code_date}}</td>
+                    <td>{{list.code_date}}</td>ㅊㅊ
                 </tr>
             {% endfor %}
             </tbody>
