@@ -82,28 +82,19 @@
             {% endif %}
       </div>
     </div>
-    <div class="box2">
+    <div class="box9">
         <p>Python 3.8</p>
         <form action="/test2_h/">
             <div id="hong"><textarea class="cm_test" id = "code_editor" name="code"></textarea></div>
             <div id="confirm_btn">
-                <div id="confirm_btn_box1"><img src="../static/img/orange.png" alt=""> &nbsp;line that just executed<br><img
-                        src="../static/img/blue.png" alt=""> &nbsp;next line to excute</div>
-                <div id="confirm_btn_box2"><p id="slider_value_view">step of</p></div>
+                <div id="confirm_btn_box1"><img src="../static/img/orange.png" alt=""> <br><img
+                        src="../static/img/blue.png" alt=""> </div>
+                <div id="confirm_btn_box2"><p id="slider_value_view"></p></div>
                 <div id="confirm_btn_box3"><button id="confirm_btn_real" type="submit">CONFRIRM</button></div>
             </div>
-            <div class="slider_box" >
-                <input id="slider" size=100 oninput='ShowSliderValue(this.value, 1)'  type="range" min='0' max='100' value='0'>
-            </div>
+
         </form>
-        <div id="control_box">
-            <button id="processing" onclick="answer(this, 0, 0)">FIRST</button>
-            <button onclick="answer(this, -1, 0)">PREV</button>
-            <button id="PlayBtn" onclick="play(this)">PLAY</button>
-            <button onclick="answer(this, 1, 0)">NEXT</button>
-            <button onclick="answer(this, 100, 0)">LAST</button>
-        <hr>
-        </div>
+
         <div>
             <p id="explanation">
                 <h4>How to use</h4>
@@ -344,17 +335,6 @@
             </div>
         </div>
         <!--가이드 팝업 창-->
-    </div>
-    <div class="box3">
-        <p id="answer_table_name">Frames</p>
-        <div id="table_box">
-            <p id="answer"></p>
-        </div>
-    </div>
-    <div class="box4">
-        <p id="visu_name">Visualize</p>
-        <p id="visu">
-        <p></p>
     </div>
 </div>
 <script>
