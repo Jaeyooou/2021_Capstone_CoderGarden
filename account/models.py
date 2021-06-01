@@ -132,7 +132,7 @@ class Member(models.Model):
 class Sourcecode(models.Model):
     user_code = models.TextField(db_column='User_code', blank=True, null=True)  # Field name made lowercase.
     code_date = models.DateField(blank=True, null=True)
-    code_title = models.CharField(max_length=30, blank=True, null=True)
+    code_title = models.CharField(max_length=50, blank=True, null=True)
     process_time = models.FloatField(blank=True, null=True)
     user_number = models.ForeignKey(Member, models.DO_NOTHING, db_column='User_number', blank=True, null=True)  # Field name made lowercase.
     code_number = models.AutoField(primary_key=True)

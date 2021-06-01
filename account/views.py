@@ -115,4 +115,4 @@ def codeview(request , code_num):
     print(code_num)
     code = Sourcecode.objects.get(code_number = code_num)
     print(code.user_code)
-    return render(request , 'detail.html' ,{'code' : code.user_code})
+    return render(request , 'MycodeList.html' ,{'code' : code.user_code})

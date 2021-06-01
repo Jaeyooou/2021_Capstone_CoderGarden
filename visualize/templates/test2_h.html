@@ -69,6 +69,40 @@
             {#font-weight:bold;#}
             font-size:12px;
         }
+        .special1
+        {
+            fill:orangered;
+        }
+        .special2
+        {
+            fill:#75787b;
+        }
+        #functionVisu
+        {
+            margin-top: 10px;
+            border-left : 3px solid grey;
+            padding-left : 5px;
+        }
+        #visu
+        {
+            margin-top: 10px;
+            border-left : 3px solid orange;
+            padding-left : 5px;
+        }
+        .functiond3{
+            fill:gold;
+        }
+        .nameForD3
+        {
+            padding-top: 20px;
+        }
+        #consoles
+        {
+            height : auto;
+            width : 100%;
+            border : 1px solid grey;
+            text-align : left;
+        }
     </style>
     <script>
         function hide_codeedit(){
@@ -97,9 +131,9 @@
             <button class = "button" onclick="hide_codeedit()">GUIDE</button>&nbsp;&nbsp;&nbsp;&nbsp;
            {% if request.session.user_numb %}
                 <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                <button class = "button" onclick ="location.href ='/logout'">LOGOUT</button>
+                <button class = "button" onclick ="location.href ='/logout'">SIGN OUT</button>
             {% else %}
-                <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>
+                <button class = "button" onclick="hide_codeedit_signin()">SIGN IN</button>
             {% endif %}
         </div>
     </div>
@@ -123,6 +157,8 @@
             <button id="PlayBtn" onclick="play(this)">PLAY</button>
             <button onclick="answer_hong(this, 1, 0)">NEXT</button>
             <button onclick="answer_hong(this, 100, 0)">LAST</button>
+            <p style = "text-align: left;">console</p>
+            <div id = "consoles"></div>
         <hr>
         </div>
         <div>
@@ -370,11 +406,15 @@
         <p id="answer_table_name"><strong>Frames</strong></p>
         <div id="table_box">
             <p id="answer_t"></p>
+            <p id="answer_f"></p>
         </div>
     </div>
     <div class="box4">
         <p id="visu_name"><strong>Visualize</strong></p>
+        <p class = "nameForD3">Globals</p>
         <p id="visu">
+        <p id = "functionName" class = "nameForD3"></p>
+        <p id = "functionVisu"></p>
         <p></p>
     </div>
 </div>
@@ -405,7 +445,7 @@
 
     // various visualization
     var b = {{ code|safe }};
-    var a = {{ fuck|safe }};
+    var a = {{ trace|safe }};
     var cnt = -1;
     var total_len = a.length;
     var prev_line = 0
@@ -419,6 +459,146 @@
         const wakeUpTime = Date.now() + ms;
         while (Date.now() < wakeUpTime) {}
     }
+
+    function consoles(obj,num)
+    {
+        var tt = document.getElementById("consoles");
+
+        if (a[num].stdout.length == 0)
+            {
+
+                console.log("stdout is null");
+                tt.innerHTML = "";
+                return;
+            }
+        else{
+            console.log(a[num].stdout);
+            var regex = '\n';
+
+            tt.innerHTML = a[num].stdout.replace(/\n/gi,'<br>');
+        }
+    }
+
+    var naming = document.getElementById("functionName");
+    function visualizing_function(obj,num)  //function visualization
+    {
+        // if(obj['stack_to_render'].length==0){
+        //     return;
+        // }
+
+        var index = num;
+        if (a[index]['stack_to_render'].length == 0)
+        {
+            var result = '';
+            var t = document.getElementById("functionVisu");
+            t.innerHTML = result;
+            return;
+        }
+
+
+        if ( a[index].func_name != "<module>")
+            naming.innerHTML = a[index].func_name;
+        console.log("function_name : " + a[index].func_name);
+        var target = {{trace|safe}};
+        var tmp = a[index].stack_to_render[0].encoded_locals; //var list
+        var names = a[index].stack_to_render[0].ordered_varnames;//var name list
+
+        for ( var i = 0 ; i < names.length ; i ++)
+        {
+            var realName = names[i];
+            if (names[i] == "pivot1")
+                pivot1 = tmp[names[i]];
+            if(names[i] == "pivot2")
+                pivot2 = tmp[names[i]];
+
+            if (typeof(tmp[names[i]]) != "object")
+            {
+                console.log("this is not list");
+                continue;
+            }
+            var targetBorder = document.getElementById("functionVisu");
+            // targetBorder.style.border = "2px solid orange";
+            console.log("this is list");
+            var target1 = tmp[names[i]];
+            var target2 = target1[1]; //ger REF for heap
+            var list = a[index].heap[target2];
+            if (list[0] == "DICT")
+            {
+                continue;
+            }
+            if (list[1][0] == "REF")
+                continue;
+
+            var dataset = list.slice(1);
+            var ddd = document.getElementsByClassName(realName)
+            if (ddd.length >= 1)
+            {
+                for (var n = 0 ; n < ddd.length ; n ++)
+                ddd[0].remove();
+            }
+
+
+            var width = 40*dataset.length + 100;
+            var height = 180;
+            var svg = d3.select("#functionVisu").append("svg")  // insert svg in #visu (p)  (insert everyday not delete previous list)
+                .attr("width", width)
+                .attr("height",height)
+                .attr("class",realName);  //tmp is the name of variable
+
+
+            var max = Math.max.apply(null,dataset);
+            var adjust = 110/max;
+            svg.append("text")
+                .text(names[i])
+                .attr("x",1)
+                .attr("y",20)
+                .attr("class","namefont");
+
+            for ( var j = 0 ; j < dataset.length ; j ++){//set svg bar attribute
+
+                tmpClass = "functiond3";
+                if(j == pivot1)
+                    tmpClass = "pivot1";
+                if (j == pivot2)
+                    tmpClass = "pivot2";
+                if (pivot3_list.includes(j))
+                    tmpClass = "pivot3";
+
+                var font_x = 10;
+                if (dataset[j]>=10)
+                {
+                    font_x = 7;
+                }
+                if (dataset[j] >= 100)
+                {
+                    font_x = 3;
+                }
+                if ( dataset[j] >= 1000)
+                {
+                        font_x = -1;
+                }
+
+                svg.append("rect")
+                    .attr("height", dataset[j]*adjust)
+                    .attr("width",30)
+                    .attr("x",40*j)
+                    .attr("y",150-dataset[j]*adjust)
+                    .attr("class",tmpClass);
+
+                svg.append("text")
+                    .text(function(d){return dataset[j]})
+                    .attr("data",dataset[j])
+                    .attr("x",40*j + font_x)
+                    .attr("y",163-dataset[j]*adjust)
+                    .attr("class","d3text");
+
+            }//dataset d3making
+        }//names.length
+
+    } //function end
+
+
+
     //viusalizing list function _RK
     function visualizing(obj,num) {
 
@@ -447,6 +627,49 @@
             //console.log("for i in " + i);
             var tmp = target[index].ordered_globals[i];   // get variable name
             var tmp2 = target[index].globals[tmp][1];   // can divide if it is int or list
+            if (tmp === "max" || tmp == "min") //max and min exceptional color int
+            {
+
+                var tt = document.getElementById(tmp);
+                if (tt != null)
+                {
+                    tt.remove();
+                }
+
+
+                var targetint = target[index].globals[tmp];
+                dataset = [targetint];
+
+                var width = 40*dataset.length + 100;
+                var height = 180;
+                var svg = d3.select("#visu").append("svg")  // insert svg in #visu (p)  (insert everyday not delete previous list)
+                .attr("width", width)
+                .attr("height",height)
+                .attr("id",tmp);  //tmp is the name of variable
+
+                var max = Math.max.apply(null,dataset);
+                var adjust = 110/max;
+                svg.append("text")
+                .text(tmp)
+                .attr("x",1)
+                .attr("y",20)
+                .attr("class","namefont");
+                var tmpClass = "special2"
+                svg.append("rect")
+                        .attr("height", dataset[0]*adjust)
+                        .attr("width",30)
+                        .attr("x",40*0)
+                        .attr("y",150-dataset[0]*adjust)
+                        .attr("class",tmpClass);
+
+                    svg.append("text")
+                        .text(function(d){return dataset[0]})
+                        .attr("data",dataset[0])
+                        .attr("x",40*0 + font_x)
+                        .attr("y",163-dataset[0]*adjust)
+                        .attr("class","d3text");
+
+            }
             if (tmp2 === undefined){
                 //console.log("now in int");
                 var targetint = target[index].globals[tmp];
@@ -462,6 +685,12 @@
                 //console.log("tmp2 : "+ tmp2);
                 //console.log("targetarr : "+targetarr);
                 //console.log("NOW TARGET : "+JSON.stringify(target[index]));
+
+                if (targetarr[0] == "DICT")
+                    continue;
+                if (targetarr[1][0] == "REF")
+                    continue;
+
 
                 var dataset = targetarr.slice(1);  //slice to use list data (not inclue key)
 
@@ -519,6 +748,10 @@
                     if (pivot3_list.includes(j)){
                         tmpClass = "pivot3";
                     }
+                    if (tmp === "answer")
+                    {
+                        tmpClass = "special1";
+                    }
                     var font_x = 10;
                     if (dataset[j]>=10)
                     {
@@ -550,7 +783,22 @@
              } // else list end
         }// for end
     }//fuction end
-
+    //function or globals
+    function isFunction(obj,cnt){
+        var result = false;
+        if(cnt==-1){
+            return result;
+        }
+        len = obj['stack_to_render'].length;
+        if(len>=1){
+            console.log("FUNCTION : ",cnt);
+            result=true;
+        }
+        else{
+            result=false;
+        }
+        return result;
+    }
     function highlightText(obj,txt){
         var tokens = myCodeMirror.getLineTokens(obj-1,true);
         var len = tokens.length;
@@ -563,14 +811,15 @@
         var mark = myCodeMirror.markText(start, end, markOptions);
     }
     function processing(obj){
-        var result = "<table> <thead><th>name</th> <th>value</th> <th>type</th><thead>";
+        var result = "Global<br><br><br><table> <thead><th>name</th> <th>value</th> <th>type</th><thead>";
         var len = obj.ordered_globals.length;
         for(var i=0; i<len; i++){
             if(obj.globals[obj.ordered_globals[i]][0]=="REF"){
                 var part = "";
                 var tmp = obj.ordered_globals[i];
                 var tmp2 = obj.globals[tmp][1];
-                var store=""
+                var store="";
+                var square="";
                 console.log("!!!!!");
                 console.log(typeof JSON.stringify(obj.heap[tmp2][1]));
                 console.log(JSON.stringify(obj.heap[tmp2].length));
@@ -579,10 +828,27 @@
                         store=store+JSON.stringify(obj.heap[tmp2][j])+"<br>";
                     }
                 }
+                else if(obj.heap[tmp2][0]=="FUNCTION"){
+                    store=obj.heap[tmp2].slice(1,2);
+                }
                 else{
                     store=obj.heap[tmp2].slice(1);
+                    console.log("STORE:",store);
+                    if(store.length>=1){
+                        if(store[0][0]=="REF"){
+                            for(var k=0; k<store.length; k++){
+                                console.log("!!!!!!!!!!!");
+                                if(store[k][0]=="REF"){
+                                    console.log("HHHHHHHHHHHHH");
+                                    console.log(k,store[k]);
+                                    console.log("ANSWER : ",obj.heap[store[k][1]].slice(1));
+                                    square+="["+obj.heap[store[k][1]].slice(1)+"]";
+                                }
+                            }
+                            store=square;
+                        }
+                    }
                 }
-
                 part = "<tr> <td>"+tmp +"</td>"+"<td>"+store+"</td>"+"<td>"+obj.heap[tmp2][0]+"</td>"+"</tr>";
             }
             else{
@@ -592,7 +858,64 @@
                 part = "<tr> <td>"+tmp +"</td>"+"<td>"+tmp2+"</td>"+"<td>"+typeof(tmp2)+"</td>"+ "</tr>";
             }
             result = result +"<tbody>"+ part+"</tbody>";
+        }
+        result = "<br>"+result+"</table>";
+        highlightText(prev_prev_line,'rgba(255,255,255,0)');
+        prev_prev_line = prev_line;
+        highlightText(prev_line,'rgba(255,204,102)');
+        prev_line = obj.line;
+        highlightText(obj.line,'rgba(102,204,255)');
 
+        return result;
+    }
+    function processing_f(obj){
+        if(obj['stack_to_render'].length==0){
+            var result = '';
+            return result;
+        }
+        var test1=obj['stack_to_render'][0];
+        var len = test1['ordered_varnames'].length;
+        var test2=test1['ordered_varnames'];
+        var result = test1['func_name']+"<br><br><br><table> <thead><th>name</th> <th>value</th> <th>type</th><thead>";
+        for(var i=0; i<len; i++){
+            var part = "";
+            var tmp=test2[i];
+            var tmp2=test1['encoded_locals'][tmp];
+            if(tmp2[0]=="REF"){
+                var part = "";
+                var fmp2 = test1['encoded_locals'][tmp][0];
+                var store="";
+                var square="";
+                if(obj.heap[tmp2[1]]=="DICT"){
+                    for(var j=1; j<JSON.stringify(obj.heap[tmp2].length);j++){
+                        store=store+JSON.stringify(obj.heap[tmp2][j])+"<br>";
+                    }
+                }
+                else{
+                    store=obj.heap[tmp2[1]].slice(1);
+                    if(store.length>=1){
+                        if(store[0][0]=="REF"){
+                            for(var k=0; k<store.length; k++){
+                                if(store[k][0]=="REF"){
+                                    square+="["+obj.heap[store[k][1]].slice(1)+"]";
+                                }
+                            }
+                            store=square;
+                        }
+                    }
+                }
+                part = "<tr> <td>"+tmp +"</td>"+"<td>"+store+"</td>"+"<td>"+obj.heap[tmp2[1]][0]+"</td>"+"</tr>";
+            }
+            else{
+                var part = "";
+                var tmp=test2[i];
+                var tmp2=test1['encoded_locals'][tmp];
+                console.log("LEN!!!!"+len);
+                part = "<tr> <td>"+tmp +"</td>"+"<td>"+tmp2+"</td>"+"<td>"+typeof(tmp2)+"</td>"+ "</tr>";
+                console.log("!~~~~~~~~~~~~~~~~~~~~~!");
+                console.log(tmp, tmp2);
+            }
+            result = result +"<tbody>"+ part+"</tbody>";
         }
         result = "<br>"+result+"</table>";
         highlightText(prev_prev_line,'rgba(255,255,255,0)');
@@ -606,60 +929,143 @@
     function answer_hong(obj, num, slider){
         var processed_code;
         var newP=document.getElementById("answer_t");
+        var newF=document.getElementById("answer_f");
         var o = newP.parentElement;
+        var f = newF.parentElement;
         if(num==-1&&cnt<=0&&slider==0){
-            processed_code = processing(a[cnt]);
-            newP.innerHTML = processed_code;
-            ShowSliderValue(cnt,0);
-            o.appendChild(newP);
-            return;
+            if(isFunction(a[cnt],cnt)){
+                processed_code = processing(a[cnt]);
+                newF.innerHTML = processed_code;
+                ShowSliderValue(cnt,0);
+                f.appendChild(newF);
+                visualizing_function(obj,cnt);
+                consoles(obj,cnt);
+                return;
+            }
+            else{
+                processed_code = processing(a[cnt]);
+                newP.innerHTML = processed_code;
+                ShowSliderValue(cnt,0);
+                o.appendChild(newP);
+                consoles(obj,cnt);
+                return;
+            }
         }
         else if(num==1&&cnt>=total_len-1&&slider==0){
-            processed_code = processing(a[cnt]);
-            newP.innerHTML = processed_code
-            highlightText(a[cnt]+1,'rgb(36,37,47)');
-            ShowSliderValue(cnt,0);
-            o.appendChild(newP);
-            return;
+            if(isFunction(a[cnt],cnt)){
+                processed_code = processing(a[cnt]);
+                newF.innerHTML = processed_code
+                highlightText(a[cnt]+1,'rgb(36,37,47)');
+                ShowSliderValue(cnt,0);
+                f.appendChild(newF);
+                visualizing_function(obj,cnt);
+                consoles(obj,cnt);
+                return;
+            }
+            else{
+                processed_code = processing(a[cnt]);
+                newP.innerHTML = processed_code
+                highlightText(a[cnt]+1,'rgb(36,37,47)');
+                ShowSliderValue(cnt,0);
+                o.appendChild(newP);
+                consoles(obj,cnt);
+                return;
+            }
         }
         else if(num==0&&slider==0){
-            cnt=num+1;
-            processed_code = processing(a[cnt]);
-            visualizing(obj,cnt);
-            processed_code = processing(a[cnt]);
-            newP.innerHTML = processed_code;
-            ShowSliderValue(cnt,0);
-            o.appendChild(newP);
-            visualizing(obj,cnt);
-            return;
+            if(isFunction(a[cnt],cnt)){
+                cnt=num+1;
+                processed_code = processing_f(a[cnt]);
+                visualizing(obj,cnt);
+                processed_code = processing_f(a[cnt]);
+                newF.innerHTML = processed_code;
+                ShowSliderValue(cnt,0);
+                f.appendChild(newF);
+                visualizing(obj,cnt);
+                visualizing_function(obj,cnt);
+                consoles(obj,cnt);
+                return;
+            }
+            else{
+                cnt=num+1;
+                processed_code = processing(a[cnt]);
+                visualizing(obj,cnt);
+                processed_code = processing(a[cnt]);
+                newP.innerHTML = processed_code;
+                ShowSliderValue(cnt,0);
+                o.appendChild(newP);
+                visualizing(obj,cnt);
+                consoles(obj,cnt);
+                return;
+            }
         }
         else if(num==100&&slider==0){
-            cnt=total_len-1;
-            processed_code = processing(a[cnt]);
-            visualizing(obj,cnt);
-            processed_code = processing(a[cnt]);
-            newP.innerHTML = processed_code;
-            visualizing(obj,cnt);
-            ShowSliderValue(cnt,0);
-            o.appendChild(newP);
-            return;
+            if(isFunction(a[cnt],cnt)){
+                cnt=total_len-1;
+                processed_code = processing_f(a[cnt]);
+                visualizing(obj,cnt);
+                processed_code = processing_f(a[cnt]);
+                newF.innerHTML = processed_code;
+                visualizing(obj,cnt);
+                ShowSliderValue(cnt,0);
+                f.appendChild(newF);
+                visualizing_function(obj,cnt);
+                consoles(obj,cnt);
+                return;
+            }
+            else{
+                cnt=total_len-1;
+                processed_code = processing(a[cnt]);
+                visualizing(obj,cnt);
+                processed_code = processing(a[cnt]);
+                newP.innerHTML = processed_code;
+                visualizing(obj,cnt);
+                ShowSliderValue(cnt,0);
+                o.appendChild(newP);
+                consoles(obj,cnt);
+                return;
+            }
         }
         else{
             if(slider==0){
-                cnt = cnt+num;
-
-                processed_code = processing(a[cnt]);
-                newP.innerHTML = processed_code;
-                ShowSliderValue(cnt,0);
-                o.appendChild(newP);
+                if(isFunction(a[cnt],cnt)){
+                    cnt=cnt+num;
+                    processed_code = processing_f(a[cnt]);
+                    newF.innerHTML = processed_code;
+                    ShowSliderValue(cnt,0);
+                    f.appendChild(newF);
+                    visualizing_function(obj,cnt);
+                    consoles(obj,cnt);
+                }
+                else{
+                    cnt = cnt+num;
+                    processed_code = processing(a[cnt]);
+                    newP.innerHTML = processed_code;
+                    ShowSliderValue(cnt,0);
+                    o.appendChild(newP);
+                    consoles(obj,cnt);
+                }
             }
             else if(slider==1) {
-                console.log("NUM : "+num);
-                cnt = num;
-                processed_code = processing(a[cnt]);
-                newP.innerHTML = processed_code;
-                ShowSliderValue(cnt,0);
-                o.appendChild(newP);
+                if(isFunction(a[cnt],cnt)){
+                    console.log("NUM : "+num);
+                    cnt = num;
+                    processed_code = processing_f(a[cnt]);
+                    newF.innerHTML = processed_code;
+                    ShowSliderValue(cnt,0);
+                    f.appendChild(newF);
+                    visualizing_function(obj,cnt);
+                    consoles(obj,cnt);
+                }
+                else{
+                    console.log("NUM : "+num);
+                    cnt = num;
+                    processed_code = processing(a[cnt]);
+                    newP.innerHTML = processed_code;
+                    ShowSliderValue(cnt,0);
+                    o.appendChild(newP);
+                    consoles(obj,cnt);
+                }
             }
         }
         if(cnt>-1&&cnt<total_len){
@@ -667,6 +1073,7 @@
             console.log("obj : "+JSON.stringify(a[cnt]));
             console.log("visualizing cnt : "+cnt);
             visualizing(obj,cnt);
+            consoles(obj,cnt);
         }
     }
     function play(obj){

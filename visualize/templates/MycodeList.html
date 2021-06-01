@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>CoderGarden</title>
-    <link rel = "icon" href = "../static/img/favicon.png" type = "image/x-icon">
-    {% load static %}
     <link rel="stylesheet" href="{% static 'css/edittor_style.css' %}">
-    <link  rel = "stylesheet" href ="../static/codemirror/lib/codemirror.css " >
-    <link  rel = "stylesheet" href ="../static/codemirror/theme/elegant.css " >
-    <link  rel = "stylesheet" href ="../static/codemirror/theme/idea.css " >
-    <link  rel = "stylesheet" href ="../static/codemirror/theme/base16-light.css " >
-    <link rel = "stylesheet" href = "../static/codemirror/addon/fold/foldgutter.css">
-    <link rel = "stylesheet" href = "../static/codemirror/addon/hint/show-hint.css">
-    <link rel = "stylesheet" href = "../static/codemirror/addon/lint/lint.css">
+    <link  rel = "stylesheet" href ="/static/codemirror/lib/codemirror.css " >
+    <link  rel = "stylesheet" href ="/static/codemirror/theme/elegant.css " >
+    <link  rel = "stylesheet" href ="/static/codemirror/theme/idea.css " >
+    <link  rel = "stylesheet" href ="/static/codemirror/theme/base16-light.css " >
+    <link rel = "stylesheet" href = "/static/codemirror/addon/fold/foldgutter.css">
+    <link rel = "stylesheet" href = "/static/codemirror/addon/hint/show-hint.css">
+    <link rel = "stylesheet" href = "/static/codemirror/addon/lint/lint.css">
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-
-    <script src = "../static/codemirror/lib/codemirror.js"></script>
-    <script src = "../static/codemirror/mode/python/python.js"></script>
-    <script src = "../static/codemirror/addon/hint/show-hint.js"></script>
-    <script src="../static/codemirror/addon/comment/comment.js"></script>
-    <script src="../static/codemirror/addon/selection/active-line.js"></script>
-    <script src="../static/codemirror/keymap/sublime.js"></script>
-    <script src="../static/codemirror/addon/fold/foldcode.js"></script>
-    <script src="../static/codemirror/addon/fold/foldgutter.js"></script>
-    <script src="../static/codemirror/addon/fold/brace-fold.js"></script>
-    <script src="../static/codemirror/addon/fold/indent-fold.js"></script>
-    <script src="../static/codemirror/addon/fold/comment-fold.js"></script>
-    <script src="../static/codemirror/addon/edit/closebrackets.js"></script>
-    <script src="../static/codemirror/addon/edit/matchbrackets.js"></script>
-    <script src = "../static/codemirror/addon/hint/python-hint.js"></script>
+    <script src = "/static/codemirror/lib/codemirror.js"></script>
+    <script src = "/static/codemirror/mode/python/python.js"></script>
+    <script src = "/static/codemirror/addon/hint/show-hint.js"></script>
+    <script src="/static/codemirror/addon/comment/comment.js"></script>
+    <script src="/static/codemirror/addon/selection/active-line.js"></script>
+    <script src="/static/codemirror/keymap/sublime.js"></script>
+    <script src="/static/codemirror/addon/fold/foldcode.js"></script>
+    <script src="/static/codemirror/addon/fold/foldgutter.js"></script>
+    <script src="/static/codemirror/addon/fold/brace-fold.js"></script>
+    <script src="/static/codemirror/addon/fold/indent-fold.js"></script>
+    <script src="/static/codemirror/addon/fold/comment-fold.js"></script>
+    <script src="/static/codemirror/addon/edit/closebrackets.js"></script>
+    <script src="/static/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src = "/static/codemirror/addon/hint/python-hint.js"></script>
     <script>
         var el = document.getElementById("editor");
         var version = "# version: Python3\n\n";
@@ -38,63 +37,64 @@
         var codeEnd = "# code end\n\n";
         var code = "def solution():\n\tpass\n\n";
         var main = "if __name__ == '__main__':\n\n";
-        var initValue = version + codeAreaTip + codeStart + code + main + codeEnd ;
+        var a  = {{code|safe}};
+        var initValue = a[0];
+
+
     </script>
-    <script>
-        function hide_codeedit(){
-            console.log("!!!!!!!!");
-            document.getElementById("hong").style.display = 'none';
-            location.href='#popup3'
+    <style>
+        .bar {
+            fill :gold;
         }
-        function unhide_codeedit(){
-            console.log("!!!!!!!!");
-            document.getElementById("hong").style.display = 'block';
+
+        .pivot1
+        {
+            fill:#008080;
         }
-        function hide_codeedit_signin(){
-            console.log("!!!!!!!!");
-            document.getElementById("hong").style.display = 'none';
-            location.href='#popup1'
+        .pivot2
+        {
+            fill:pink;
         }
-    </script>
+        .pivot3
+        {
+            fill:mediumslateblue;
+        }
+        .d3text{
+            fill : black;
+            font-weight:bold;
+            font-size : 14px;
+        }
+    </style>
 </head>
 <body>
-<div class="wrapper">
+    <div class="wrapper">
     <div class="box1">
-        <div class="box1_logo">
+         <div class="box1_logo">
             <a href="/"><img id="logo" src="../static/img/codergarden_logo2.png" alt=""></a>
         </div>
         <div class="box1_nav_items" >
-            <button class = "button" onclick="hide_codeedit()">GUIDE</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class = "button" onclick="location.href='#popup1'">GUIDE</button>
             {% if request.session.user_numb %}
-                <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                <button class = "button" onclick ="location.href ='/logout'">SIGN OUT</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>
+                <button class = "button" onclick ="location.href ='/logout'">LOGOUT</button>
             {% else %}
-                <button class = "button" onclick="hide_codeedit_signin()">SIGN IN</button>
+                <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>
             {% endif %}
-        </div>
+      </div>
     </div>
-    <div class="box2">
+    <div class="box9">
         <p>Python 3.8</p>
         <form action="/test2_h/">
             <div id="hong"><textarea class="cm_test" id = "code_editor" name="code"></textarea></div>
             <div id="confirm_btn">
-                <div id="confirm_btn_box1"><img src="../static/img/orange.png" alt=""> &nbsp;line that just executed<br><img
-                        src="../static/img/blue.png" alt=""> &nbsp;next line to excute</div>
-                <div id="confirm_btn_box2"><p id="slider_value_view">step of</p></div>
+                <div id="confirm_btn_box1"><img src="../static/img/orange.png" alt=""> <br><img
+                        src="../static/img/blue.png" alt=""> </div>
+                <div id="confirm_btn_box2"><p id="slider_value_view"></p></div>
                 <div id="confirm_btn_box3"><button id="confirm_btn_real" type="submit">CONFRIRM</button></div>
             </div>
-            <div class="slider_box" >
-                <input id="slider" size=100 oninput='ShowSliderValue(this.value, 1)'  type="range" min='0' max='100' value='0'>
-            </div>
+
         </form>
-        <div id="control_box">
-            <button id="processing" onclick="answer(this, 0, 0)">FIRST</button>
-            <button onclick="answer(this, -1, 0)">PREV</button>
-            <button id="PlayBtn" onclick="play(this)">PLAY</button>
-            <button onclick="answer(this, 1, 0)">NEXT</button>
-            <button onclick="answer(this, 100, 0)">LAST</button>
-        <hr>
-        </div>
+
         <div>
             <p id="explanation">
                 <h4>How to use</h4>
@@ -113,7 +113,7 @@
                 <span>Fourth, The type of visualization chart color in the list <br> (YELLOW : the default, BLUE : the pivot, GREEN : the completion)  </span>
             </p>
         </div>
-        <!--로그인 및 회원가입 팝업 창-->
+                <!--로그인 및 회원가입 팝업 창-->
          <div id="popup1" class="overlay">
             <div class="popup_signin">
                 <div class="content1">
@@ -129,7 +129,7 @@
                         {% csrf_token %}
                         <input type="text" name="userid" placeholder="ID" class = "texts">
                         <br>
-                        <input type="password" name="password" placeholder="PASSWORD" class = "texts">
+                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
                         <br><br>
                         <input type="submit" value="SIGN IN" class = "popup_signin_btn">
                         <br>
@@ -169,9 +169,9 @@
                         <br>
                         <input type="text" name="username" placeholder="USERNAME" class = "texts">
                         <br>
-                        <input type="password" name="password" placeholder="PASSWORD" class = "texts">
+                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
                         <br>
-                        <input type="password" name="confirm" placeholder="PASSWORD CONFIRM" class = "texts">
+                        <input type="text" name="confirm" placeholder="PASSWORD CONFIRM" class = "texts">
                         <br>
                         <input type="submit" value="SIGN UP" class = "popup_signup_btn2">
                     </form>
@@ -294,7 +294,7 @@
                 </div>
                 <div class="guide_content3">
                     <hr>
-                    <strong>STEP4.</strong> 정렬 알고리즘을 학습할땐, 정렬이된 인덱스를 pivot3로 설정하여 정렬이 완료된 범위를 보라색을 통해 확인할 수 있습니다.
+                    <strong>STEP4.</strong> 추가적으로 pivot3으로 설정하면, 정렬이 완료된 리스트를 보라색 Bar로 시각화할 수 있습니다.
                 </div>
                 <div class="guide_content4">
                     <div class="left_btn">
@@ -334,25 +334,15 @@
                 </div>
             </div>
         </div>
-        <!--가이드 팝업 창-->
-    </div>
-    <div class="box3">
-        <p id="answer_table_name">Frames</p>
-        <div id="table_box">
-            <p id="answer"></p>
-        </div>
-    </div>
-    <div class="box4">
-        <p id="visu_name">Visualize</p>
-        <p id="visu">
-        <p></p>
+        <!—가이드 팝업 창—>
     </div>
 </div>
 <script>
-    let editor = CodeMirror.fromTextArea(document.getElementById('code_editor') , {
+    var editor = {
         mode :"python" ,
-        theme : "idea" ,
         keyMap: "sublime", // Fast key style
+        value: "Test Default Value",
+        theme : "idea",
         lineNumbers: true, // set number
         smartIndent: true, // smart indent
         indentUnit: 4, // Smart indent in 4 spaces
@@ -365,19 +355,20 @@
         matchBrackets: true, // Match end symbols, such as "],}"
         autoCloseBrackets: true, // Auto close symbol
         styleActiveLine: true, // Display the style of the selected row
-    });
-    editor.setOption("value" , initValue);
-    editor.on('inputRead', function onChange(editor, input) {
-
-        if (input.text[0] === ';' || input.text[0] === ' ' || input.text[0] === ":") {
-            return;
-        }
-
-        editor.showHint({
-            hint: CodeMirror.pythonHint
-        });
-    });
+        styleSelectedText: true,
+    };
+    var myTextArea = $(".cm_test").get(0);
+    var myCodeMirror = CodeMirror.fromTextArea(myTextArea, editor);
+    myCodeMirror.setOption("value", initValue);
+    var b = {{ code|safe }};
+    var cnt = -1;
+    var total_len = a.length;
+    var prev_line = 0
+    var prev_prev_line = 0;
+    var is_playing = 0;
+    var pivot3_list = []
+    var pivot1;
+    var pivot2;
 </script>
-
 </body>
 </html>
