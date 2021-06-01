@@ -22,6 +22,10 @@
     font-size : 14px;
     grid-column: 1/2;
 }
+.box9 {
+    font-size : 14px;
+    grid-column: 1/4;
+}
 .box3 {
     font-size:13px;
     grid-column: 2/3;
@@ -258,8 +262,6 @@ body{
 #answer{
     text-align:center;
     margin-top: 0px;
-}
-#answer_t{
 }
 table {
     margin-top: -17px;

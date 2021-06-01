@@ -78,23 +78,22 @@ def test2_h(request):
 
     user_session_numb = request.session.get('user_numb')# 유저 세션 있고 ,
     if user_session_numb:# 세션이 존재한다면
-        print(user_session_numb)
-        print(type(user_session_numb))
+        title = trace['code'].split('\n')[0]
+        if title.startswith('#'): # 주석으로 시작하게되면
+            title = title[1:]
+
         Sourcecode(
-           user_code = text ,
+           user_code = hong,
            code_date = datetime.datetime.now() ,
-           code_title = 'Bubble_sort' ,
+           code_title = title ,
            process_time= execution_time ,
            user_number = Member.objects.get(user_number = user_session_numb)
         ).save()
     context = {
         'code' : hong,
         'trace' : trace['trace'],
-        'fuck' : trace['trace']
     }
-    print("!!!!!!!!!!")
-    print(context['fuck'])
-    print(type(context['fuck']))
+
     return render(request, 'test2_h.html', context)
 
 def search_table(request):

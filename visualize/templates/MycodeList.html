@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>CoderGarden</title>
+    <link rel="stylesheet" href="{% static 'css/edittor_style.css' %}">
+    <link  rel = "stylesheet" href ="/static/codemirror/lib/codemirror.css " >
+    <link  rel = "stylesheet" href ="/static/codemirror/theme/elegant.css " >
+    <link  rel = "stylesheet" href ="/static/codemirror/theme/idea.css " >
+    <link  rel = "stylesheet" href ="/static/codemirror/theme/base16-light.css " >
+    <link rel = "stylesheet" href = "/static/codemirror/addon/fold/foldgutter.css">
+    <link rel = "stylesheet" href = "/static/codemirror/addon/hint/show-hint.css">
+    <link rel = "stylesheet" href = "/static/codemirror/addon/lint/lint.css">
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src = "/static/codemirror/lib/codemirror.js"></script>
+    <script src = "/static/codemirror/mode/python/python.js"></script>
+    <script src = "/static/codemirror/addon/hint/show-hint.js"></script>
+    <script src="/static/codemirror/addon/comment/comment.js"></script>
+    <script src="/static/codemirror/addon/selection/active-line.js"></script>
+    <script src="/static/codemirror/keymap/sublime.js"></script>
+    <script src="/static/codemirror/addon/fold/foldcode.js"></script>
+    <script src="/static/codemirror/addon/fold/foldgutter.js"></script>
+    <script src="/static/codemirror/addon/fold/brace-fold.js"></script>
+    <script src="/static/codemirror/addon/fold/indent-fold.js"></script>
+    <script src="/static/codemirror/addon/fold/comment-fold.js"></script>
+    <script src="/static/codemirror/addon/edit/closebrackets.js"></script>
+    <script src="/static/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src = "/static/codemirror/addon/hint/python-hint.js"></script>
+    <script>
+        var el = document.getElementById("editor");
+        var version = "# version: Python3\n\n";
+        var codeAreaTip = "# please edit your code here:\n";
+        var codeStart = "# code start\n\n";
+        var codeEnd = "# code end\n\n";
+        var code = "def solution():\n\tpass\n\n";
+        var main = "if __name__ == '__main__':\n\n";
+        var a  = {{code|safe}};
+        var initValue = a[0];
+
+
+    </script>
+    <style>
+        .bar {
+            fill :gold;
+        }
+
+        .pivot1
+        {
+            fill:#008080;
+        }
+        .pivot2
+        {
+            fill:pink;
+        }
+        .pivot3
+        {
+            fill:mediumslateblue;
+        }
+        .d3text{
+            fill : black;
+            font-weight:bold;
+            font-size : 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+    <div class="box1">
+         <div class="box1_logo">
+            <a href="/"><img id="logo" src="../static/img/codergarden_logo2.png" alt=""></a>
+        </div>
+        <div class="box1_nav_items" >
+            <button class = "button" onclick="location.href='#popup1'">GUIDE</button>
+            {% if request.session.user_numb %}
+                <button class = "button" onclick ="location.href ='/mypage'">MYPAGE</button>
+                <button class = "button" onclick ="location.href ='/logout'">LOGOUT</button>
+            {% else %}
+                <button class = "button" onclick="location.href='#popup1'">SIGN IN</button>
+            {% endif %}
+      </div>
+    </div>
+    <div class="box9">
+        <p>Python 3.8</p>
+        <form action="/test2_h/">
+            <div id="hong"><textarea class="cm_test" id = "code_editor" name="code"></textarea></div>
+            <div id="confirm_btn">
+                <div id="confirm_btn_box1"><img src="../static/img/orange.png" alt=""> <br><img
+                        src="../static/img/blue.png" alt=""> </div>
+                <div id="confirm_btn_box2"><p id="slider_value_view"></p></div>
+                <div id="confirm_btn_box3"><button id="confirm_btn_real" type="submit">CONFRIRM</button></div>
+            </div>
+
+        </form>
+
+        <div>
+            <p id="explanation">
+                <h4>How to use</h4>
+                <span>First, edit your Python code in the code editor.</span><br>
+                <span>Second, if you're done editing the code, press the CONFIRM button.</span><br>
+                <span>Third, now your code is compiled. Control your code visualization with any of the five buttons below. <br>
+                    (FIRST : Go to the first line of your code, PREV : Visualize the previous line of current code line,
+                    PLAY : It automatically proceeds with code visualization from the current line to the last line,
+                    NEXT : Visualize next line of current code line, LAST : Visualize the last line of your code.)</span><br><br>
+                <span>Now enjoy code visualization. It will help you look at your code intuitively and improve learning efficiency.</span>
+                <br><br>
+                <h4>Guide line</h4>
+                <span>First, Variable names for pivot must be set to pivot1, pivot2, and pivot3</span><br>
+                <span>Second, Frames part shows what values the variables in the user's code have</span><br>
+                <span>Third, Visualize part shows how the 'list' in the user's code changes. </span><br>
+                <span>Fourth, The type of visualization chart color in the list <br> (YELLOW : the default, BLUE : the pivot, GREEN : the completion)  </span>
+            </p>
+        </div>
+                <!--로그인 및 회원가입 팝업 창-->
+         <div id="popup1" class="overlay">
+            <div class="popup_signin">
+                <div class="content1">
+                    <div class="content1_1">
+                        <a class="close" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="content1_2">
+                        <img src="../static/img/codergarden_logo2.png" alt="">
+                    </div>
+                </div>
+                <div class="content2">
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <input type="text" name="userid" placeholder="ID" class = "texts">
+                        <br>
+                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
+                        <br><br>
+                        <input type="submit" value="SIGN IN" class = "popup_signin_btn">
+                        <br>
+                    </form>
+                </div>
+                <div class="content3">
+                    <div><hr></div>
+                    <div>or</div>
+                    <div><hr></div>
+                </div>
+                <div class="content4">
+                    <button class = "popup_signup_btn" onclick="location.href='#popup2'">SIGN UP</button>
+                    <p>아이디 찾기 | 비밀번호 찾기</p>
+                </div>
+                <div class="content5">
+                    <hr>
+                    <br>
+                    Copyright&copy; Philip J. Guo (philip@pgbovine.net)<br>
+                    Copyright&copy; CorderGarden Corp. All rights reserved.
+                </div>
+            </div>
+        </div>
+        <div id = "popup2" class = "overlay">
+            <div class="popup_signup">
+                <div class="content1">
+                    <div class="content1_1">
+                        <a class="close" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="content1_2">
+                        <img src="../static/img/codergarden_logo2.png" alt="">
+                    </div>
+                </div>
+                <div class="content2">
+                    <form method="POST" action="{% url 'signup' %}">
+                         {% csrf_token %}
+                        <input type="text" name="userid" placeholder="ID" class = "texts">
+                        <br>
+                        <input type="text" name="username" placeholder="USERNAME" class = "texts">
+                        <br>
+                        <input type="text" name="password" placeholder="PASSWORD" class = "texts">
+                        <br>
+                        <input type="text" name="confirm" placeholder="PASSWORD CONFIRM" class = "texts">
+                        <br>
+                        <input type="submit" value="SIGN UP" class = "popup_signup_btn2">
+                    </form>
+                </div>
+                <div></div>
+                <div></div>
+                <div class="content5">
+                    <hr>
+                    <br>
+                    Copyright&copy; Philip J. Guo (philip@pgbovine.net)<br>
+                    Copyright&copy; CorderGarden Corp. All rights reserved.
+                </div>
+            </div>
+        </div>
+        <!--로그인 및 회원가입 팝업 창-->
+         <!--가이드 팝업 창-->
+        <!--GUIDE POP UP 1-->
+        <div id="popup3" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close2" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img src="../static/img/guide1.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP1.</strong> 파이썬 코드를 코드에디터에 입력하세요.
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_2'">></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--GUIDE POP UP 2-->
+        <div id="popup3_2" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close2" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img src="../static/img/guide2.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP2.</strong> 코드 입력을 완료하면 아래의 CONFIRM 버튼을 누르세요. <br>
+                    FIRST : 코드의 첫번째 라인으로 이동합니다. PREV : 현재 라인에서 이전 라인으로 이동합니다. PLAY : 현재 라인에서 마지막 라인까지 자동 재생합니다. NEXT : 현재 라인에서 다음 라인으로 이동합니다. LAST : 코드의 마지막 라인으로 이동합니다. <br>
+                    추가적으로 슬라이더를 이용하여 라인을 이동할 수 있습니다.
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3'"><</button>
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_3'">></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--GUIDE POP UP 3-->
+        <div id="popup3_3" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close2" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img class="guide3_img" src="../static/img/guide3.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP3.</strong> 코드 에디터의 주황색 파트는 현재 실행 코드, 파란색 파트는 다음 실행 코드입니다. <br>
+                    Frames는 해당 라인까지 읽어진 변수를 표현합니다. <br>
+                    Visualize는 리스트의 변화를 시각적으로 보여줍니다.(Yellow: 기본, Green: pivot1로 설정된 index, Pink: pivot2로 설정된 index)
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_2'"><</button>
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_4'">></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--GUIDE POP UP 4-->
+        <div id="popup3_4" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close2" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img class="guide3_img" src="../static/img/guide4.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP4.</strong> 추가적으로 pivot3으로 설정하면, 정렬이 완료된 리스트를 보라색 Bar로 시각화할 수 있습니다.
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_3'"><</button>
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--GUIDE POP UP 5-->
+        <div id="popup3_4" class="overlay">
+            <div class="popup_guide">
+                <div class="guide_content1">
+                    <div class="guide_content1_1">
+                        <a class="close" href="#" onclick="unhide_codeedit()">×</a>
+                    </div>
+                    <div class="guide_content1_2">
+                        GUIDE
+                    </div>
+                </div>
+                <div class="guide_content2">
+                    <img class="guide3_img" src="../static/img/guide4.png" alt="">
+                </div>
+                <div class="guide_content3">
+                    <hr>
+                    <strong>STEP4.</strong> 추가적으로 pivot3으로 설정하면, 정렬이 완료된 리스트를 보라색 Bar로 시각화할 수 있습니다.
+                </div>
+                <div class="guide_content4">
+                    <div class="left_btn">
+                        <button class = "guide_btn" onclick="location.href='#popup3_3'"><</button>
+                    </div>
+                    <div></div>
+                    <div class="right_btn">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!—가이드 팝업 창—>
+    </div>
+</div>
+<script>
+    var editor = {
+        mode :"python" ,
+        keyMap: "sublime", // Fast key style
+        value: "Test Default Value",
+        theme : "idea",
+        lineNumbers: true, // set number
+        smartIndent: true, // smart indent
+        indentUnit: 4, // Smart indent in 4 spaces
+        indentWithTabs: true, // Smart indent with tabs
+        lineWrapping: true, //
+        // Add line number display, folder and syntax detector to the slot
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
+        foldGutter: true, // Enable code folding in slots
+        autofocus: true, // Autofocus
+        matchBrackets: true, // Match end symbols, such as "],}"
+        autoCloseBrackets: true, // Auto close symbol
+        styleActiveLine: true, // Display the style of the selected row
+        styleSelectedText: true,
+    };
+    var myTextArea = $(".cm_test").get(0);
+    var myCodeMirror = CodeMirror.fromTextArea(myTextArea, editor);
+    myCodeMirror.setOption("value", initValue);
+    var b = {{ code|safe }};
+    var cnt = -1;
+    var total_len = a.length;
+    var prev_line = 0
+    var prev_prev_line = 0;
+    var is_playing = 0;
+    var pivot3_list = []
+    var pivot1;
+    var pivot2;
+</script>
+</body>
+</html>
