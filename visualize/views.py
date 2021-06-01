@@ -77,23 +77,22 @@ def test2_h(request):
     text = request.GET['code']
     print(text)
     # 예외처리
-    try:
-        print("try context")
-        exec(text)
-        print("after text")
-    except Exception as e:
-        print("1111111111111111111")
-        print("the code  is " + eval(get_exec(text))['code'])
-        context = {
-            'code' : eval(get_exec(text))['code'] ,
-            'catch' : 1 ,
-            'error' : e
-        }
-        return render(request , 'test_h.html' , context)
-        # 예외처리 하였지만 js 에서 출력이 되지않음
+    # try:
+    #     print("try context")
+    #     exec(text)
+    #     print("after text")
+    # except Exception as e:
+    #     print("1111111111111111111")
+    #     print("the code  is " + eval(get_exec(text))['code'])
+    #     context = {
+    #         'code' : eval(get_exec(text))['code'] ,
+    #         'catch' : 1 ,
+    #         'error' : e
+    #     }
+    #     return render(request , 'test_h.html' , context)
+    #     # 예외처리 하였지만 js 에서 출력이 되지않음
     start_time = time.time()
     trace = eval(get_exec(text))
-    print(trace)
     a.append(trace['code'])
     execution_time = time.time() - start_time
 
@@ -101,10 +100,13 @@ def test2_h(request):
     if user_session_numb:# 세션이 존재한다면
         # print(user_session_numb)
         # print(type(user_session_numb))
+        title = trace['code'].split('\n')[0]
+        if title.startswith('#'): # 주석으로 시작하게되면
+            title = title[1:]
         Sourcecode(
-           user_code = text ,
+           user_code = a,
            code_date = datetime.datetime.now() ,
-           code_title = 'Bubble_sort' ,
+           code_title = title ,
            process_time= execution_time ,
            user_number = Member.objects.get(user_number = user_session_numb)
         ).save()
